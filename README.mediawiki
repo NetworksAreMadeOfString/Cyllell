@@ -2,7 +2,7 @@
 
 An interface to Chef for Android devices. Will allow access to common knife tasks.
 
-== License ==
+License
 
 Author: Gareth Llewellyn (<gareth@networksaremadeofstring.co.uk>)
 Copyright: Copyright (c) 2011 Gareth Llewellyn
