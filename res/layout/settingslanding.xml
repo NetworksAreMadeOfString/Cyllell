@@ -1,0 +1,9 @@
+
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:id="@+id/titleText" android:text="Cyllell - Config" android:textSize="12pt"></TextView>
+        <EditText android:layout_height="wrap_content" android:layout_below="@+id/titleText" android:id="@+id/chefServerURL" android:layout_width="fill_parent" android:layout_marginLeft="20px" android:layout_marginRight="20px" android:hint="http://chef.server.com/url/" android:layout_marginTop="40px"></EditText>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/chefServerURL" android:layout_alignLeft="@+id/chefServerURL" android:id="@+id/timeTitle" android:text="Current Time: "></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/timeTitle" android:layout_centerHorizontal="true" android:id="@+id/timeDescription" android:text="Ensure your device time matches that on your Chef server otherwise authentication will fail." android:textSize="4pt" android:gravity="center_vertical|center_horizontal"></TextView>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@+id/timeDescription" android:id="@+id/saveSettingsButton" android:text="Save Settings" android:layout_centerHorizontal="true" android:layout_marginTop="80px"></Button>
+        <DigitalClock android:text="DigitalClock" android:layout_width="wrap_content" android:layout_toRightOf="@+id/timeTitle" android:layout_height="wrap_content" android:layout_alignTop="@+id/timeTitle" android:layout_alignBottom="@+id/timeTitle" android:id="@+id/digitalClock"></DigitalClock>
+    </RelativeLayout>
