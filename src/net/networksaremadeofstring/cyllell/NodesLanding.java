@@ -18,6 +18,18 @@
 */
 package net.networksaremadeofstring.cyllell;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.cert.CertificateException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -47,7 +59,7 @@ public class NodesLanding extends Activity
     			Toast.makeText(NodesLanding.this, "If this code was any good I'd have written a ListView and stuff like that", Toast.LENGTH_LONG).show();
     			
     			//Once we've checked the data is good to use start processing it
-    			if(true == false)//TODO sanity check
+    			if(true == true)//TODO sanity check
     			{
     				//TODO ListView population
     				
