@@ -49,7 +49,16 @@ public class NodesLanding extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nodeslanding);
         
-        Cut = new Cuts(this);
+        try 
+        {
+			Cut = new Cuts(this);
+		} 
+        catch (Exception e) 
+        {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         final ProgressDialog dialog = ProgressDialog.show(this, "Contacting Chef", "Please wait: loading data....", true);
         
     	final Handler handler = new Handler() 

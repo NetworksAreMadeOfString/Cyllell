@@ -18,14 +18,19 @@
 */
 package net.networksaremadeofstring.cyllell;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
 
-import org.apache.http.util.ByteArrayBuffer;
-import org.json.JSONException;
-import org.json.JSONObject;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.SingleClientConnManager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -38,78 +43,84 @@ import android.util.Log;
 public class Cuts 
 {
 	private SharedPreferences settings = null;
-	private String ChefURL = "https://api.opscode.com/organizations/namos";//This should probably be null or something
-	private String UserID = "Android"; //The name of the API client
+	private String ChefURL = "https://api.opscode.com";//This won't work but hey ho
+	private String UserID = "Cyllell"; //The name of the API client
+	private String PrivateKey = null;
 	
-	public Cuts(Context thisContext)
+	private ResponseHandler<String> responseHandler;
+	private String JSONReturn = "";
+	private Authentication ChefAuth = null;
+	
+	//These don't get used directly
+	private DefaultHttpClient client;
+	private SingleClientConnManager mgr;
+	
+	//This one is the HttpClient we do use;
+	private DefaultHttpClient httpClient;
+	
+	public Cuts(Context thisContext) throws Exception
 	{
 		settings = thisContext.getSharedPreferences("Cyllell", 0);
 		
-		//TODO ensure that there is no trailing slash
-		this.ChefURL = settings.getString("ChefURL", ChefURL);
+		/*this.ChefURL = settings.getString("ChefURL", "--");
+		this.UserID = settings.getString("UserID", "--");
+		this.PrivateKey = settings.getString("PrivateKey", "--");*/
 		
-		this.UserID = settings.getString("UserID", UserID);
+		responseHandler = new BasicResponseHandler();
+		
+		if(settings.getString("URL", "--").equals("--") == false && settings.getString("ClientName", "--").equals("--") == false &&  settings.getString("PrivateKey", "--").equals("--") == false)
+		{
+			ChefAuth = new Authentication(settings.getString("URL", "--"),settings.getString("ClientName", "--"),settings.getString("PrivateKey", "--"));
+		}
+		else
+		{
+			Log.i("URL",settings.getString("URL", "--"));
+			Log.i("ClientName",settings.getString("ClientName", "--"));
+			Log.i("PrivateKey",settings.getString("PrivateKey", "--"));
+			throw new Exception("Chef URL is not set");
+		}
+		
+		//Create the httpclient that trusts everything!
+		this.PrepareSSLHTTPClient();
+	}
+	
+	private void PrepareSSLHTTPClient()
+	{
+		client = new DefaultHttpClient(); 
+		HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+		
+		SchemeRegistry registry = new SchemeRegistry();
+        SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
+        socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
+        registry.register(new Scheme("https", socketFactory, 443));
+        mgr = new SingleClientConnManager(client.getParams(), registry); 
+        HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
+        
+        httpClient = new DefaultHttpClient(mgr, client.getParams());
 	}
 	
 	public String[] GetNodes()
 	{
-		Authentication ChefAuth = new Authentication(ChefURL + "/nodes");//Lack of variables makes me sad
-		Log.e("API", "Resulting Chef URL is: " + ChefURL);
-		URLConnection conn = ChefAuth.AddHeaders(UserID);
+		ChefAuth.SetHeaders("/search/nodes");
 		
-		InputStream is = null;
-		int current = 0; 
-		ByteArrayBuffer baf = new ByteArrayBuffer(50);  
-		
-		try 
+	    try 
 		{
-			conn = ChefAuth.chefURL.openConnection();
+	    	JSONReturn = httpClient.execute(ChefAuth.httpget, responseHandler);
 		} 
-		catch (IOException e) 
-		{
-			return null;
-		}  
-		
-		
-		try 
-		{
-			is = conn.getInputStream();
-		} 
-		catch (IOException e) 
+		catch (ClientProtocolException e) 
 		{
 			e.printStackTrace();
-			return null;
-		}  
-		BufferedInputStream bis = new BufferedInputStream(is);  
-		
-		 
-		try 
-		{
-			while((current = bis.read()) != -1)
-			{  
-				baf.append((byte)current);  
-			}
+			Log.i("Cuts ClientProtocolException",e.getLocalizedMessage());
+			Log.i("Cuts ClientProtocolException",e.getMessage());
 		} 
 		catch (IOException e) 
 		{
+			Log.i("Cuts IOException",responseHandler.toString());
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
-		}  
-		
-		/* Convert the Bytes read to a String. */  
-		String ChefJSONString = new String(baf.toByteArray());  
-		
-		Log.e("API", "assigning the string to a JSON object failed: " + ChefJSONString);
-		
-		try 
-		{
-			JSONObject ChefJSON = new JSONObject(ChefJSONString);
-		} 
-		catch (JSONException e) 
-		{
-			//Log.e("API", "assigning the string to a JSON object failed: " + ChefJSONString);
-			return null;
 		}
+		
+		Log.i("Cuts",JSONReturn);
 		
 		return null;
 	}

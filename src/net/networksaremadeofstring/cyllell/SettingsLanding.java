@@ -20,12 +20,17 @@ package net.networksaremadeofstring.cyllell;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class SettingsLanding extends Activity 
 {
+	private SharedPreferences settings = null;
 	 /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -33,18 +38,60 @@ public class SettingsLanding extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settingslanding);
         
+        settings = getSharedPreferences("Cyllell", 0);
+        
+        EditText chefURL = (EditText) findViewById(R.id.chefServerURL);
+        EditText chefClientName = (EditText) findViewById(R.id.chefClientName);
+        EditText chefPrivateKey = (EditText) findViewById(R.id.chefPrivateKey);
+        
+        if(settings.getString("URL", "--").equals("--") == false)
+        	chefURL.setText(settings.getString("URL",""));
+        
+        if(settings.getString("ClientName", "--").equals("--") == false)
+        	chefClientName.setText(settings.getString("ClientName",""));
+        
+        if(settings.getString("PrivateKey", "--").equals("--") == false)
+        	chefPrivateKey.setText(settings.getString("PrivateKey",""));
+        
+        
         Button SaveButton = (Button) findViewById(R.id.saveSettingsButton);
         SaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) 
             {
-            	//Eventually I'll actually do some sanity testing on this URL but since 
-            	//I'm doing everything statically at the moment it can wait
-            	
+            	EditText chefURL = (EditText) findViewById(R.id.chefServerURL);
+                EditText chefClientName = (EditText) findViewById(R.id.chefClientName);
+                EditText chefPrivateKey = (EditText) findViewById(R.id.chefPrivateKey);
+                
+                SharedPreferences.Editor editor = settings.edit();
+                //TODO remove trailing slash from a URL
+                editor.putString("URL", chefURL.getText().toString());
+                
+                //Name doesn't need any validation really
+                editor.putString("ClientName", chefClientName.getText().toString());
+                
+                //Strip crap out of private key
+                String tmpPK = chefPrivateKey.getText().toString().replace("-----BEGIN RSA PRIVATE KEY-----", "");
+                tmpPK = tmpPK.replace("-----END RSA PRIVATE KEY-----", "");
+                tmpPK = tmpPK.replace("\n", "");
+                //tmpPK = tmpPK.replaceAll(regularExpression, replacement); //REGEX one day!
+                editor.putString("PrivateKey", tmpPK);
+                
+
             	//TODO Actually do some verification of the settings the user has passed in
-            	
+                editor.commit();
+                
+                //Return back to the launcher
             	Intent in = new Intent();
                 setResult(1,in);
                 finish();
+            }
+        });
+        
+        Button SettingsButton = (Button) findViewById(R.id.LoadTimeSettings);
+        SettingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) 
+            {
+            	startActivityForResult(new Intent(Settings.ACTION_DATE_SETTINGS),0);
             }
         });
     }

@@ -50,6 +50,6 @@ public class Digester
 		}
 		
 	    sha1hash = md.digest();
-	    return Base64.encodeToString(sha1hash, 0);
+	    return Base64.encodeToString(sha1hash, Base64.NO_WRAP);
 	}
 }
