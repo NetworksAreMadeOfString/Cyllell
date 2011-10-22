@@ -46,8 +46,8 @@ public class launcher extends Activity
         }
         else
         {
-        	Toast.makeText(launcher.this, "Welcome to Cyllell\nLoading Nodes list...", Toast.LENGTH_LONG).show();
-        	Intent NodesIntent = new Intent(launcher.this, NodesLanding.class);
+        	//Toast.makeText(launcher.this, "Welcome to Cyllell\nLoading Nodes list...", Toast.LENGTH_LONG).show();
+        	Intent NodesIntent = new Intent(launcher.this, Main.class);
     		launcher.this.startActivity(NodesIntent);
     		finish();
         }
@@ -64,9 +64,9 @@ public class launcher extends Activity
         	editor.putBoolean("FirstRun", false);
         	editor.commit();
         	
-    		Toast.makeText(launcher.this, "Settings validated!\r\nLaunching Cyllell...", Toast.LENGTH_LONG).show();
-    		Intent NodesIntent = new Intent(launcher.this, NodesLanding.class);
-    		launcher.this.startActivity(NodesIntent);
+    		Toast.makeText(launcher.this, "Settings validated!\r\nLaunching Cyllell...", Toast.LENGTH_SHORT).show();
+    		Intent MainIntent = new Intent(launcher.this, Main.class);
+    		launcher.this.startActivity(MainIntent);
     		finish();
     	}
     	else //There is the potential for an infinite loop of unhappiness here but I doubt it'll happen

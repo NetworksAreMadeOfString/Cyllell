@@ -1,0 +1,28 @@
+<resources>
+<color name="codeops_background_light">#f4f2e6</color>
+<color name="codeops_background_darker">#d7d4c3</color>
+<color name="codeops_background_dark">#333333</color>
+<color name="codeops_title_text">#f7681a</color>
+<color name="codeops_subtitle_text">#333333</color>
+<color name="codeops_normal_text">#767676</color>
+
+<style name="codeops_titlebar">
+        <item name="android:background">@color/codeops_background_dark</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    
+<style name="codeops_default" parent="android:Theme.Light">
+    <item name="android:windowBackground">@color/codeops_background_light</item>
+    <item name="android:colorBackground">@color/codeops_background_light</item>
+    <item name="android:textColor">@color/codeops_normal_text</item>
+    <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar</item>
+</style>
+
+<style name="codeops_default.NoTitleBar" parent="codeops_default">
+	<item name="android:windowNoTitle">true</item>
+</style>
+
+<style name="codeops_title" parent="android:Theme.Light">
+	<item name="android:textColor">@color/codeops_title_text</item>
+</style>
+</resources>
