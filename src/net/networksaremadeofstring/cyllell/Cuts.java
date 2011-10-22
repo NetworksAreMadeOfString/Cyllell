@@ -19,18 +19,20 @@
 package net.networksaremadeofstring.cyllell;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -62,10 +64,6 @@ public class Cuts
 	{
 		settings = thisContext.getSharedPreferences("Cyllell", 0);
 		
-		/*this.ChefURL = settings.getString("ChefURL", "--");
-		this.UserID = settings.getString("UserID", "--");
-		this.PrivateKey = settings.getString("PrivateKey", "--");*/
-		
 		responseHandler = new BasicResponseHandler();
 		
 		if(settings.getString("URL", "--").equals("--") == false && settings.getString("ClientName", "--").equals("--") == false &&  settings.getString("PrivateKey", "--").equals("--") == false)
@@ -84,18 +82,33 @@ public class Cuts
 		this.PrepareSSLHTTPClient();
 	}
 	
-	private void PrepareSSLHTTPClient()
+	private void PrepareSSLHTTPClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException
 	{
 		client = new DefaultHttpClient(); 
-		HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 		
-		SchemeRegistry registry = new SchemeRegistry();
-        SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
-        socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
-        registry.register(new Scheme("https", socketFactory, 443));
-        mgr = new SingleClientConnManager(client.getParams(), registry); 
-        HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
+        SchemeRegistry registry = new SchemeRegistry();
+        //HostnameVerifier hostnameVerifier;
+        SocketFactory socketFactory = null;
         
+        //Check whether people are self signing or not
+        if(settings.getBoolean("SelfSigned", true))
+        {
+        	Log.i("SelfSigned","Allowing Self Signed Certificates");
+        	//hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+			socketFactory = TrustAllSSLSocketFactory.getDefault();
+        }
+        else
+        {
+        	Log.i("SelfSigned","Enforcing Certificate checks");
+        	//hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
+        	socketFactory = SSLSocketFactory.getSocketFactory();
+        }
+        
+        //socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
+        registry.register(new Scheme("https", socketFactory, 443));
+        //HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
+        mgr = new SingleClientConnManager(client.getParams(), registry); 
+
         httpClient = new DefaultHttpClient(mgr, client.getParams());
 	}
 	

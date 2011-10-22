@@ -26,6 +26,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 public class SettingsLanding extends Activity 
@@ -61,6 +62,7 @@ public class SettingsLanding extends Activity
             	EditText chefURL = (EditText) findViewById(R.id.chefServerURL);
                 EditText chefClientName = (EditText) findViewById(R.id.chefClientName);
                 EditText chefPrivateKey = (EditText) findViewById(R.id.chefPrivateKey);
+                CheckBox chefSelfSigned = (CheckBox) findViewById(R.id.chefSelfSigned);
                 
                 SharedPreferences.Editor editor = settings.edit();
                 //TODO remove trailing slash from a URL
@@ -77,6 +79,10 @@ public class SettingsLanding extends Activity
                 editor.putString("PrivateKey", tmpPK);
                 
 
+                //Save selfsigned settings
+                editor.putBoolean("SelfSigned", chefSelfSigned.isChecked());
+                
+                
             	//TODO Actually do some verification of the settings the user has passed in
                 editor.commit();
                 

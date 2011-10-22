@@ -49,7 +49,7 @@ public class Authentication
 		this.PrivateKey = _PrivateKey;
 	}
 	
-	private String Sign3(String dataToSign) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchProviderException
+	private String SignHeaders(String dataToSign) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchProviderException
 	{
 		 PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64.decode(this.PrivateKey.getBytes(),0));
 	     KeyFactory kf = KeyFactory.getInstance("RSA");
@@ -112,7 +112,7 @@ public class Authentication
 		
 		
 		try {
-			signed_canonicalize_request = Sign3("Method:GET"+
+			signed_canonicalize_request = SignHeaders("Method:GET"+
 												"\nHashed Path:" + Disgesteriser.hash_string(Path) + 
 												"\nX-Ops-Content-Hash:"+Disgesteriser.hash_string(Body)+
 												"\nX-Ops-Timestamp:"+TimeStamp+
