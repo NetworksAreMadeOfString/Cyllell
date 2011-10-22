@@ -38,7 +38,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
-public class NodesLanding extends Activity
+public class ViewNodes extends Activity
 {
 	Cuts Cut = null;
 	String[] Nodes = null;
@@ -65,7 +65,7 @@ public class NodesLanding extends Activity
     	{
     		public void handleMessage(Message msg) 
     		{
-    			Toast.makeText(NodesLanding.this, "If this code was any good I'd have written a ListView and stuff like that", Toast.LENGTH_LONG).show();
+    			Toast.makeText(ViewNodes.this, "If this code was any good I'd have written a ListView and stuff like that", Toast.LENGTH_LONG).show();
     			
     			//Once we've checked the data is good to use start processing it
     			if(true == true)//TODO sanity check
@@ -80,7 +80,7 @@ public class NodesLanding extends Activity
     				//Close the Progress dialog
     				dialog.dismiss();
     				
-    				AlertDialog alertDialog = new AlertDialog.Builder(NodesLanding.this).create();
+    				AlertDialog alertDialog = new AlertDialog.Builder(ViewNodes.this).create();
     				alertDialog.setTitle("API Error");
     				alertDialog.setMessage("There was an error communicating with the API.");
     				/*alertDialog.setButton2("Exit", new DialogInterface.OnClickListener() {
