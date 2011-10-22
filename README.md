@@ -1,6 +1,6 @@
 Cyllell is a Chef Knife Client for Android
 ======
-Cyllell makes it easy to deploy servers and scale applications throughout your entire infrastructure from your phone. 
+Cyllell makes it easy to manage servers and scale applications throughout your entire infrastructure from your phone. 
 
 Common Chef tasks such as Node editing, Role assignment, Searching, Recipe creation and more will all be available without 
 needing to boot up your PC or go back to your desk which can save valuable time and effort if you are on-call, busy or
@@ -42,6 +42,7 @@ Things that probably won't be done:
 These are things I wouldn't want to be playing with on an idle whim on my phone as the impact of a mistake would be quite large.
 
 If people think it's a good idea then let me know @NetworkString and I'll add them
+
 * Delete environments
 * Delete Role
 * Delete Node
