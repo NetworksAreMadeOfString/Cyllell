@@ -2,7 +2,16 @@
 <resources>
     <string name="hello">Hello World, launcher!</string>
     <string name="app_name">Cyllell</string>
+    <string name="searchLabel">Search</string>
+    <string name="searchHint">Role or Node Name</string>
+    <string-array name="SearchIndexes">
+	<item>Node</item>
+	<item>Role</item>
+	<item>Client</item>
+	</string-array>
+
     <string name="fake_private_key">-----BEGIN RSA PRIVATE KEY-----
+ \n
 T3VyIHN0b3J5IGJlZ2lucywgYXMgdGhlc2Ugc3RvcmllcyBvZnRlbiBkbywgd2l0
 aCBhIHlvdW5nIHVwLWFuZC1jb21pbmcgcG9saXRpY2lhbi4gSGUncyBhIGRlZXBs
 eSByZWxpZ2lvdXMgbWFuIGFuZCBhIG1lbWJlciBvZiB0aGUgY29uc2VydmF0aXZl
@@ -27,7 +36,7 @@ aWVuY2U7IGZvciB3aG9tIHRoZSBlbmRzIGFsd2F5cyBqdXN0aWZ5IHRoZSBtZWFu
 cyBhbmQgaXQgaXMgaGUgd2hvIHN1Z2dlc3RzIHRoYXQgdGhlaXIgdGFyZ2V0IHNo
 b3VsZCBub3QgYmUgYW4gZW5lbXkgb2YgdGhlIGNvdW50cnkgYnV0IHJhdGhlciB0
 aGUgY291bnRyeSBpdHNlbGYu
-
+\n
 -----END RSA PRIVATE KEY-----</string>
 <string name="realpk">-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAzrVn/Ww9qwxCZcpRq4Z6ywGIJ+kMgm2owD6Em7Jl68pnwt+p

@@ -19,20 +19,36 @@
 package net.networksaremadeofstring.cyllell;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -59,6 +75,7 @@ public class Cuts
 	
 	//This one is the HttpClient we do use;
 	private DefaultHttpClient httpClient;
+	public HttpGet httpget = null;
 	
 	public Cuts(Context thisContext) throws Exception
 	{
@@ -68,7 +85,8 @@ public class Cuts
 		
 		if(settings.getString("URL", "--").equals("--") == false && settings.getString("ClientName", "--").equals("--") == false &&  settings.getString("PrivateKey", "--").equals("--") == false)
 		{
-			ChefAuth = new Authentication(settings.getString("URL", "--"),settings.getString("ClientName", "--"),settings.getString("PrivateKey", "--"));
+			ChefAuth = new Authentication(settings.getString("ClientName", "--"),settings.getString("PrivateKey", "--"));
+			this.ChefURL = settings.getString("URL", "--");
 		}
 		else
 		{
@@ -87,54 +105,161 @@ public class Cuts
 		client = new DefaultHttpClient(); 
 		
         SchemeRegistry registry = new SchemeRegistry();
-        //HostnameVerifier hostnameVerifier;
         SocketFactory socketFactory = null;
         
         //Check whether people are self signing or not
         if(settings.getBoolean("SelfSigned", true))
         {
         	Log.i("SelfSigned","Allowing Self Signed Certificates");
-        	//hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
 			socketFactory = TrustAllSSLSocketFactory.getDefault();
         }
         else
         {
         	Log.i("SelfSigned","Enforcing Certificate checks");
-        	//hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
         	socketFactory = SSLSocketFactory.getSocketFactory();
         }
-        
-        //socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
         registry.register(new Scheme("https", socketFactory, 443));
-        //HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
         mgr = new SingleClientConnManager(client.getParams(), registry); 
 
         httpClient = new DefaultHttpClient(mgr, client.getParams());
 	}
 	
-	public String[] GetNodes()
+	/**
+	 * Gets a list of all Nodes in the system along with the URI's to get additional details
+	 * @return - JSONObject - Returns a hash of uri's for the nodes.
+	 * @throws Exception
+	 */
+	public JSONObject GetNodes() throws Exception
 	{
-		ChefAuth.SetHeaders("/search/nodes");
+		String Path = "/nodes";
+		this.httpget = new HttpGet(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
+	}
+	
+	/**
+	 * Get all the details about a particular node
+	 * @param URI - The unique name of the node in question
+	 * @return - JSONObject - Complete list of cookbook attributes, definitions, libraries and recipes that are required for this node
+	 * @throws Exception
+	 */
+	public JSONObject GetNode(String URI) throws Exception
+	{
+		String Path = "/nodes/"+URI;
+		this.httpget = new HttpGet(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
+	}
+	
+	public HashMap<String,String> CanonicalizeNode(JSONObject Node)
+	{
+		HashMap<String,String> CanonicalNode = new HashMap<String,String>();
 		
-	    try 
-		{
-	    	JSONReturn = httpClient.execute(ChefAuth.httpget, responseHandler);
+		//TODO Make some form of awesome array to do this in a loop
+		try {
+			CanonicalNode.put("serial_number",
+					Node.getJSONObject("automatic").getJSONObject("dmi").getJSONObject("system").getString("serial_number"));
 		} 
-		catch (ClientProtocolException e) 
-		{
-			e.printStackTrace();
-			Log.i("Cuts ClientProtocolException",e.getLocalizedMessage());
-			Log.i("Cuts ClientProtocolException",e.getMessage());
+		catch (JSONException e) { CanonicalNode.put("serial_number","Serial Number Not Found"); }
+		
+		try {
+			CanonicalNode.put("sku_number",
+					Node.getJSONObject("automatic").getJSONObject("dmi").getJSONObject("system").getString("sku_number"));
 		} 
-		catch (IOException e) 
+		catch (JSONException e) { CanonicalNode.put("sku_number","SKU Not Found"); }
+		
+		try {
+			CanonicalNode.put("family",
+					Node.getJSONObject("automatic").getJSONObject("dmi").getJSONObject("system").getString("family"));
+		} 
+		catch (JSONException e) { CanonicalNode.put("family","Unknown OS"); }
+		
+		try {
+			CanonicalNode.put("uptime",
+					Node.getJSONObject("automatic").getString("uptime"));
+			Log.i("uptime",Node.getJSONObject("automatic").getString("uptime"));
+		} 
+		catch (JSONException e) { CanonicalNode.put("uptime","Uptime unknown"); }
+		
+		
+		try {
+			CanonicalNode.put("chef_environment","Environment: " + Node.getString("chef_environment"));
+		} 
+		catch (JSONException e) { CanonicalNode.put("chef_environment","Chef Environment Unknown"); }
+		
+		try {
+			CanonicalNode.put("cpuCountString",Node.getJSONObject("automatic").getJSONObject("cpu").getString("real") + " / " + Node.getJSONObject("automatic").getJSONObject("cpu").getString("total"));
+		} 
+		catch (JSONException e) { CanonicalNode.put("cpuCountString","0 / 0"); }
+		
+		try {
+			CanonicalNode.put("ramStatsString",Node.getJSONObject("automatic").getJSONObject("memory").getString("total") + " / " + Node.getJSONObject("automatic").getJSONObject("memory").getString("free"));
+		} 
+		catch (JSONException e) { CanonicalNode.put("ramStatsString","0kB Total / 0kB Free"); }
+		
+		try {
+			CanonicalNode.put("platform",Node.getJSONObject("automatic").getString("platform"));
+		} 
+		catch (JSONException e) { CanonicalNode.put("platform",""); }
+		
+		try 
 		{
-			Log.i("Cuts IOException",responseHandler.toString());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JSONArray runListArray = Node.getJSONArray("run_list");
+			String runList = "";
+			for(int i = 0; i < runListArray.length(); i++)
+			{
+				runList += runListArray.getString(i);			
+				if(i != runListArray.length() - 1)
+					runList += ", ";
+			}
+
+			CanonicalNode.put("run_list",runList);
+			Log.i("CanonicalizeNode",runList);
+		} 
+		catch (JSONException e) { CanonicalNode.put("run_list","Unknown"); }
+		
+		return CanonicalNode;
+	}
+	
+	public JSONObject Search(String Query, String Index) throws Exception
+	{
+		String Path = "/search/"+Index;
+		
+		Query.replace(' ', '*');
+		
+		if(Index.equals("node"))
+		{
+			this.httpget = new HttpGet(this.ChefURL + Path + "?q=name:*"+Query+"*%20OR%20role:*"+Query+"*");
 		}
-		
-		Log.i("Cuts",JSONReturn);
-		
-		return null;
+		else
+		{
+			this.httpget = new HttpGet(this.ChefURL + Path + "?q=name:*"+Query+"*");
+		}
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
 	}
 }

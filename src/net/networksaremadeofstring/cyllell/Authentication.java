@@ -18,6 +18,8 @@
 */
 package net.networksaremadeofstring.cyllell;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -25,28 +27,38 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.ShortBufferException;
+
+import org.apache.http.Header;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.util.Base64;
 import android.util.Log;
 
 public class Authentication 
 {
-	public HttpGet httpget = null;
-	private String URL = "https://api.opscode.com";//This won't work but hey ho
 	private String ClientName = "Cyllell"; //The name of the API client
 	private String PrivateKey = null;
 	
-	public Authentication(String URL,String _ClientName, String _PrivateKey)
+	public Authentication(String _ClientName, String _PrivateKey)
 	{
-		this.httpget = new HttpGet(URL); 
 		this.ClientName = _ClientName;
-		this.PrivateKey = _PrivateKey;
+		this.PrivateKey = _PrivateKey;		
 	}
 	
 	private String SignHeaders(String dataToSign) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchProviderException
@@ -69,80 +81,40 @@ public class Authentication
 		 }
 		 return Base64.encodeToString(EncryptedStream, Base64.NO_WRAP);
 	}
-	
-	/*
-	 * When doing GET requests the Body is an empty string, no need to make people send it
-	 */
-	public void SetHeaders(String Path) 
+
+	private String GetTimeStamp()
 	{
-		this.SetHeaders(Path, "");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+		return sdf.format(new Date());
 	}
 	
-	/*
-	 * Used for adding the other Headers required by a Chef server (excluding X-Ops-Authorization-$N);
-	 * 	X-Ops-Sign
-	 * 	X-Ops-Userid
-	 * 	X-Ops-Timestamp
-	 *  X-Ops-Content-Hash
-	 */
-	public void SetHeaders(String Path, String Body)
+	public List <NameValuePair> GetHeaders(String Path, String Body) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchProviderException, URISyntaxException
 	{
-		Log.i("setHeaders","Setting Headers");
+		List <NameValuePair> Headers = new ArrayList <NameValuePair>();
+		
+		Log.i("setHeaders","Getting Headers");
 		Digester Disgesteriser = new Digester();
 		String signed_canonicalize_request = null;
 		int charLocation = 0, AuthorizationIteration = 1;
 		
-		Calendar c = Calendar.getInstance(); 
-		String TimeStamp = c.get(Calendar.YEAR) + "-" + Integer.toString((c.get(Calendar.MONTH) + 1)) + "-" + c.get(Calendar.DAY_OF_MONTH) +
-				"T" + c.get(Calendar.HOUR_OF_DAY) + ":0" + c.get(Calendar.MINUTE) +":" + c.get(Calendar.SECOND) +"Z";
+		String TimeStamp = this.GetTimeStamp();
+		Headers.add(new BasicNameValuePair("Accept","application/json"));
+		Headers.add(new BasicNameValuePair("Content-Type","application/json"));
+		
+		Headers.add(new BasicNameValuePair("X-Ops-Sign","version=1.0"));
+		Headers.add(new BasicNameValuePair("X-Ops-Userid",this.ClientName));
+		Headers.add(new BasicNameValuePair("X-Ops-Timestamp",TimeStamp));
+		Headers.add(new BasicNameValuePair("X-Ops-Content-Hash",Disgesteriser.hash_string(Body)));
+		
+		signed_canonicalize_request = SignHeaders("Method:GET"+
+				"\nHashed Path:" + Disgesteriser.hash_string(Path) + 
+				"\nX-Ops-Content-Hash:"+Disgesteriser.hash_string(Body)+
+				"\nX-Ops-Timestamp:"+TimeStamp+
+				"\nX-Ops-UserId:"+this.ClientName);
 
-		this.httpget.setHeader("Accept","application/json");
-		this.httpget.setHeader("'Content-Type","application/json");
-		
-		this.httpget.setHeader("X-Ops-Sign","version=1.0");
-		this.httpget.setHeader("X-Ops-Userid",this.ClientName);
-		this.httpget.setHeader("X-Ops-Timestamp",TimeStamp);
-		this.httpget.setHeader("X-Ops-Content-Hash",Disgesteriser.hash_string(Body));
-		
-		Log.i("SetHeaders","String to sign:\r\n\tMethod:GET\n"+
-			"\tHashed Path:" + Disgesteriser.hash_string(Path) + "\n"+
-			"\tX-Ops-Content-Hash:"+Disgesteriser.hash_string(Body)+"\n"+
-			"\tX-Ops-Timestamp:"+TimeStamp+"\n"+
-			"\tX-Ops-UserId:"+this.ClientName);
-		
-		
-		try {
-			signed_canonicalize_request = SignHeaders("Method:GET"+
-												"\nHashed Path:" + Disgesteriser.hash_string(Path) + 
-												"\nX-Ops-Content-Hash:"+Disgesteriser.hash_string(Body)+
-												"\nX-Ops-Timestamp:"+TimeStamp+
-												"\nX-Ops-UserId:"+this.ClientName);
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchProviderException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 		//Header strings must be less than 60 chars so the signed request needs to be cut up into
 		//chunks of 60 characters each one set in a Header X-Ops-Authorization-$N
 		while(charLocation < signed_canonicalize_request.length())
@@ -155,16 +127,16 @@ public class Authentication
 				if(signed_canonicalize_request.charAt(charLocation) != '\n' && signed_canonicalize_request.charAt(charLocation) != '\r')
 				{
 					AuthString += signed_canonicalize_request.charAt(charLocation);
-					
 					rubyLength++;
 				}
 				charLocation++;
 			}
-			this.httpget.setHeader("X-Ops-Authorization-"+Integer.toString(AuthorizationIteration),AuthString);
+			Headers.add(new BasicNameValuePair("X-Ops-Authorization-"+Integer.toString(AuthorizationIteration),AuthString));
 			
 			Log.i("TAG","X-Ops-Authorization-"+Integer.toString(AuthorizationIteration) + " : " + AuthString);
 			AuthorizationIteration++;
-		}		
-		return;
+		}	
+
+		return Headers;
 	}
 }

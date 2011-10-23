@@ -1,0 +1,7 @@
+
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutNodeListItem">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/icon5" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:id="@+id/nodeIcon" android:layout_marginLeft="8dp" android:layout_marginTop="8dp"></ImageView>
+        <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:layout_alignTop="@+id/nodeIcon" android:layout_alignParentLeft="true" android:id="@+id/NodeName" android:layout_marginLeft="16dp" android:textStyle="bold" style="@style/codeops_title"></TextView>
+        <ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/MoreDetailsSpinner" android:indeterminate="true" android:paddingRight="8dp" android:visibility="invisible"></ProgressBar>
+        <ImageView android:layout_height="wrap_content" android:src="@drawable/error" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/WarningIcon" android:visibility="invisible"></ImageView>
+    </RelativeLayout>

@@ -1,0 +1,18 @@
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/SearchMainRelativeLayout" style="@style/codeops_default" android:layout_height="fill_parent" android:layout_width="fill_parent">
+    <TextView android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_width="fill_parent" style="@style/codeops_titlebar" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/TitleBarText" android:text="Cyllell - Search"></TextView>
+    <ImageView android:layout_height="wrap_content" android:src="@drawable/drawer_down" android:layout_width="wrap_content" android:id="@+id/ShowSearchParams" android:layout_centerHorizontal="true" android:layout_marginTop="4dp"></ImageView>
+    <LinearLayout android:orientation="vertical" android:layout_below="@+id/TitleBarText" android:id="@+id/SearchViewContainer" android:layout_height="fill_parent" android:layout_width="fill_parent">
+    	<RelativeLayout android:layout_below="@+id/TitleBarText" android:layout_centerHorizontal="true" android:layout_width="fill_parent" android:id="@+id/SearchParamContainer" android:layout_height="128dp" android:background="@color/codeops_background_darker">
+        <EditText android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:id="@+id/SearchStringEditText" android:hint="role:*web* AND chef_environment:prod*" android:maxLines="2" android:layout_width="fill_parent" android:layout_marginLeft="4dp" android:layout_marginRight="4dp" android:gravity="top|left">
+            <requestFocus></requestFocus>
+        </EditText>
+        <Spinner android:layout_height="wrap_content" android:layout_below="@+id/SearchStringEditText" android:layout_alignLeft="@+id/SearchStringEditText" android:id="@+id/IndexChoice" android:layout_width="220dp" android:layout_toLeftOf="@+id/SearchButton" android:entries="@array/SearchIndexes"></Spinner>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignTop="@+id/IndexChoice" android:layout_alignRight="@+id/SearchStringEditText" android:id="@+id/SearchButton" android:text="Search"></Button>
+        <View android:background="@drawable/drawer_bottom_tile" android:id="@+id/BottomTile" android:layout_width="fill_parent" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:layout_height="6px"></View>
+        <ImageView android:layout_height="wrap_content" android:src="@drawable/drawer_up" android:layout_width="wrap_content" android:id="@+id/HideSearchParams" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"></ImageView>
+    </RelativeLayout>
+    <ListView android:layout_below="@+id/SearchParamContainer" android:layout_centerHorizontal="true" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/SearchResultsListView"></ListView>
+    </LinearLayout>
+    
+    </RelativeLayout>

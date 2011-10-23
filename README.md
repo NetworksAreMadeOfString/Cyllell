@@ -55,3 +55,13 @@ Links:
 * GitHub: https://github.com/NetworksAreMadeOfString/Cyllell
 * Market URL: https://market.android.com/details?id=net.networksaremadeofstring.cyllell [Not live yet]
 * Twitter: @NetworkString
+
+Copyright and Credits:
+-------
+All artwork has either been made myself or from iconfinder.com. The following is a attribution list;
+CPU and Memory Icons: http://omercetin.deviantart.com
+Chef Logo: OpsCode http://www.opscode.com
+Magnifying Glass: http://www.icons-land.com
+Operating System Icons: http://tatice.deviantart.com
+
+All other materials (unless I've made a mistake): Gareth Llewellyn

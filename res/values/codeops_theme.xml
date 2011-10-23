@@ -5,6 +5,7 @@
 <color name="codeops_title_text">#f7681a</color>
 <color name="codeops_subtitle_text">#333333</color>
 <color name="codeops_normal_text">#767676</color>
+<color name="codeops_normal_text_onDark">#EFECDD</color>
 
 <style name="codeops_titlebar">
         <item name="android:background">@color/codeops_background_dark</item>
@@ -16,6 +17,14 @@
     <item name="android:colorBackground">@color/codeops_background_light</item>
     <item name="android:textColor">@color/codeops_normal_text</item>
     <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar</item>
+    <item name="android:windowNoTitle">true</item>
+</style>
+
+<style name="codeops_dark" parent="android:Theme.Light">
+    <item name="android:windowBackground">@color/codeops_background_dark</item>
+    <item name="android:colorBackground">@color/codeops_background_dark</item>
+    <item name="android:textColor">@color/codeops_normal_text_onDark</item>
+    <item name="android:windowNoTitle">true</item>
 </style>
 
 <style name="codeops_default.NoTitleBar" parent="codeops_default">
