@@ -24,6 +24,7 @@
 		<activity android:name=".ViewNodes"
 			android:label="Cyllell - View Nodes"
 			android:theme="@style/codeops_default.NoTitleBar">
+			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
 		</activity>
 		
 		<activity android:name=".Main"

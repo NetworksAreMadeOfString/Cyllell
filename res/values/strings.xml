@@ -4,6 +4,7 @@
     <string name="app_name">Cyllell</string>
     <string name="searchLabel">Search</string>
     <string name="searchHint">Role or Node Name</string>
+    <string name="searchVoicePrompt">For best results use a short single word to describe the name or role of the node(s) you are searching for.</string>
     <string-array name="SearchIndexes">
 	<item>Node</item>
 	<item>Role</item>

@@ -38,10 +38,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,16 +53,33 @@ public class Search extends Activity
 	HashMap<String, String> NodeMap;
 	List<Node> listOfNodes = new ArrayList<Node>();
 	ListView list;
-	String query;
+	String query, index;
 	Cuts threadCut;
+	Handler handler;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.search_main);
+	    
+	    //Fancy title
 	    ((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
 	    
+	    //List view to hold search results
 	    list = (ListView)findViewById(R.id.SearchResultsListView);
+	    
+	    //Prep the handler to do all the UI updating etc
+	    MakeHandler();
+	    
+	    //This is for the crafted search (not visible if the user came in via a search intent
+	    ((Button) findViewById(R.id.SearchButton)).setOnClickListener(new View.OnClickListener() {
+	           public void onClick(View v) 
+	           {
+	        	   index = ((Spinner) findViewById(R.id.IndexChoice)).getSelectedItem().toString().toLowerCase();
+	        	   query = ((TextView) findViewById(R.id.SearchStringEditText)).getText().toString();
+	        	   PerformSearch(true);
+	           }
+	    });
 	    
 	    // Get the intent, verify the action and get the query
 	    Intent intent = getIntent();
@@ -73,125 +90,9 @@ public class Search extends Activity
 	    	findViewById(R.id.SearchMainRelativeLayout).invalidate();
 	    	
 	    	query = intent.getStringExtra(SearchManager.QUERY);
-		      try 
-		      {
-		    	  threadCut = new Cuts(Search.this);
-
-				dialog = new ProgressDialog(this);
-		        dialog.setTitle("Contacting Chef");
-		        dialog.setMessage("Please wait: Prepping Authentication protocols");       
-		        dialog.setIndeterminate(true);
-		        dialog.show();
-		        
-		        
-				final Handler handler = new Handler() 
-		    	{
-		    		public void handleMessage(Message msg) 
-		    		{	
-		    			//Once we've checked the data is good to use start processing it
-		    			if(msg.what == 0)
-		    			{
-		    				//TODO ListView population
-		    				NodeAdapter = new NodeListAdaptor(Search.this, listOfNodes);
-			    	        list.setAdapter(NodeAdapter);
-			    	        
-		    				//Close the Progress dialog
-		        			dialog.dismiss();
-		    			}
-		    			else if(msg.what == 200)
-		    			{
-		    				dialog.setMessage("Sending request to Chef...");
-		    			}
-		    			else if(msg.what == 201)
-		    			{
-		    				dialog.setMessage("Parsing JSON.....");
-		    			}
-		    			else if(msg.what == 202)
-		    			{
-		    				dialog.setMessage("Populating UI!");
-		    			}
-		    			else
-		    			{
-		    				//Close the Progress dialog
-		    				dialog.dismiss();
-		    				
-		    				//Alert the user that something went terribly wrong
-		    				AlertDialog alertDialog = new AlertDialog.Builder(Search.this).create();
-		    				alertDialog.setTitle("API Error");
-		    				alertDialog.setMessage("There was an error communicating with the API:\n" + msg.getData().getString("exception"));
-		    				alertDialog.setButton2("Back", new DialogInterface.OnClickListener() {
-		    				   public void onClick(DialogInterface dialog, int which) {
-		    					   Search.this.finish();
-		    				   }
-		    				});
-		    				alertDialog.setIcon(R.drawable.error);
-		    				alertDialog.show();
-		    			}
-		    			
-		    			
-		    		}
-		    	};
-				
-				
-				Thread dataPreload = new Thread() 
-		    	{  
-		    		public void run() 
-		    		{
-		    			try 
-		    			{
-		    				handler.sendEmptyMessage(200);
-		    				JSONObject Nodes = threadCut.Search(query, "node");
-							handler.sendEmptyMessage(201);
-							JSONArray rows = Nodes.getJSONArray("rows");
-							for(int i = 0; i < rows.length(); i++)
-							{
-								//String URI = Nodes.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/nodes/", "");
-								//Log.i("URI", URI);
-								//listOfNodes.add(new Node(Keys.get(i).toString(), URI));
-								Log.i("URI", ((JSONObject) rows.get(i)).getString("name"));
-								listOfNodes.add(new Node(((JSONObject) rows.get(i)).getString("name"), ""));
-							}
-							handler.sendEmptyMessage(202);
-							handler.sendEmptyMessage(0);
-						} 
-		    			catch (Exception e)
-		    			{
-		    				Message msg = new Message();
-		    				Bundle data = new Bundle();
-		    				data.putString("exception", e.getMessage());
-		    				msg.setData(data);
-		    				msg.what = 1;
-		    				handler.sendMessage(msg);
-		    				//handler.sendEmptyMessage(1);
-						}
-		    			
-		    			return;
-		    		}
-		    	};
-		    	
-		    	dataPreload.start();
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-		      } 
-		      catch (Exception e) 
-		      {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		      }
+	    	index = "node";
+	    	
+	    	PerformSearch(false);
 	    }
 	    else if (Intent.ACTION_SEARCH_LONG_PRESS.equals(intent.getAction()))
 	    {
@@ -228,4 +129,117 @@ public class Search extends Activity
     {
 		Toast.makeText(Search.this, "Search results can't be queried for additional information at present.", Toast.LENGTH_SHORT).show();
     }
+	
+	public void PerformSearch(final Boolean Crafted)
+	{
+		try 
+	      {
+	    	  threadCut = new Cuts(Search.this);
+
+			dialog = new ProgressDialog(this);
+	        dialog.setTitle("Chef Search");
+	        dialog.setMessage("Searching for: "+query+"\n\nPlease wait: Prepping Authentication protocols");       
+	        dialog.setIndeterminate(true);
+	        dialog.show();
+	        
+			Thread dataPreload = new Thread() 
+	    	{  
+	    		public void run() 
+	    		{
+	    			try 
+	    			{
+	    				JSONObject Nodes;
+	    				handler.sendEmptyMessage(200);
+	    				if(Crafted)
+	    				{
+	    					Nodes = threadCut.CraftedSearch(query, index);
+	    				}
+	    				else
+	    				{
+	    					Nodes = threadCut.Search(query, index);
+	    				}
+	    				
+						handler.sendEmptyMessage(201);
+						JSONArray rows = Nodes.getJSONArray("rows");
+						for(int i = 0; i < rows.length(); i++)
+						{
+							Log.i("URI", ((JSONObject) rows.get(i)).getString("name"));
+							listOfNodes.add(new Node(((JSONObject) rows.get(i)).getString("name"), ""));
+						}
+						handler.sendEmptyMessage(202);
+						handler.sendEmptyMessage(0);
+					} 
+	    			catch (Exception e)
+	    			{
+	    				Message msg = new Message();
+	    				Bundle data = new Bundle();
+	    				data.putString("exception", e.getMessage());
+	    				msg.setData(data);
+	    				msg.what = 1;
+	    				handler.sendMessage(msg);
+					}
+	    			
+	    			return;
+	    		}
+	    	};
+	    	dataPreload.start();
+
+	      } 
+	      catch (Exception e) 
+	      {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+	      }
+	}
+	
+	public void MakeHandler()
+	{
+		handler = new Handler() 
+    	{
+    		public void handleMessage(Message msg) 
+    		{	
+    			//Once we've checked the data is good to use start processing it
+    			if(msg.what == 0)
+    			{
+    				//TODO ListView population
+    				NodeAdapter = new NodeListAdaptor(Search.this, listOfNodes);
+	    	        list.setAdapter(NodeAdapter);
+	    	        
+    				//Close the Progress dialog
+        			dialog.dismiss();
+    			}
+    			else if(msg.what == 200)
+    			{
+    				dialog.setMessage("Searching for: "+query+"\n\nSending request to Chef...");
+    			}
+    			else if(msg.what == 201)
+    			{
+    				dialog.setMessage("Parsing JSON.....");
+    			}
+    			else if(msg.what == 202)
+    			{
+    				dialog.setMessage("Populating UI!");
+    			}
+    			else
+    			{
+    				//Close the Progress dialog
+    				dialog.dismiss();
+    				
+    				//Alert the user that something went terribly wrong
+    				AlertDialog alertDialog = new AlertDialog.Builder(Search.this).create();
+    				alertDialog.setTitle("API Error");
+    				alertDialog.setMessage("There was an error communicating with the API:\n" + msg.getData().getString("exception"));
+    				alertDialog.setButton2("Back", new DialogInterface.OnClickListener() {
+    				   public void onClick(DialogInterface dialog, int which) {
+    					   Search.this.finish();
+    				   }
+    				});
+    				alertDialog.setIcon(R.drawable.error);
+    				alertDialog.show();
+    			}
+    			
+    			
+    		}
+    	};
+	}
 }

@@ -241,7 +241,7 @@ public class Cuts
 	{
 		String Path = "/search/"+Index;
 		
-		Query.replace(' ', '*');
+		Query = Query.replace(' ', '*');
 		
 		if(Index.equals("node"))
 		{
@@ -251,6 +251,25 @@ public class Cuts
 		{
 			this.httpget = new HttpGet(this.ChefURL + Path + "?q=name:*"+Query+"*");
 		}
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
+	}
+	
+	public JSONObject CraftedSearch(String Query, String Index) throws Exception
+	{
+		String Path = "/search/"+Index.toLowerCase();
+		
+		Query = Query.replace(" ", "%20");
+		
+		this.httpget = new HttpGet(this.ChefURL + Path.toLowerCase() + "?q="+Query);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
     	for(int i = 0; i < Headers.size(); i++)

@@ -2,5 +2,6 @@
     android:label="@string/searchLabel"
     android:hint="@string/searchHint"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
+    android:voicePromptText="@string/searchVoicePrompt"
     >
 </searchable>
