@@ -12,30 +12,42 @@ Current Features:
 --------
 * It loads and checks it can connect to a Chef server
 * Enable or disable SSL certificate checking
+* Nodes
+	* List all Nodes
+	* Get Node details (Run List, OHAI info etc)
+* Search
+	* Free form search
+	* Voice search
 
 To Do:
 --------
 * Recipes
-	* Edit Recipe
+	* List Recipe
+ 	* Edit Recipes 
 	
 * Roles
 	* Create Role
 	* Edit Role
 
 * Nodes
-	* List all Nodes
-	* Get Node details (Run List, OHAI info etc)
 	* Edit Node
 	* Add run list to Node
 	* Remove run list from Node
+ 	* Set default search params for /node/ search on list view 
 
 * Search
-	* Free form search
 	* Saved / Favourited Searches
+ 	* Utilise search results (view info, edit etc)
+  	* Set default search query for voice search 
 	
 * Environments
 	* List Evironments
 	* Edit Environments
+
+* Caching - used for search prediction / filter as you type stuff
+	* Cache role list 
+	* Cache recipe list
+	* Cache node list
 
 Things that probably won't be done:
 --------
