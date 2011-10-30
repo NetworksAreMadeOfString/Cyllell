@@ -40,7 +40,7 @@ public class SettingsLanding extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_initial);
-        
+        ((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
         settings = getSharedPreferences("Cyllell", 0);
 
         EditText chefURL = (EditText) findViewById(R.id.chefServerURL);
@@ -102,5 +102,14 @@ public class SettingsLanding extends Activity
             	startActivityForResult(new Intent(Settings.ACTION_DATE_SETTINGS),0);
             }
         });
+    }
+    
+    @Override
+    public void onBackPressed() 
+    {
+    	//Return back to the launcher
+    	Intent in = new Intent();
+        setResult(2,in);
+        finish();
     }
 }

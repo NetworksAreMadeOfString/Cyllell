@@ -145,6 +145,49 @@ public class Cuts
     	return json;
 	}
 	
+	
+	/**
+	 * Gets a list of all Roles in the system along with the URI's to get additional details
+	 * @return - JSONObject - Returns a hash of uri's for the roles.
+	 * @throws Exception
+	 */
+	public JSONObject GetRoles() throws Exception
+	{
+		String Path = "/roles";
+		this.httpget = new HttpGet(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
+	}
+	
+	/**
+	 * Gets a list of all environments in the system along with the URI's to get additional details
+	 * @return - JSONObject - Returns a hash of uri's for the environments.
+	 * @throws Exception
+	 */
+	public JSONObject GetEnvironments() throws Exception
+	{
+		String Path = "/environments";
+		this.httpget = new HttpGet(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
+	}
+	
 	/**
 	 * Get all the details about a particular node
 	 * @param URI - The unique name of the node in question

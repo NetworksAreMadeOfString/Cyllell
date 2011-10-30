@@ -17,9 +17,12 @@
 * this program. If not, see <http://www.gnu.org/licenses/>
 */
 package net.networksaremadeofstring.cyllell;
+import java.lang.reflect.Method;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -30,7 +33,8 @@ public class launcher extends Activity
     
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         
@@ -46,11 +50,24 @@ public class launcher extends Activity
         }
         else
         {
-        	//Toast.makeText(launcher.this, "Welcome to Cyllell\nLoading Nodes list...", Toast.LENGTH_LONG).show();
-        	Intent NodesIntent = new Intent(launcher.this, Main.class);
+        	CheckDatabase();
+        }
+    }
+    
+    private void CheckDatabase()
+    {
+    	if(settings.getBoolean("DatabaseCreated", false) == true)
+    	{
+    		Intent NodesIntent = new Intent(launcher.this, Main.class);
     		launcher.this.startActivity(NodesIntent);
     		finish();
-        }
+    	}
+    	else
+    	{
+    		Intent DatabaseIntent = new Intent(launcher.this, CreateDatabase.class);
+    		launcher.this.startActivity(DatabaseIntent);
+    		finish();
+    	}
     }
     
     @Override
@@ -64,9 +81,16 @@ public class launcher extends Activity
         	editor.putBoolean("FirstRun", false);
         	editor.commit();
         	
-    		Toast.makeText(launcher.this, "Settings validated!\r\nLaunching Cyllell...", Toast.LENGTH_SHORT).show();
-    		Intent MainIntent = new Intent(launcher.this, Main.class);
+    		//Toast.makeText(launcher.this, "Settings validated!\r\nLaunching Cyllell...", Toast.LENGTH_SHORT).show();
+    		
+    		/*Intent MainIntent = new Intent(launcher.this, Main.class);
     		launcher.this.startActivity(MainIntent);
+    		finish();*/
+        	CheckDatabase();
+    	}
+    	else if(resultCode == 2)
+    	{
+    		Toast.makeText(launcher.this, "Cyllell cannot start without configured settings.\n\nExiting....", Toast.LENGTH_LONG).show();
     		finish();
     	}
     	else //There is the potential for an infinite loop of unhappiness here but I doubt it'll happen
@@ -75,5 +99,26 @@ public class launcher extends Activity
     		Intent LauncherIntent = new Intent(launcher.this, SettingsLanding.class);
     		launcher.this.startActivityForResult(LauncherIntent, requestCode);
     	}
+    }
+    
+    private boolean isTabletDevice() 
+    {
+        if (android.os.Build.VERSION.SDK_INT >= 11) // honeycomb
+        { 
+            // test screen size, use reflection because isLayoutSizeAtLeast is only available since 11
+            Configuration con = getResources().getConfiguration();
+            try 
+            {
+                Method mIsLayoutSizeAtLeast = con.getClass().getMethod("isLayoutSizeAtLeast", int.class);
+                Boolean r = (Boolean) mIsLayoutSizeAtLeast.invoke(con, 0x00000004); // Configuration.SCREENLAYOUT_SIZE_XLARGE
+                return r;
+            } 
+            catch (Exception x) 
+            {
+                x.printStackTrace();
+                return false;
+            }
+        }
+        return false;
     }
 }
