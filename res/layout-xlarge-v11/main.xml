@@ -1,0 +1,24 @@
+<RelativeLayout android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutMain" style="@style/codeops_default_tablet" android:layout_width="fill_parent">
+        
+        <ImageView android:src="@drawable/chef_logo_trans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:id="@+id/chefWaterMark"></ImageView>
+        <LinearLayout android:orientation="vertical" android:id="@+id/PrimaryMenu" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_width="128dp" android:layout_height="fill_parent">
+            <ImageView android:src="@drawable/nodes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:id="@+id/NodeImageView"></ImageView>
+            <ImageView android:src="@drawable/recipe" android:id="@+id/imageView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp"></ImageView>
+            <ImageView android:layout_marginRight="24dp" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_width="wrap_content" android:id="@+id/imageView3" android:src="@drawable/role"></ImageView>
+            <ImageView android:layout_marginRight="24dp" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_width="wrap_content" android:id="@+id/SettingsImageView" android:src="@drawable/settings"></ImageView>
+            <ImageView android:layout_marginRight="24dp" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_width="wrap_content" android:id="@+id/SearchImageView" android:src="@drawable/search"></ImageView>
+            <ImageView android:id="@+id/imageView4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:src="@drawable/environment"></ImageView>
+        </LinearLayout>
+        <ProgressBar android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:id="@+id/backgroundProgress" android:indeterminate="true" android:layout_alignLeft="@id/PrimaryMenu" android:layout_marginLeft="24dp"></ProgressBar>
+        
+        <fragment android:layout_alignParentTop="true" 
+        android:layout_height="fill_parent" 
+        android:layout_width="fill_parent" 
+        android:layout_alignParentRight="true" 
+        android:layout_toRightOf="@id/PrimaryMenu" 
+        android:tag="MainFragment" 
+        android:id="@+id/MainFragment" 
+        class="net.networksaremadeofstring.cyllell.TabletWelcome" 
+        android:name="WhatEver"></fragment>
+
+    </RelativeLayout>

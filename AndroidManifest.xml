@@ -4,7 +4,7 @@
       android:versionCode="1"
       android:versionName="1.0"
       android:installLocation="auto">
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11"/>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
@@ -19,18 +19,23 @@
         
         <activity android:name=".SettingsLanding"
 			android:label="Configure Startup Settings"
-			android:theme="@android:style/Theme.NoTitleBar">
+			android:theme="@style/codeops_default.NoTitleBar">
+		</activity>
+		
+		<activity android:name=".CreateDatabase"
+			android:label="Cyllell - Create Database"
+			android:theme="@style/codeops_default.NoTitleBar">
 		</activity>
 		
 		<activity android:name=".ViewNodes"
 			android:label="Cyllell - View Nodes"
-			android:theme="@style/codeops_default.NoTitleBar">
+			android:theme="@style/codeops_default">
 			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
 		</activity>
 		
 		<activity android:name=".Main"
 			android:label="@string/app_name"
-			android:theme="@style/codeops_default.NoTitleBar">
+			android:theme="@style/codeops_default_tablet">
 			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
 		</activity>
 		

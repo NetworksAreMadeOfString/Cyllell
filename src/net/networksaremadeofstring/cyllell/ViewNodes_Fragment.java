@@ -1,0 +1,195 @@
+package net.networksaremadeofstring.cyllell;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
+
+public class ViewNodes_Fragment extends Fragment
+{
+	Cuts Cut = null;
+	JSONObject Nodes = null;
+	HashMap<String, String> NodeMap;
+	List<Node> listOfNodes = new ArrayList<Node>();
+	ListView list;
+	ProgressDialog dialog;
+	NodeListAdaptor NodeAdapter;
+	Handler updateListNotify;
+	Thread GetFullDetails;
+	private SharedPreferences settings = null;
+	Boolean CutInProgress = false;
+	
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+	{
+		list = (ListView) this.getActivity().findViewById(R.id.nodesListView);
+		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
+        try 
+        {
+			Cut = new Cuts(this.getActivity());
+		} 
+        catch (Exception e) 
+        {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        dialog = new ProgressDialog(this.getActivity());
+        dialog.setTitle("Contacting Chef");
+        dialog.setMessage("Please wait: Prepping Authentication protocols");       
+        dialog.setIndeterminate(true);
+        dialog.show();
+        
+        updateListNotify = new Handler() 
+    	{
+    		public void handleMessage(Message msg) 
+    		{	
+    			int tag = msg.getData().getInt("tag", 999999);
+    			
+    			if(msg.what == 0)
+    			{
+    				if(tag != 999999)
+    				{
+	    				//Log.i("TAG - Handler", Integer.toString(tag));
+	    				listOfNodes.get(tag).SetSpinnerVisible();
+						//list.invalidate();
+    				}
+    			}
+    			else if(msg.what == 1)
+    			{
+    				//Get rid of the lock
+    				CutInProgress = false;
+    				
+    				//the notifyDataSetChanged() will handle the rest
+    			}
+    			else if (msg.what == 99)
+    			{
+    				if(tag != 999999)
+    				{
+    					Toast.makeText(ViewNodes_Fragment.this.getActivity(), "An error occured during that operation.", Toast.LENGTH_LONG).show();
+    					//Log.i("TAG - Handler", Integer.toString(tag));
+    					listOfNodes.get(tag).SetErrorState();
+    				}
+    			}
+    			NodeAdapter.notifyDataSetChanged();
+    		}
+    	};
+        
+    	final Handler handler = new Handler() 
+    	{
+    		public void handleMessage(Message msg) 
+    		{	
+    			//Once we've checked the data is good to use start processing it
+    			if(msg.what == 0)
+    			{
+    				//TODO ListView population
+    				NodeAdapter = new NodeListAdaptor(ViewNodes_Fragment.this.getActivity().getBaseContext(), listOfNodes);
+    				list = (ListView) ViewNodes_Fragment.this.getActivity().findViewById(R.id.nodesListView);
+    				if(list != null)
+    				{
+    					if(NodeAdapter != null)
+    					{
+    						list.setAdapter(NodeAdapter);
+    					}
+    					else
+    					{
+    						Log.e("NodeAdapter","NodeAdapter is null");
+    					}
+    				}
+    				else
+    				{
+    					Log.e("List","List is null");
+    				}
+	    	        
+    				//Close the Progress dialog
+        			dialog.dismiss();
+    			}
+    			else if(msg.what == 200)
+    			{
+    				dialog.setMessage("Sending request to Chef...");
+    			}
+    			else if(msg.what == 201)
+    			{
+    				dialog.setMessage("Parsing JSON.....");
+    			}
+    			else if(msg.what == 202)
+    			{
+    				dialog.setMessage("Populating UI!");
+    			}
+    			else
+    			{
+    				//Close the Progress dialog
+    				dialog.dismiss();
+    				
+    				//Alert the user that something went terribly wrong
+    				AlertDialog alertDialog = new AlertDialog.Builder(ViewNodes_Fragment.this.getActivity()).create();
+    				alertDialog.setTitle("API Error");
+    				alertDialog.setMessage("There was an error communicating with the API:\n" + msg.getData().getString("exception"));
+    				alertDialog.setButton2("Back", new DialogInterface.OnClickListener() {
+    				   public void onClick(DialogInterface dialog, int which) {
+    					   ViewNodes_Fragment.this.getActivity().finish();
+    				   }
+    				});
+    				alertDialog.setIcon(R.drawable.icon);
+    				alertDialog.show();
+    			}
+    			
+    			
+    		}
+    	};
+    	
+    	Thread dataPreload = new Thread() 
+    	{  
+    		public void run() 
+    		{
+    			try 
+    			{
+    				handler.sendEmptyMessage(200);
+					Nodes = Cut.GetNodes();
+					handler.sendEmptyMessage(201);
+					JSONArray Keys = Nodes.names();
+					for(int i = 0; i < Nodes.length(); i++)
+					{
+						String URI = Nodes.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/nodes/", "");
+						Log.i("URI", URI);
+						listOfNodes.add(new Node(Keys.get(i).toString(), URI));
+					}
+					handler.sendEmptyMessage(202);
+					handler.sendEmptyMessage(0);
+				} 
+    			catch (Exception e)
+    			{
+    				Message msg = new Message();
+    				Bundle data = new Bundle();
+    				data.putString("exception", e.getMessage());
+    				msg.setData(data);
+    				msg.what = 1;
+    				handler.sendMessage(msg);
+    				//handler.sendEmptyMessage(1);
+				}
+    			
+    			return;
+    		}
+    	};
+    	
+    	dataPreload.start();
+        return inflater.inflate(R.layout.nodeslanding, container, false);
+    }
+}
