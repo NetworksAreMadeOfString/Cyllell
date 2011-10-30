@@ -17,7 +17,6 @@
     <item name="android:colorBackground">@color/codeops_background_light</item>
     <item name="android:textColor">@color/codeops_normal_text</item>
     <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar</item>
-    <item name="android:windowNoTitle">true</item>
 </style>
 
 <style name="codeops_dark" parent="android:Theme.Light">
@@ -27,8 +26,33 @@
     <item name="android:windowNoTitle">true</item>
 </style>
 
+
+
+
+<style name="codeops_default_tablet" parent="android:Theme.Holo.Light">
+    <item name="android:windowBackground">@color/codeops_background_light</item>
+    <item name="android:colorBackground">@color/codeops_background_light</item>
+    <item name="android:textColor">@color/codeops_normal_text</item>
+    <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar</item>
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
 <style name="codeops_default.NoTitleBar" parent="codeops_default">
 	<item name="android:windowNoTitle">true</item>
+</style>
+
+<style name="codeops_default.WithTitleBar" parent="codeops_default">
+	<item name="android:windowNoTitle">false</item>
 </style>
 
 <style name="codeops_title" parent="android:Theme.Light">
