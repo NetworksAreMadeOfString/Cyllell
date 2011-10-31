@@ -34,6 +34,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -186,6 +187,35 @@ public class Cuts
     	Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
+	}
+	
+	/**
+	 * Try and perform a chef function - it'll either succeed or throw an exception / return false
+	 * @return - Boolean - whether we logged in or not
+	 * @throws Exception
+	 */
+	public Boolean ConfirmLogin() throws Exception
+	{
+		String Path = "/clients/" + settings.getString("ClientName", "--");
+		this.httpget = new HttpGet(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    
+    	JSONObject json = new JSONObject(jsonTempString);
+    	
+    	if(json.getString("chef_type").equals("client"))
+    	{
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
 	}
 	
 	/**

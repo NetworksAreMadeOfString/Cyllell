@@ -117,6 +117,7 @@ public class CreateDatabase extends Activity
 	    			case 9://Increment the counter
 	    			{
 	    				int progress = ((ProgressBar) findViewById(R.id.overallProgress)).getProgress() + msg.getData().getInt("progress",0);
+	    				Log.i("Progress","Increasing Progress Bar by: " + Integer.toString(progress) + " from " + Integer.toString(((ProgressBar) findViewById(R.id.overallProgress)).getProgress()));
 	    				((ProgressBar) findViewById(R.id.overallProgress)).setProgress(progress);
 	    			}
 	    			break;
@@ -304,15 +305,16 @@ public class CreateDatabase extends Activity
 				{
 					Nodes = Cut.GetNodes();
 					JSONArray Keys = Nodes.names();
-					float increase = (int)(Nodes.length() / 25);
-					float progress = increase;
+					double increase = (25 / (float)Nodes.length());
+					
+					Log.i("NodesIncrease", Double.toString(increase));
+					double progress = increase;
 					for(int i = 0; i < Nodes.length(); i++)
 					{
 						String URI = Nodes.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/nodes/", "");
 						ContentValues values = new ContentValues(2);
 						values.put("node_name", Keys.get(i).toString());
 						values.put("node_uri", URI);
-						//Log.i("DB","Adding " + Keys.get(i).toString() + " into the DB");
 						
 						progress += increase;
 						
@@ -320,7 +322,7 @@ public class CreateDatabase extends Activity
 						{
 							msg = new Message();
 							data = new Bundle();
-							data.putFloat("increase", progress);
+							data.putInt("progress", (int)progress);
 							msg.what = 9;
 							data.putString("lastUpdate", "Added Node " + Keys.get(i).toString());
 							msg.setData(data);
@@ -360,8 +362,8 @@ public class CreateDatabase extends Activity
 				{
 					Roles = Cut.GetRoles();
 					JSONArray Keys = Roles.names();
-					float increase = (int)(Roles.length() / 25);
-					float progress = increase;
+					double increase = (25 / (float)Roles.length());
+					double progress = increase;
 					for(int i = 0; i < Roles.length(); i++)
 					{
 						//In future versions I might get all the role details here too
@@ -369,7 +371,7 @@ public class CreateDatabase extends Activity
 						ContentValues values = new ContentValues(2);
 						values.put("role_name", Keys.get(i).toString());
 						values.put("role_uri", URI);
-						//Log.i("DB","Adding " + Keys.get(i).toString() + " ("+URI+")into the DB");
+
 						
 						progress += increase;
 						
@@ -377,7 +379,7 @@ public class CreateDatabase extends Activity
 						{
 							msg = new Message();
 							data = new Bundle();
-							data.putFloat("increase", progress);
+							data.putInt("progress", (int)progress);
 							msg.what = 9; //This is a cheat
 							data.putString("lastUpdate", "Added Role " + Keys.get(i).toString());
 							msg.setData(data);
@@ -417,16 +419,14 @@ public class CreateDatabase extends Activity
 				{
 					Environments = Cut.GetEnvironments();
 					JSONArray Keys = Environments.names();
-					float increase = (int)(Environments.length() / 25);
-					float progress = increase;
+					double increase = (25 / (float)Environments.length());
+					double progress = increase;
 					for(int i = 0; i < Environments.length(); i++)
 					{
-						//In future versions I might get all the role details here too
 						String URI = Environments.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/environments/", "");
 						ContentValues values = new ContentValues(2);
 						values.put("env_name", Keys.get(i).toString());
 						values.put("env_uri", URI);
-						//Log.i("DB","Adding " + Keys.get(i).toString() + " ("+URI+")into the DB");
 						
 						progress += increase;
 						
@@ -434,7 +434,7 @@ public class CreateDatabase extends Activity
 						{
 							msg = new Message();
 							data = new Bundle();
-							data.putFloat("increase", progress);
+							data.putInt("progress", (int)progress);
 							msg.what = 9; //This is a cheat
 							data.putString("lastUpdate", "Added Environment " + Keys.get(i).toString());
 							msg.setData(data);
@@ -466,10 +466,15 @@ public class CreateDatabase extends Activity
 				updateUI.sendMessage(msg);
 				
 				//Finish up
-				updateUI.sendEmptyMessage(25);
+				msg = new Message();
+				msg.what = 25;
+				data.putString("lastUpdate", "Caching Complete! Checking database contents....");
+				msg.setData(data);
+				updateUI.sendMessage(msg);
+				//updateUI.sendEmptyMessage(25);
 				
 				//Right now there's nothing to check
-				updateUI.sendEmptyMessageDelayed(26, 4000);
+				updateUI.sendEmptyMessageDelayed(26, 2000);
     		}
     	};
     }

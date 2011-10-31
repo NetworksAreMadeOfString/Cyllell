@@ -19,10 +19,15 @@
 package net.networksaremadeofstring.cyllell;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +39,9 @@ import android.widget.TextView;
 public class SettingsLanding extends Activity 
 {
 	private SharedPreferences settings = null;
+	Handler confirmDetails;
+	ProgressDialog dialog;
+	
 	 /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -88,10 +96,13 @@ public class SettingsLanding extends Activity
             	//TODO Actually do some verification of the settings the user has passed in
                 editor.commit();
                 
+                
+                
                 //Return back to the launcher
-            	Intent in = new Intent();
+            	/*Intent in = new Intent();
                 setResult(1,in);
-                finish();
+                finish();*/
+                CheckDetails();
             }
         });
         
@@ -102,6 +113,76 @@ public class SettingsLanding extends Activity
             	startActivityForResult(new Intent(Settings.ACTION_DATE_SETTINGS),0);
             }
         });
+    }
+    
+    public void CheckDetails()
+    {
+    	dialog = new ProgressDialog(this);
+        dialog.setTitle("Contacting Chef");
+        dialog.setMessage("Please wait: Confirming Authentication details...");       
+        dialog.setIndeterminate(true);
+        dialog.show();
+        
+        confirmDetails = new Handler() 
+    	{
+    		public void handleMessage(Message msg) 
+    		{
+    			if(msg.what == 0)
+    			{
+    				dialog.dismiss();
+    				Intent in = new Intent();
+                    setResult(1,in);
+                    finish();
+    			}
+    			else
+    			{
+    				dialog.dismiss();
+    				//Alert the user that something went terribly wrong
+    				AlertDialog alertDialog = new AlertDialog.Builder(SettingsLanding.this).create();
+    				alertDialog.setTitle("API Error");
+    				alertDialog.setMessage("There was an error communicating with the API:\n" + msg.getData().getString("exception"));
+    				alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
+    				   public void onClick(DialogInterface dialog, int which) {
+    					   //SettingsLanding.this.finish();
+    				   }
+    				});
+    				alertDialog.setIcon(R.drawable.icon);
+    				alertDialog.show();
+    			}
+    		}
+    	};
+        
+    	Thread CheckDetails = new Thread() 
+    	{  
+    		public void run() 
+    		{
+    			Message msg = new Message();
+				Bundle data = new Bundle();
+    			try 
+    			{
+    				Cuts CheckCut = new Cuts(SettingsLanding.this);
+    				if(CheckCut.ConfirmLogin())
+    				{
+    					confirmDetails.sendEmptyMessage(0);
+    				}
+    				else
+    				{
+    					data.putString("exception", "Did not recieve a 200 response code");
+        				msg.what = 1;
+    				}
+    			}
+    			catch(Exception e)
+    			{
+    				data.putString("exception", e.getMessage());
+    				msg.setData(data);
+    				msg.what = 1;
+    			}
+    			
+    			confirmDetails.sendMessage(msg);
+    		}
+    	};
+    	
+    	CheckDetails.start();
     }
     
     @Override
