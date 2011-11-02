@@ -1,0 +1,5 @@
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/tablet_border" 
+    android:tileMode="repeat" 
+    android:dither="true"
+    android:gravity="right|fill_vertical"/>

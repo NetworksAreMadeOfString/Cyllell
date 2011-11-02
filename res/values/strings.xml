@@ -6,6 +6,12 @@
     <string name="searchHint">Role or Node Name</string>
     <string name="cacheDesc">Cyllell maintains a local cache of Node, Role &amp; Environment names and URI\'s to improve the responsiveness of the app.\nThis only has to be done once.</string>
     <string name="searchVoicePrompt">For best results use a short single word to describe the name or role of the node(s) you are searching for.</string>
+    
+    <string name="step1Desc">Issues the command to create the local SQLite database.\n(Moving this app to an SD card might be a good idea)</string>
+    <string name="step2Desc">Issues a series of SQLite instructions to create the tables that will store the local cache of info</string>
+    <string name="step9Desc">Queries the /nodes/ endpoint of your Chef server to build a list of all nodes and their URI\'s</string>
+    <string name="step11Desc">Queries the /roles/ endpoint of your Chef server to build a list of all roles and their URI\'s</string>
+    <string name="step12Desc">Queries the /environments/ endpoint of your Chef server to build a list of all the environments and their URI\'s</string>
     <string-array name="SearchIndexes">
 	<item>Node</item>
 	<item>Role</item>
