@@ -473,6 +473,7 @@ public class CreateDatabase extends Activity
 				updateUI.sendMessage(msg);
 				//updateUI.sendEmptyMessage(25);
 				
+				cacheDB.close();
 				//Right now there's nothing to check
 				updateUI.sendEmptyMessageDelayed(26, 2000);
     		}
