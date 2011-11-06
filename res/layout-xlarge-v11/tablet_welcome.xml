@@ -1,4 +1,6 @@
-
-    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/textView1" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_marginLeft="26dp" android:layout_marginTop="108dp" android:text="Hello!"></TextView>
-    </RelativeLayout>
+<RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@color/codeops_background_light">
+    <WebView android:id="@+id/webView1" android:layout_height="match_parent" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_width="600dp"></WebView>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_marginTop="32dp" android:id="@+id/introTitle" android:textColor="@color/codeops_normal_text" android:layout_marginLeft="32dp" android:text="@string/tabletWelcomeTitle"></TextView>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_below="@+id/introTitle" android:layout_alignLeft="@+id/introTitle" android:id="@+id/tabletWelcomeIntro" android:text="@string/tabletWelcomeIntro" android:layout_toLeftOf="@+id/webView1" android:textColor="@color/codeops_normal_text" android:layout_marginRight="8dp"></TextView>
+     
+</RelativeLayout>

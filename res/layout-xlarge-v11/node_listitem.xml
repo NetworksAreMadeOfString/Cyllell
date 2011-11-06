@@ -1,0 +1,6 @@
+
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutNodeListItem">
+        <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:layout_alignTop="@+id/nodeIcon" android:layout_alignParentLeft="true" android:id="@+id/NodeName" android:textStyle="bold" style="@style/codeops_title" android:layout_marginLeft="48dp" android:textSize="24dp" android:shadowColor="@color/codeops_text_shadow" android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"></TextView>
+        <ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/MoreDetailsSpinner" android:indeterminate="true" android:paddingRight="8dp" android:visibility="invisible"></ProgressBar>
+        <ImageView android:layout_height="wrap_content" android:src="@drawable/error" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/WarningIcon" android:visibility="invisible"></ImageView>
+    </RelativeLayout>

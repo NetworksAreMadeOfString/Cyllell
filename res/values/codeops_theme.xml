@@ -4,6 +4,7 @@
 <color name="codeops_background_dark">#333333</color>
 <color name="codeops_title_text">#f7681a</color>
 <color name="codeops_subtitle_text">#333333</color>
+<color name="codeops_text_shadow">#767676</color>
 <color name="codeops_normal_text">#767676</color>
 <color name="codeops_normal_text_onDark">#EFECDD</color>
 
@@ -27,13 +28,16 @@
 </style>
 
 
-
+<style name="codeops_titlebar_tablet" parent="android:Theme.Holo">
+        <item name="android:background">@color/codeops_background_dark</item>
+        <item name="android:textColor">#FFFFFF</item>
+</style>
 
 <style name="codeops_default_tablet" parent="android:Theme.Holo.Light">
-    <item name="android:windowBackground">@color/codeops_background_light</item>
-    <item name="android:colorBackground">@color/codeops_background_light</item>
-    <item name="android:textColor">@color/codeops_normal_text</item>
-    <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar</item>
+    <item name="android:windowBackground">@color/codeops_background_dark</item>
+    <item name="android:colorBackground">@color/codeops_background_dark</item>
+    <item name="android:textColor">@color/codeops_normal_text_onDark</item>
+    <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar_tablet</item>
 </style>
 
 

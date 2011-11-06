@@ -33,9 +33,16 @@
 			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
 		</activity>
 		
+		<activity android:name=".ViewNodes_Container"
+			android:label="Cyllell - View Nodes"
+			android:theme="@style/codeops_default">
+			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
+		</activity>
+		
 		<activity android:name=".Main"
 			android:label="@string/app_name"
-			android:theme="@style/codeops_default_tablet">
+			android:theme="@style/codeops_default_tablet"
+			android:logo="@drawable/app_logo">
 			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
 		</activity>
 		

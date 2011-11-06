@@ -2,12 +2,7 @@ package net.networksaremadeofstring.cyllell;
 
 import java.lang.reflect.Method;
 
-
 import android.app.ActionBar;
-import android.app.Activity;
-/*import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;*/
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -20,9 +15,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class Main extends FragmentActivity
 {
@@ -33,13 +30,12 @@ public class Main extends FragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
-    	if(!isTabletDevice())
-    		requestWindowFeature(Window.FEATURE_NO_TITLE);
-    	
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
         fm = getSupportFragmentManager();
+        
+        ((WebView) findViewById(R.id.webView1)).loadUrl("http://mobile.twitter.com/opscode_status");
         
         if(isTabletDevice())
         {
@@ -48,7 +44,8 @@ public class Main extends FragmentActivity
             if(actionBar != null)
             {
             	actionBar.setDisplayUseLogoEnabled(true);
-            	actionBar.setDisplayShowTitleEnabled(false);
+            	//actionBar.setDisplayShowTitleEnabled(false);
+            	actionBar.setTitle("Welcome to Cyllell");
             }
             else
             {
@@ -57,6 +54,7 @@ public class Main extends FragmentActivity
         }
         else
         {
+        	requestWindowFeature(Window.FEATURE_NO_TITLE);
         	((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
         	
         }
@@ -70,14 +68,24 @@ public class Main extends FragmentActivity
             {
             	if(isTabletDevice())
                 {
+            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab);
+            		
+            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		
     	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
     	        	Fragment fragment = new ViewNodes_Fragment();
     	            fragmentTransaction.replace(R.id.MainFragment, fragment);
     	            fragmentTransaction.commit();
+    	            
+    	            ((ActionBar) getActionBar()).setTitle("View Nodes");
                 }
                 else
                 {
-                	Intent ViewNodesIntent = new Intent(Main.this, ViewNodes.class);
+                	//Intent ViewNodesIntent = new Intent(Main.this, ViewNodes.class);
+                	Intent ViewNodesIntent = new Intent(Main.this, ViewNodes_Container.class);
                 	Main.this.startActivity(ViewNodesIntent);
                 }
             }
@@ -106,18 +114,6 @@ public class Main extends FragmentActivity
         	Toast.makeText(Main.this, "Blah blah", Toast.LENGTH_LONG).show();
         }
     }
-    
-   /* @Override
-    public boolean onSearchRequested() 
-    {
-    	Toast.makeText(Main.this, "Blah blah", Toast.LENGTH_LONG).show();
-    	
-         Bundle appData = new Bundle();
-         appData.putBoolean("key", true);
-         startSearch(null, false, appData, false);
-         return true;
-     }*/
-    
     
     private boolean isTabletDevice() 
     {

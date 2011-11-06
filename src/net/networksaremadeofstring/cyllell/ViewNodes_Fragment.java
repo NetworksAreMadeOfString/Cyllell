@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,11 +19,15 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class ViewNodes_Fragment extends Fragment
+public class ViewNodes_Fragment extends CyllellFragment
 {
 	Cuts Cut = null;
 	JSONObject Nodes = null;
@@ -39,6 +44,16 @@ public class ViewNodes_Fragment extends Fragment
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
+		if(!isTabletDevice())
+		{
+			//((TextView) this.getActivity().findViewById(R.id.TitleBarText)).setVisibility(8);
+			
+		}
+		else
+		{
+			
+		}
+		
 		list = (ListView) this.getActivity().findViewById(R.id.nodesListView);
 		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
         try 
@@ -47,7 +62,6 @@ public class ViewNodes_Fragment extends Fragment
 		} 
         catch (Exception e) 
         {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
@@ -99,8 +113,17 @@ public class ViewNodes_Fragment extends Fragment
     			//Once we've checked the data is good to use start processing it
     			if(msg.what == 0)
     			{
-    				//TODO ListView population
-    				NodeAdapter = new NodeListAdaptor(ViewNodes_Fragment.this.getActivity().getBaseContext(), listOfNodes);
+    				OnClickListener listener = new OnClickListener(){
+
+						public void onClick(View v) {
+							Log.i("OnClick","Clicked");
+							GetMoreDetails((Integer)v.getTag());
+						}
+
+					
+					};
+					
+    				NodeAdapter = new NodeListAdaptor(ViewNodes_Fragment.this.getActivity().getBaseContext(), listOfNodes,listener);
     				list = (ListView) ViewNodes_Fragment.this.getActivity().findViewById(R.id.nodesListView);
     				if(list != null)
     				{
@@ -118,7 +141,6 @@ public class ViewNodes_Fragment extends Fragment
     					Log.e("List","List is null");
     				}
 	    	        
-    				//Close the Progress dialog
         			dialog.dismiss();
     			}
     			else if(msg.what == 200)
@@ -182,7 +204,6 @@ public class ViewNodes_Fragment extends Fragment
     				msg.setData(data);
     				msg.what = 1;
     				handler.sendMessage(msg);
-    				//handler.sendEmptyMessage(1);
 				}
     			
     			return;
@@ -191,5 +212,47 @@ public class ViewNodes_Fragment extends Fragment
     	
     	dataPreload.start();
         return inflater.inflate(R.layout.nodeslanding, container, false);
+    }
+	
+	public void GetMoreDetails(final int Tag)
+    {
+    	GetFullDetails = new Thread() 
+    	{  
+    		public void run() 
+    		{
+    			try 
+    			{
+    				Log.i("TAG", Integer.toString(Tag));
+    				Message msg = new Message();
+    				Bundle data = new Bundle();
+    				data.putInt("tag", Tag);
+    				msg.setData(data);
+    				msg.what = 0;
+    				//Set the spinner going
+    				updateListNotify.sendMessage(msg);
+
+    				Cuts threadCut = new Cuts(ViewNodes_Fragment.this.getActivity());
+    				listOfNodes.get(Tag).SetFullDetails(threadCut.CanonicalizeNode(threadCut.GetNode(listOfNodes.get(Tag).GetURI())));
+    				
+    				updateListNotify.sendEmptyMessage(1);
+				} 
+    			catch (Exception e)
+    			{
+    				Log.e("GetMoreDetails","An actual exception occured!");
+    				e.printStackTrace();
+    				
+    				Message msg = new Message();
+    				Bundle data = new Bundle();
+    				data.putInt("tag", Tag);
+    				msg.setData(data);
+    				msg.what = 99;
+    				updateListNotify.sendMessage(msg);
+				}
+    			
+    			return;
+    		}
+    	};
+    	
+    	GetFullDetails.start();
     }
 }

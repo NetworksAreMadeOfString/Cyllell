@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -35,15 +36,23 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class NodeListAdaptor extends BaseAdapter implements OnClickListener, OnLongClickListener
+public class NodeListAdaptor extends BaseAdapter implements OnLongClickListener
 {
 	private Context context;
     private List<Node> listNodes;
+    private OnClickListener listener;
     
     public NodeListAdaptor(Context context, List<Node> _listNodes) 
     {
         this.context = context;
         this.listNodes = _listNodes;
+    }
+    
+    public NodeListAdaptor(Context context, List<Node> _listNodes, OnClickListener _listener) 
+    {
+        this.context = context;
+        this.listNodes = _listNodes;
+        this.listener = _listener;
     }
     
     @Override
@@ -175,8 +184,11 @@ public class NodeListAdaptor extends BaseAdapter implements OnClickListener, OnL
         
         convertView.setTag(position);
         //Log.i("NodeListAdaptor","Setting Tag to " + Integer.toString(position));
-        convertView.setOnClickListener(this);
+        //convertView.setOnClickListener(this);
         convertView.setOnLongClickListener(this);
+        if(listener != null)
+        	convertView.setOnClickListener((OnClickListener) listener);
+        
         return convertView;
 	}
 
@@ -185,8 +197,8 @@ public class NodeListAdaptor extends BaseAdapter implements OnClickListener, OnL
 		return false;
 	}
 
-	public void onClick(View v) 
+	/*public void onClick(View v) 
 	{
-		((ViewNodes)context).GetMoreDetails((Integer)v.getTag());
-	}
+		//((ViewNodes)context).GetMoreDetails((Integer)v.getTag());
+	}*/
 }
