@@ -5,18 +5,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.TextView;
 
-public class TabletWelcome extends Fragment
+public class ViewCookbook_Fragment extends Fragment
 {
+	private String URI = "";
+	
+	public ViewCookbook_Fragment(String _URI)
+	{
+		this.URI = _URI;
+	}
+	
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-        return inflater.inflate(R.layout.tablet_welcome, container, false);
+        return inflater.inflate(R.layout.cookbook_view_details, container, false);
     }
     
     public void onActivityCreated(Bundle savedInstanceState)
     {
     	super.onCreate(savedInstanceState);
-    	((WebView) getView().findViewById(R.id.webView1)).loadUrl("http://blog.networksaremadeofstring.co.uk/projects/cyllell/");
+    	((TextView) getView().findViewById(R.id.textView1)).setText(this.URI);
     }
 }

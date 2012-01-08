@@ -41,16 +41,6 @@
 </style>
 
 
-
-
-
-
-
-
-
-
-
-
 <style name="codeops_default.NoTitleBar" parent="codeops_default">
 	<item name="android:windowNoTitle">true</item>
 </style>

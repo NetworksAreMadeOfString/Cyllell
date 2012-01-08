@@ -21,28 +21,28 @@ package net.networksaremadeofstring.cyllell;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class ViewCookbooks_Fragment extends CyllellFragment
@@ -189,12 +189,26 @@ public class ViewCookbooks_Fragment extends CyllellFragment
     				Cookbooks = Cut.GetCookbooks();
 					handler.sendEmptyMessage(201);
 					JSONArray Keys = Cookbooks.names();
+					String URI = "";
+					String Version = "0.0.0";
+					JSONObject cookbook;
 					for(int i = 0; i < Cookbooks.length(); i++)
 					{
-						String URI = Cookbooks.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/cookbooks/", "");
-						Log.i("URI", URI);
-						listOfCookbooks.add(new Cookbook(Keys.get(i).toString(), URI));
+						cookbook = new JSONObject(Cookbooks.getString(Keys.get(i).toString()));
+						//URI = Cookbooks.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/cookbooks/", "");
+						//Version = Cookbooks.getString(Keys.get(i).toString())
+						//Log.i("Cookbook Name", Keys.get(i).toString());
+						URI = cookbook.getString("url").replaceFirst("^(https://|http://).*/cookbooks/", "");
+						//Log.i("Cookbook URL", URI);
+						
+						JSONArray versions = cookbook.getJSONArray("versions");
+						
+						Version = versions.getJSONObject(versions.length() -1).getString("version");
+						//Log.i("Cookbook version", Version);
+						
+						listOfCookbooks.add(new Cookbook(Keys.get(i).toString(), URI, Version));
 					}
+					
 					handler.sendEmptyMessage(202);
 					handler.sendEmptyMessage(0);
 				} 
@@ -217,11 +231,26 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	
 	public void GetMoreDetails(final int Tag)
     {
-    	GetFullDetails = new Thread() 
+		if(isTabletDevice())
+        {
+			FragmentManager fm = getActivity().getSupportFragmentManager();
+			FragmentTransaction fragmentTransaction = fm.beginTransaction();
+	    	Fragment fragment = new ViewCookbook_Fragment(listOfCookbooks.get(Tag).GetURI());
+	        fragmentTransaction.replace(R.id.CookbookDetails, fragment,"CookbookTag");
+	        fragmentTransaction.commit();
+        }
+		else
+		{
+			Intent GenericIntent = new Intent(getActivity().getApplicationContext(), Generic_Container.class);
+        	GenericIntent.putExtra("fragment", "viewcookbook");
+        	GenericIntent.putExtra("cookbookURI", listOfCookbooks.get(Tag).GetURI());
+        	getActivity().getApplicationContext().startActivity(GenericIntent);
+		}
+    	/*GetFullDetails = new Thread() 
     	{  
     		public void run() 
     		{
-    			/*try 
+    			try 
     			{
     				Log.i("TAG", Integer.toString(Tag));
     				Message msg = new Message();
@@ -248,11 +277,11 @@ public class ViewCookbooks_Fragment extends CyllellFragment
     				msg.setData(data);
     				msg.what = 99;
     				updateListNotify.sendMessage(msg);
-				}*/
+				}
     			return;
     		}
     	};
     	
-    	GetFullDetails.start();
+    	GetFullDetails.start();*/
     }
 }

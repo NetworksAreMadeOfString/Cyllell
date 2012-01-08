@@ -99,7 +99,8 @@ public class CookbookListAdaptor extends BaseAdapter implements OnLongClickListe
     	}
     
         ((TextView) convertView.findViewById(R.id.CookbookName)).setText(thisCookbook.GetName());
-
+        ((TextView) convertView.findViewById(R.id.cookbookVersion)).setText(thisCookbook.GetVersion());
+        
         //DeviceNameTextView.setTypeface(Typeface.createFromAsset(((ViewNodes)context).getAssets(), "fonts/codeops_serif.ttf"));
         
         if(this.getItemViewType(position) == 1)
