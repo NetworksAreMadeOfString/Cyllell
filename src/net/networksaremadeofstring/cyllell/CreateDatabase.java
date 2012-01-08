@@ -40,17 +40,13 @@ public class CreateDatabase extends Activity
     public void onCreate(Bundle savedInstanceState) 
     {
     	super.onCreate(savedInstanceState);
-        setContentView(R.layout.createdatabase);
-        
+        setContentView(R.layout.createdatabase); 
         
         ((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
         
-        
         //Populate the settings so we can get out some common info
         settings = getSharedPreferences("Cyllell", 0);
-        
-        //Toast.makeText(this, "Preparing and updating a local cache of Chef information....", Toast.LENGTH_SHORT).show();
-        
+
         try 
         {
 			Cut = new Cuts(this);
@@ -65,7 +61,6 @@ public class CreateDatabase extends Activity
         createThread();
         ProcessDatabase.start();
     }
-    
     
     private void createHandlers()
     {

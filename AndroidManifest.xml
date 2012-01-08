@@ -51,6 +51,12 @@
 			android:theme="@style/codeops_default.NoTitleBar">
 		</activity>
         
+        <activity android:name=".Generic_Container"
+			android:label="Cyllell - Apps"
+			android:theme="@style/codeops_default.NoTitleBar">
+			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
+		</activity>
+        
     	<activity android:name="Search" android:label="Search" android:theme="@style/codeops_default.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

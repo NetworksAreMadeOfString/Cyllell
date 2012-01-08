@@ -31,14 +31,19 @@ public class Main extends FragmentActivity
     public void onCreate(Bundle savedInstanceState) 
     {
     	super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    	
         
         fm = getSupportFragmentManager();
         
-        ((WebView) findViewById(R.id.webView1)).loadUrl("http://mobile.twitter.com/opscode_status");
-        
         if(isTabletDevice())
         {
+        	setContentView(R.layout.main);
+        	
+        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        	Fragment fragment = new TabletWelcome();
+            fragmentTransaction.replace(R.id.MainFragment, fragment);
+            fragmentTransaction.commit();
+            
         	//Sort out the action bar
             ActionBar actionBar = getActionBar();
             if(actionBar != null)
@@ -55,6 +60,7 @@ public class Main extends FragmentActivity
         else
         {
         	requestWindowFeature(Window.FEATURE_NO_TITLE);
+        	setContentView(R.layout.main);
         	((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
         	
         }
@@ -69,7 +75,6 @@ public class Main extends FragmentActivity
             	if(isTabletDevice())
                 {
             		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab);
-            		
             		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
             		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
             		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
@@ -84,13 +89,39 @@ public class Main extends FragmentActivity
                 }
                 else
                 {
-                	//Intent ViewNodesIntent = new Intent(Main.this, ViewNodes.class);
-                	Intent ViewNodesIntent = new Intent(Main.this, ViewNodes_Container.class);
-                	Main.this.startActivity(ViewNodesIntent);
+                	Intent GenericIntent = new Intent(Main.this, Generic_Container.class);
+                	GenericIntent.putExtra("fragment", "viewnodes");
+                	Main.this.startActivity(GenericIntent);
                 }
             }
         });
         
+        ((ImageView)findViewById(R.id.CookbookImageView)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+            	if(isTabletDevice())
+                {
+            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab);
+            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		
+    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
+    	        	Fragment fragment = new ViewCookbooks_Fragment();
+    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
+    	            fragmentTransaction.commit();
+    	            
+    	            ((ActionBar) getActionBar()).setTitle("View Cookbooks");
+                }
+                else
+                {
+                	Intent GenericIntent = new Intent(Main.this, Generic_Container.class);
+                	GenericIntent.putExtra("fragment", "viewcookbooks");
+                	Main.this.startActivity(GenericIntent);
+                }
+            }
+        });
         
         ((ImageView)findViewById(R.id.SettingsImageView)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -103,8 +134,26 @@ public class Main extends FragmentActivity
         ((ImageView)findViewById(R.id.SearchImageView)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-	             Intent SearchIntent = new Intent(Main.this, Search.class);
-	             Main.this.startActivity(SearchIntent);
+            	if(isTabletDevice())
+                {
+            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab);
+            		
+    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
+    	        	Fragment fragment = new Search_Fragment();
+    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
+    	            fragmentTransaction.commit();
+    	            
+    	            ((ActionBar) getActionBar()).setTitle("Chef Search");
+                }
+                else
+                {
+                	Intent SearchIntent = new Intent(Main.this, Search.class);
+   	             	Main.this.startActivity(SearchIntent);
+                }
             }
         });
         

@@ -19,8 +19,22 @@
 	</string-array>
 	
 	
-	<string name="tabletWelcomeTitle">Getting Started With Cyllell:</string>
-	<string name="tabletWelcomeIntro">Well, the way they make shows is, they make one show. That show\'s called a pilot. Then they show that show to the people who make shows, and on the strength of that one show they decide if they\'re going to make more shows. Some pilots get picked and become television programs. Some don\'t, become nothing. She starred in one of the ones that became nothing.\n\nYou think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, I don\'t know exactly when we turned on each other, but I know that seven of us survived the slide... and only five made it out. Now we took an oath, that I\'m breaking now. We said we\'d say it was the snow that killed the other two, but it wasn\'t. Nature is lethal but it doesn\'t hold a candle to man.\n\nMy money\'s in that office, right? If she start giving me some bullshit about it ain\'t there, and we got to go someplace else and get it, I\'m gonna shoot you in the head then and there. Then I\'m gonna shoot that bitch in the kneecaps, find out where my goddamn money is. She gonna tell me too. Hey, look at me when I\'m talking to you, motherfucker. You listen: we go in there, and that nigga Winston or anybody else is in there, you the first motherfucker to get shot. You understand?</string>
+	<string name="tabletWelcomeTitle">What is Cyllell:</string>
+	<string name="tabletWelcomeIntro">Chef is an open-source systems integration framework built specifically for automating the cloud. 
+No matter how complex the realities of your business, Chef makes it easy to deploy servers and scale applications throughout your 
+entire infrastructure. Because it combines the fundamental elements of configuration management and service oriented architectures 
+with the full power of Ruby, Chef makes it easy to create an elegant, fully automated infrastructure</string>
+
+	<string name="tabletWelcomeSubTitle">Getting Started With Cyllell:</string>
+	<string name="tabletWelcomeGettingStarted">Cyllell works similar to knife allowing you to;\n\n
+	\t List nodes, view and edit the run list\n
+	\t List all environments and make edits\n
+	\t List cookbooks and view all cookbook meta data\n
+	\t List and edit roles\n
+	\t Search with <b>knife search</b> syntax or a GUI\n
+	\n
+	Simply select one of the tabs on the left to get started. 
+	</string>
 
     <string name="fake_private_key">-----BEGIN RSA PRIVATE KEY-----
  \n
@@ -77,4 +91,5 @@ WPfqLQKBgQCkNsCo85MJ2WQ0ebt3EdSBEiRKJsl/2HK05Xasf53UjQ1ziTUm28FK
 NcDSSQDKegwr0efoh7Ys0hN+yDq48mWu+RlfCiQXnxIqGhRugybmLH0W4eVcFWVB
 mVwpwJBuiJNNjKPAqTRpKABwNJ7jjNwZr4SbqiXVEZd22+ogeJZBSQ==
 -----END RSA PRIVATE KEY-----</string>
+
 </resources>

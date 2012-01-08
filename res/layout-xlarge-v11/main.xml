@@ -7,7 +7,7 @@
             <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:id="@+id/NodesTab" android:layout_marginTop="2dp"></ImageView>
             <ImageView android:layout_height="wrap_content" android:id="@+id/NodeImageView" android:layout_width="wrap_content" android:src="@drawable/nodes" android:layout_alignParentRight="true" android:layout_marginRight="12dp" android:layout_marginTop="20dp" android:layout_alignTop="@+id/NodesTab"></ImageView>
             <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_alignParentRight="true" android:layout_below="@+id/NodesTab" android:id="@+id/CookbookTab"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:id="@+id/imageView2" android:layout_width="wrap_content" android:src="@drawable/recipe" android:layout_alignTop="@+id/CookbookTab" android:layout_alignParentRight="true" android:layout_marginRight="12dp" android:layout_marginTop="20dp"></ImageView>
+            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/recipe" android:layout_alignTop="@+id/CookbookTab" android:layout_alignParentRight="true" android:layout_marginRight="12dp" android:layout_marginTop="20dp" android:id="@+id/CookbookImageView"></ImageView>
             <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_below="@+id/CookbookTab" android:layout_alignParentRight="true" android:id="@+id/RolesTab"></ImageView>
             <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/role" android:layout_alignTop="@+id/RolesTab" android:layout_alignParentRight="true" android:id="@+id/RoleImageView" android:layout_marginRight="12dp" android:layout_marginTop="20dp"></ImageView>
             <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_below="@+id/RolesTab" android:layout_alignParentRight="true" android:id="@+id/EnvironmentTab"></ImageView>
@@ -17,15 +17,12 @@
             <ImageView android:id="@+id/SettingsImageView" android:src="@drawable/settings" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:layout_height="32px" android:layout_width="32px"></ImageView>
         </RelativeLayout>
         
-        <fragment android:layout_alignParentTop="true" 
+        <FrameLayout android:layout_alignParentTop="true" 
         android:layout_height="fill_parent" 
         android:layout_width="fill_parent" 
         android:layout_alignParentRight="true" 
         android:layout_toRightOf="@id/PrimaryMenu" 
-        android:tag="MainFragment" 
-        android:id="@+id/MainFragment" 
-        class="net.networksaremadeofstring.cyllell.TabletWelcome" 
-        android:name="WhatEver">
-        </fragment>
+        android:id="@+id/MainFragment" android:background="@color/codeops_background_light">
+        </FrameLayout>
 
     </RelativeLayout>

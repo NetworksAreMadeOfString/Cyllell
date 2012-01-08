@@ -19,9 +19,6 @@
 package net.networksaremadeofstring.cyllell;
 
 import java.util.HashMap;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
 
 public class Node 
 {
