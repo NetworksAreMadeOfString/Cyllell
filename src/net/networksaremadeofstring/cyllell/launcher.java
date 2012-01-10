@@ -19,12 +19,15 @@
 package net.networksaremadeofstring.cyllell;
 import java.lang.reflect.Method;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Toast;
+import com.bugsense.trace.BugSenseHandler;
 
 public class launcher extends Activity 
 {
@@ -37,6 +40,9 @@ public class launcher extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        
+        //Enable BugSense
+        BugSenseHandler.setup(this, "84aff884");
         
         //Populate the settings so we can get out some common info
         settings = getSharedPreferences("Cyllell", 0);

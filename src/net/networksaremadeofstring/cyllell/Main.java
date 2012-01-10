@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class Main extends FragmentActivity
 {
 	private SharedPreferences settings = null;
@@ -64,7 +63,6 @@ public class Main extends FragmentActivity
         	((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
         	
         }
-        
         
         //Populate the settings so we can get out some common info
         settings = getSharedPreferences("Cyllell", 0);

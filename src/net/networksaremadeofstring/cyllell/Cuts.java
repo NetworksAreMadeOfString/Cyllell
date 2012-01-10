@@ -151,6 +151,27 @@ public class Cuts
 	 * @return - JSONObject - Returns a hash of uri's for the nodes.
 	 * @throws Exception
 	 */
+	public JSONObject GetCookbook(String CookbookURI) throws Exception
+	{
+		String Path = "/cookbooks/" + CookbookURI + "/_latest";
+		this.httpget = new HttpGet(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
+	}
+	
+	/**
+	 * Gets a list of all Nodes in the system along with the URI's to get additional details
+	 * @return - JSONObject - Returns a hash of uri's for the nodes.
+	 * @throws Exception
+	 */
 	public JSONObject GetNodes() throws Exception
 	{
 		String Path = "/nodes";

@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/Android/android-sdk/extras/android/compatibility/v4/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/NetworkString/Documents/Source Code/bugsense-trace-1-1-2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

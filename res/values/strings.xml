@@ -36,6 +36,13 @@ with the full power of Ruby, Chef makes it easy to create an elegant, fully auto
 	Simply select one of the tabs on the left to get started. 
 	</string>
 
+
+	<string name="MaintainerEmailLabel">Maintainer Email:</string>
+	<string name="MaintainerLabel">Maintainer:</string>
+	<string name="CookbookDescLabel">Description:</string>
+	<string name="RecipeListLabel">Recipes:</string>
+	<string name="TemplateListLabel">Templates:</string>
+	
     <string name="fake_private_key">-----BEGIN RSA PRIVATE KEY-----
  \n
 T3VyIHN0b3J5IGJlZ2lucywgYXMgdGhlc2Ugc3RvcmllcyBvZnRlbiBkbywgd2l0
