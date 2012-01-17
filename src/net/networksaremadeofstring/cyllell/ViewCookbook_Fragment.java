@@ -23,6 +23,7 @@ public class ViewCookbook_Fragment extends Fragment
 	private String URI = "";
 	Cuts Cut = null;
 	private SharedPreferences settings = null;
+	private String FullJSON = "";
 	
 	public ViewCookbook_Fragment(String _URI)
 	{
@@ -117,7 +118,7 @@ public class ViewCookbook_Fragment extends Fragment
     				JSONObject Cookbook = Cut.GetCookbook(URI);
     				//Parsing JSON
 					handler.sendEmptyMessage(201);
-
+					FullJSON = Cookbook.toString(2);
 					data.putString("maintainer_email", Cookbook.getJSONObject("metadata").getString("maintainer_email"));
 					data.putString("maintainer", Cookbook.getJSONObject("metadata").getString("maintainer"));
 					data.putString("version", Cookbook.getJSONObject("metadata").getString("version"));
@@ -130,7 +131,14 @@ public class ViewCookbook_Fragment extends Fragment
 					{
 						RecipesString += Recipes.getJSONObject(i).getString("name") + ", ";
 					}
-					data.putString("recipes", RecipesString.substring(0, RecipesString.length() -2));
+					if(RecipesString.length() > 0)
+					{
+						data.putString("recipes", RecipesString.substring(0, RecipesString.length() -2));
+					}
+					else
+					{
+						data.putString("recipes","No Recipes specified");
+					}
 					
 					String TemplateString = "";
 					JSONArray Templates = Cookbook.getJSONArray("templates");
@@ -139,7 +147,14 @@ public class ViewCookbook_Fragment extends Fragment
 					{
 						TemplateString += Templates.getJSONObject(i).getString("name") + ", ";
 					}
-					data.putString("templates", TemplateString.substring(0, TemplateString.length() -2));
+					if(TemplateString.length() > 0)
+					{
+						data.putString("templates", TemplateString.substring(0, TemplateString.length() -2));
+					}
+					else
+					{
+						data.putString("templates", "There are no templates in this cookbook");
+					}
 					
 					
 					//Populating UI
