@@ -121,6 +121,33 @@ public class Main extends FragmentActivity
             }
         });
         
+        ((ImageView)findViewById(R.id.RoleImageView)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+            	if(isTabletDevice())
+                {
+            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab);
+            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab_inactive);
+            		
+    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
+    	        	Fragment fragment = new ViewRoles_Fragment();
+    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
+    	            fragmentTransaction.commit();
+    	            
+    	            ((ActionBar) getActionBar()).setTitle("View Cookbooks");
+                }
+                else
+                {
+                	Intent GenericIntent = new Intent(Main.this, Generic_Container.class);
+                	GenericIntent.putExtra("fragment", "viewroles");
+                	Main.this.startActivity(GenericIntent);
+                }
+            }
+        });
+        
         ((ImageView)findViewById(R.id.SettingsImageView)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
