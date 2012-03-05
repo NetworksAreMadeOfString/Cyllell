@@ -35,11 +35,16 @@ public class Generic_Container extends FragmentActivity
         }
         else if(getIntent().getStringExtra("fragment").equals("viewroles"))
         {
-        	fragment = new ViewNodes_Fragment();
+        	fragment = new ViewRoles_Fragment();
         }
         else if(getIntent().getStringExtra("fragment").equals("viewenvironments"))
         {
         	fragment = new ViewNodes_Fragment();
+        }
+        else if(getIntent().getStringExtra("fragment").equals("viewrole"))
+        {
+        	String roleURI = getIntent().getStringExtra("roleURI");
+        	fragment = new ViewRole_Fragment(roleURI);
         }
         else
         {

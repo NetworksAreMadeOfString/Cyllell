@@ -1,0 +1,8 @@
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutNodeLanding" style="@style/codeops_default.NoTitleBar" android:background="@color/codeops_background_light">
+    
+    <ListView android:layout_alignParentLeft="true" android:background="@color/codeops_background_light" android:layout_height="fill_parent" android:layout_width="20dp" android:layout_alignRight="@+id/vertborder" android:id="@+id/environmentsListView"></ListView>
+    <FrameLayout android:layout_alignParentTop="true" android:layout_height="fill_parent" android:layout_alignParentRight="true" android:layout_width="500dp" android:background="@color/codeops_background_darker" android:id="@+id/EnvironmentDetails">
+    </FrameLayout>
+    <View android:id="@+id/vertborder" android:layout_height="fill_parent" android:layout_width="6px" android:background="@drawable/vert_border" android:layout_alignParentTop="true" android:rotation="0" android:translationX="6px" android:layout_toLeftOf="@+id/EnvironmentDetails"></View>
+
+</RelativeLayout>

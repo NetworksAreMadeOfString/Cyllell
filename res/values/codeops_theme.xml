@@ -36,8 +36,17 @@
 <style name="codeops_default_tablet" parent="android:Theme.Holo.Light">
     <item name="android:windowBackground">@color/codeops_background_dark</item>
     <item name="android:colorBackground">@color/codeops_background_dark</item>
-    <item name="android:textColor">@color/codeops_normal_text_onDark</item>
+    <item name="android:textColor">@color/codeops_normal_text</item>
     <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar_tablet</item>
+    <item name="android:actionBarStyle">@style/codeops.ActionBarStyle</item> 
+</style>
+
+<style name="codeops.ActionBarStyle" parent="android:style/Widget.Holo.ActionBar">
+<item name="android:titleTextStyle">@style/codeops.ActionBar.TitleTextStyle</item>
+</style>
+
+<style name="codeops.ActionBar.TitleTextStyle" parent="android:style/TextAppearance">
+<item name="android:textColor">@color/codeops_normal_text_onDark</item>
 </style>
 
 

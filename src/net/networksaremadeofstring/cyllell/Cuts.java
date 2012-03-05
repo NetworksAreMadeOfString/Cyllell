@@ -252,6 +252,27 @@ public class Cuts
 	}
 	
 	/**
+	 * Gets a specific environemnt and its details
+	 * @return - JSONObject - Returns details of a role
+	 * @throws Exception
+	 */
+	public JSONObject GetEnvironment(String URI) throws Exception
+	{
+		String Path = "/environments/"+URI;
+		this.httpget = new HttpGet(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+    	return json;
+	}
+	
+	/**
 	 * Try and perform a chef function - it'll either succeed or throw an exception / return false
 	 * @return - Boolean - whether we logged in or not
 	 * @throws Exception
