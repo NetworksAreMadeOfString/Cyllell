@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Main extends FragmentActivity
+public class MainLanding extends FragmentActivity
 {
 	private SharedPreferences settings = null;
 	FragmentManager fm;
@@ -87,9 +87,9 @@ public class Main extends FragmentActivity
                 }
                 else
                 {
-                	Intent GenericIntent = new Intent(Main.this, Generic_Container.class);
+                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
                 	GenericIntent.putExtra("fragment", "viewnodes");
-                	Main.this.startActivity(GenericIntent);
+                	MainLanding.this.startActivity(GenericIntent);
                 }
             }
         });
@@ -114,9 +114,9 @@ public class Main extends FragmentActivity
                 }
                 else
                 {
-                	Intent GenericIntent = new Intent(Main.this, Generic_Container.class);
+                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
                 	GenericIntent.putExtra("fragment", "viewcookbooks");
-                	Main.this.startActivity(GenericIntent);
+                	MainLanding.this.startActivity(GenericIntent);
                 }
             }
         });
@@ -141,9 +141,9 @@ public class Main extends FragmentActivity
                 }
                 else
                 {
-                	Intent GenericIntent = new Intent(Main.this, Generic_Container.class);
+                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
                 	GenericIntent.putExtra("fragment", "viewroles");
-                	Main.this.startActivity(GenericIntent);
+                	MainLanding.this.startActivity(GenericIntent);
                 }
             }
         });
@@ -168,9 +168,9 @@ public class Main extends FragmentActivity
                 }
                 else
                 {
-                	Intent GenericIntent = new Intent(Main.this, Generic_Container.class);
-                	GenericIntent.putExtra("fragment", "viewevironments");
-                	Main.this.startActivity(GenericIntent);
+                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
+                	GenericIntent.putExtra("fragment", "viewenvironments");
+                	MainLanding.this.startActivity(GenericIntent);
                 }
             }
         });
@@ -178,8 +178,8 @@ public class Main extends FragmentActivity
         ((ImageView)findViewById(R.id.SettingsImageView)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-	             Intent ViewSettingsIntent = new Intent(Main.this, ViewSettings.class);
-	             Main.this.startActivity(ViewSettingsIntent);
+	             Intent ViewSettingsIntent = new Intent(MainLanding.this, ViewSettings.class);
+	             MainLanding.this.startActivity(ViewSettingsIntent);
             }
         });
         
@@ -203,8 +203,8 @@ public class Main extends FragmentActivity
                 }
                 else
                 {
-                	Intent SearchIntent = new Intent(Main.this, Search.class);
-   	             	Main.this.startActivity(SearchIntent);
+                	Intent SearchIntent = new Intent(MainLanding.this, Search.class);
+   	             	MainLanding.this.startActivity(SearchIntent);
                 }
             }
         });
@@ -212,7 +212,7 @@ public class Main extends FragmentActivity
         //See if this is the first time the app has run so we can give the user an intro
         if(settings.getBoolean("FirstRun", true) == true)
         {
-        	Toast.makeText(Main.this, "Blah blah", Toast.LENGTH_LONG).show();
+        	Toast.makeText(MainLanding.this, "Blah blah", Toast.LENGTH_LONG).show();
         }
     }
     

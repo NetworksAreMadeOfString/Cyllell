@@ -32,6 +32,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,7 +46,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewEnvironments_Fragment extends CyllellFragment
@@ -220,6 +223,16 @@ public class ViewEnvironments_Fragment extends CyllellFragment
         return inflater.inflate(R.layout.environments_landing, container, false);
     }
 	
+	public void onActivityCreated(Bundle savedInstanceState)
+    {
+    	super.onCreate(savedInstanceState);
+    	
+		if(!isTabletDevice())
+        {
+    		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
+        }
+    }
+	
 	public void GetMoreDetails(final int Tag)
     {
 		if(isTabletDevice())
@@ -235,7 +248,7 @@ public class ViewEnvironments_Fragment extends CyllellFragment
 			Intent GenericIntent = new Intent(getActivity().getApplicationContext(), Generic_Container.class);
         	GenericIntent.putExtra("fragment", "viewenvironment");
         	GenericIntent.putExtra("roleURI", listOfEnvironments.get(Tag).GetURI());
-        	getActivity().getApplicationContext().startActivity(GenericIntent);
+        	getActivity().startActivity(GenericIntent);
 		}
     }
 }

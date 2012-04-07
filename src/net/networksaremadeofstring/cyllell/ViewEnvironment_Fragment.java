@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class ViewEnvironment_Fragment extends Fragment
+public class ViewEnvironment_Fragment extends CyllellFragment
 {
 	private String URI = "";
 	Cuts Cut = null;
@@ -51,6 +52,11 @@ public class ViewEnvironment_Fragment extends Fragment
     	((ProgressBar) getView().findViewById(R.id.progressBar1)).setVisibility(0);
 		((TextView) getView().findViewById(R.id.ProgressStatus)).setVisibility(0);
     	
+		if(!isTabletDevice())
+        {
+    		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
+        }
+		
     	final Handler handler = new Handler() 
     	{
     		public void handleMessage(Message msg) 

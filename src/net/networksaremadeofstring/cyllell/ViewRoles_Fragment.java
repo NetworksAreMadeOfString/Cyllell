@@ -32,6 +32,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,6 +47,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewRoles_Fragment extends CyllellFragment
@@ -61,6 +63,15 @@ public class ViewRoles_Fragment extends CyllellFragment
 	RoleListAdaptor RoleAdapter;
 	List<Role> listOfRoles = new ArrayList<Role>();
 	JSONObject Roles = null;
+	
+	public void onActivityCreated(Bundle savedInstanceState)
+    {
+    	super.onCreate(savedInstanceState);
+    	if(!isTabletDevice())
+        {
+    		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
+        }
+    }
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -235,7 +246,7 @@ public class ViewRoles_Fragment extends CyllellFragment
 			Intent GenericIntent = new Intent(getActivity().getApplicationContext(), Generic_Container.class);
         	GenericIntent.putExtra("fragment", "viewrole");
         	GenericIntent.putExtra("roleURI", listOfRoles.get(Tag).GetURI());
-        	getActivity().getApplicationContext().startActivity(GenericIntent);
+        	getActivity().startActivity(GenericIntent);
 		}
     }
 }

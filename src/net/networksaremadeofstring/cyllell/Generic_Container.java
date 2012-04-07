@@ -33,13 +33,21 @@ public class Generic_Container extends FragmentActivity
         {
         	fragment = new ViewCookbooks_Fragment();
         }
+        else if(getIntent().getStringExtra("fragment").equals("viewcookbook"))
+        {
+        	fragment = new ViewCookbook_Fragment(getIntent().getStringExtra("cookbookURI"));
+        }
         else if(getIntent().getStringExtra("fragment").equals("viewroles"))
         {
         	fragment = new ViewRoles_Fragment();
         }
         else if(getIntent().getStringExtra("fragment").equals("viewenvironments"))
         {
-        	fragment = new ViewNodes_Fragment();
+        	fragment = new ViewEnvironments_Fragment();
+        }
+        else if(getIntent().getStringExtra("fragment").equals("viewenvironment"))
+        {
+        	fragment = new ViewEnvironment_Fragment(getIntent().getStringExtra("roleURI"));
         }
         else if(getIntent().getStringExtra("fragment").equals("viewrole"))
         {

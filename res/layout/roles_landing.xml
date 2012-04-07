@@ -1,0 +1,4 @@
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutNodeLanding" style="@style/codeops_default.NoTitleBar" android:background="@color/codeops_background_light">
+    <TextView android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_width="fill_parent" style="@style/codeops_titlebar" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/TitleBarText" android:text="Cyllell - Roles List"></TextView>
+    <ListView android:layout_alignParentLeft="true" android:background="@color/codeops_background_light" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_alignRight="@+id/vertborder" android:id="@+id/rolesListView" android:layout_below="@+id/TitleBarText"></ListView>
+</RelativeLayout>

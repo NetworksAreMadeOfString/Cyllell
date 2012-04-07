@@ -41,19 +41,19 @@ public class ViewNodes_Fragment extends CyllellFragment
 	private SharedPreferences settings = null;
 	Boolean CutInProgress = false;
 	
+	public void onActivityCreated(Bundle savedInstanceState)
+    {
+    	super.onCreate(savedInstanceState);
+		if(!isTabletDevice())
+		{
+			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
+			
+		}
+    }
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		if(!isTabletDevice())
-		{
-			//((TextView) this.getActivity().findViewById(R.id.TitleBarText)).setVisibility(8);
-			
-		}
-		else
-		{
-			
-		}
-		
 		list = (ListView) this.getActivity().findViewById(R.id.nodesListView);
 		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
         try 

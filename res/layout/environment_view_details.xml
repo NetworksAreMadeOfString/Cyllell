@@ -1,0 +1,31 @@
+<ScrollView android:id="@+id/scrollView1" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@color/codeops_background_darker" android:layout_height="match_parent" android:layout_width="match_parent">
+	<RelativeLayout android:id="@+id/relativeLayout1" android:layout_height="match_parent" android:layout_width="match_parent" android:minHeight="680dp" android:background="@color/codeops_background_darker">
+	        <TextView android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_width="fill_parent" style="@style/codeops_titlebar" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/TitleBarText" android:text="Cyllell - View Role"></TextView>
+	    
+	        <TextView android:text="Environment Title" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:textColor="@color/codeops_title_text" android:layout_width="wrap_content" android:layout_centerHorizontal="true" android:textSize="28dp" android:layout_marginTop="4dp" android:id="@+id/EnvironmentTitle" android:layout_below="@+id/TitleBarText"></TextView>
+	        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_alignParentLeft="true" android:layout_marginLeft="12dp" android:text="-" android:textColor="@color/codeops_subtitle_text" android:layout_below="@+id/EnvironmentTitle" android:id="@+id/EnvironmentDescription" android:layout_marginRight="12dp"></TextView>
+	        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="...." android:textColor="@color/codeops_normal_text" android:id="@+id/CookbookList" android:layout_below="@+id/EnvironmentListLabel" android:layout_alignLeft="@+id/EnvironmentListLabel" android:layout_marginLeft="12dp" android:layout_width="fill_parent" android:layout_marginRight="12dp"></TextView>
+	        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/DefaultAttrLabel" android:text="Default Attributes" android:layout_marginTop="20dp" android:textColor="@color/codeops_normal_text" android:layout_width="200dp" android:layout_alignLeft="@+id/EnvironmentDescription" android:layout_below="@+id/EnvironmentDescription"></TextView>
+	        <TextView android:layout_height="wrap_content" android:layout_width="200dp" android:textColor="@color/codeops_normal_text" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_marginTop="20dp" android:id="@+id/EnvironmentListLabel" android:layout_alignLeft="@+id/DefaultAttrLabel" android:layout_below="@+id/DefaultAttributes" android:text="Locked Cookbooks:"></TextView>
+	        <EditText android:gravity="top|left" android:inputType="textMultiLine" android:id="@+id/DefaultAttributes" android:layout_height="200dp" android:layout_width="fill_parent" android:textColor="@color/codeops_normal_text" android:layout_below="@+id/DefaultAttrLabel" android:layout_alignLeft="@+id/EnvironmentListLabel" android:layout_marginRight="12dp"></EditText>
+
+	        <ProgressBar
+	            android:id="@+id/progressBar1"
+	            style="?android:attr/progressBarStyleSmall"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_above="@+id/DefaultAttrLabel"
+	            android:layout_toRightOf="@+id/EnvironmentDescription" />
+
+	        <TextView
+	            android:id="@+id/ProgressStatus"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignTop="@+id/progressBar1"
+	            android:layout_toRightOf="@+id/progressBar1"
+	            android:text="......."
+	            android:textAppearance="?android:attr/textAppearanceMedium"
+	            android:textColor="@color/codeops_normal_text" />
+
+	</RelativeLayout>
+</ScrollView>
