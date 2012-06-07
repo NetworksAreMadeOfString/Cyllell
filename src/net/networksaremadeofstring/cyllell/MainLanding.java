@@ -164,7 +164,7 @@ public class MainLanding extends FragmentActivity
     	            fragmentTransaction.replace(R.id.MainFragment, fragment);
     	            fragmentTransaction.commit();
     	            
-    	            ((ActionBar) getActionBar()).setTitle("View Roles");
+    	            ((ActionBar) getActionBar()).setTitle("View Environments");
                 }
                 else
                 {
