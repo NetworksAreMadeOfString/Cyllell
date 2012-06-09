@@ -1,5 +1,5 @@
 
-    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutMain" style="@style/codeops_default">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutMain" style="@style/codeops_default" android:background="@color/codeops_background_light">
         <TextView android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_width="fill_parent" style="@style/codeops_titlebar" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/TitleBarText" android:text="Cyllell - Knife for Android"></TextView>
         <ImageView android:src="@drawable/chef_logo_trans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:id="@+id/chefWaterMark"></ImageView>
         <LinearLayout android:layout_height="wrap_content" android:layout_below="@+id/TitleBarText" android:layout_centerHorizontal="true" android:id="@+id/buttonGroup1" android:layout_width="fill_parent" android:gravity="center_vertical|center_horizontal" android:layout_marginTop="24dp">
@@ -13,5 +13,5 @@
             <ImageView android:layout_marginRight="24dp" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_width="wrap_content" android:id="@+id/SearchImageView" android:src="@drawable/search"></ImageView>
             <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:src="@drawable/environment" android:id="@+id/EnvironmentImageView"></ImageView>
         </LinearLayout>
-        <ProgressBar android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:id="@+id/backgroundProgress" android:indeterminate="true"></ProgressBar>
+        <ProgressBar android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:id="@+id/backgroundProgress" android:indeterminate="true" android:visibility="invisible"></ProgressBar>
     </RelativeLayout>

@@ -112,7 +112,7 @@ public class CreateDatabase extends Activity
 	    			case 9://Increment the counter
 	    			{
 	    				int progress = ((ProgressBar) findViewById(R.id.overallProgress)).getProgress() + msg.getData().getInt("progress",0);
-	    				Log.i("Progress","Increasing Progress Bar by: " + Integer.toString(progress) + " from " + Integer.toString(((ProgressBar) findViewById(R.id.overallProgress)).getProgress()));
+	    				//Log.i("Progress","Increasing Progress Bar by: " + Integer.toString(progress) + " from " + Integer.toString(((ProgressBar) findViewById(R.id.overallProgress)).getProgress()));
 	    				((ProgressBar) findViewById(R.id.overallProgress)).setProgress(progress);
 	    			}
 	    			break;
@@ -302,7 +302,7 @@ public class CreateDatabase extends Activity
 					JSONArray Keys = Nodes.names();
 					double increase = (25 / (float)Nodes.length());
 					
-					Log.i("NodesIncrease", Double.toString(increase));
+					//Log.i("NodesIncrease", Double.toString(increase));
 					double progress = increase;
 					for(int i = 0; i < Nodes.length(); i++)
 					{

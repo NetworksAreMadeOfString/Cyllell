@@ -135,7 +135,6 @@ public class ViewRoles_Fragment extends CyllellFragment
     				OnClickListener listener = new OnClickListener()
     				{
 						public void onClick(View v) {
-							Log.i("OnClick","Clicked");
 							GetMoreDetails((Integer)v.getTag());
 						}
 					};
@@ -150,12 +149,12 @@ public class ViewRoles_Fragment extends CyllellFragment
     					}
     					else
     					{
-    						Log.e("CookbookAdapter","CookbookAdapter is null");
+    						//Log.e("CookbookAdapter","CookbookAdapter is null");
     					}
     				}
     				else
     				{
-    					Log.e("List","List is null");
+    					//Log.e("List","List is null");
     				}
 	    	        
         			dialog.dismiss();

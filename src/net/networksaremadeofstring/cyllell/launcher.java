@@ -64,8 +64,8 @@ public class launcher extends Activity
     {
     	if(settings.getBoolean("DatabaseCreated", false) == true)
     	{
-    		Intent NodesIntent = new Intent(launcher.this, net.networksaremadeofstring.cyllell.MainLanding.class);
-    		launcher.this.startActivity(NodesIntent);
+    		Intent MainLandingIntent = new Intent(launcher.this, net.networksaremadeofstring.cyllell.MainLanding.class);
+    		launcher.this.startActivity(MainLandingIntent);
     		finish();
     	}
     	else

@@ -53,7 +53,7 @@ public class MainLanding extends FragmentActivity
             }
             else
             {
-            	Log.e("ActionBar","Still fucking broken");
+            	//Log.e("ActionBar","Still fucking broken");
             }
         }
         else

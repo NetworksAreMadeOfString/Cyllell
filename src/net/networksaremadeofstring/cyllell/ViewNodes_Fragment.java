@@ -7,22 +7,21 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,23 +36,34 @@ public class ViewNodes_Fragment extends CyllellFragment
 	ProgressDialog dialog;
 	NodeListAdaptor NodeAdapter;
 	Handler updateListNotify;
+	Handler handler;
 	Thread GetFullDetails;
 	private SharedPreferences settings = null;
 	Boolean CutInProgress = false;
+	Boolean Paused = false;
+	Thread dataPreload;
+	String instanceTime = "";
+	
+	public void OnPause()
+	{
+		Log.e("OnPause","Pasuing");
+	}
+	
+	public void OnResume()
+	{
+		Log.e("OnPause","Resuming");
+	}
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
+		Log.e("onActivityCreated","Called");
     	super.onCreate(savedInstanceState);
 		if(!isTabletDevice())
 		{
 			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
 			
 		}
-    }
-	
-	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
-	{
+		
 		list = (ListView) this.getActivity().findViewById(R.id.nodesListView);
 		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
         try 
@@ -106,25 +116,23 @@ public class ViewNodes_Fragment extends CyllellFragment
     		}
     	};
         
-    	final Handler handler = new Handler() 
+    	handler = new Handler() 
     	{
     		public void handleMessage(Message msg) 
     		{	
     			//Once we've checked the data is good to use start processing it
     			if(msg.what == 0)
     			{
-    				OnClickListener listener = new OnClickListener(){
-
-						public void onClick(View v) {
-							Log.i("OnClick","Clicked");
+    				OnClickListener listener = new OnClickListener()
+    				{
+						public void onClick(View v) 
+						{
 							GetMoreDetails((Integer)v.getTag());
 						}
-
-					
 					};
 					
-    				NodeAdapter = new NodeListAdaptor(ViewNodes_Fragment.this.getActivity().getBaseContext(), listOfNodes,listener);
-    				list = (ListView) ViewNodes_Fragment.this.getActivity().findViewById(R.id.nodesListView);
+    				NodeAdapter = new NodeListAdaptor(getActivity().getBaseContext(), listOfNodes,listener);
+    				list = (ListView) getActivity().findViewById(R.id.nodesListView);
     				if(list != null)
     				{
     					if(NodeAdapter != null)
@@ -133,12 +141,12 @@ public class ViewNodes_Fragment extends CyllellFragment
     					}
     					else
     					{
-    						Log.e("NodeAdapter","NodeAdapter is null");
+    						//Log.e("NodeAdapter","NodeAdapter is null");
     					}
     				}
     				else
     				{
-    					Log.e("List","List is null");
+    					//Log.e("List","List is null");
     				}
 	    	        
         			dialog.dismiss();
@@ -177,7 +185,7 @@ public class ViewNodes_Fragment extends CyllellFragment
     		}
     	};
     	
-    	Thread dataPreload = new Thread() 
+    	dataPreload = new Thread() 
     	{  
     		public void run() 
     		{
@@ -190,7 +198,7 @@ public class ViewNodes_Fragment extends CyllellFragment
 					for(int i = 0; i < Nodes.length(); i++)
 					{
 						String URI = Nodes.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/nodes/", "");
-						Log.i("URI", URI);
+						//Log.i("URI", URI);
 						listOfNodes.add(new Node(Keys.get(i).toString(), URI));
 					}
 					handler.sendEmptyMessage(202);
@@ -211,6 +219,12 @@ public class ViewNodes_Fragment extends CyllellFragment
     	};
     	
     	dataPreload.start();
+    }
+	
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+	{
+		//Log.e("onCreateView","Called");
         return inflater.inflate(R.layout.nodeslanding, container, false);
     }
 	
@@ -222,7 +236,7 @@ public class ViewNodes_Fragment extends CyllellFragment
     		{
     			try 
     			{
-    				Log.i("TAG", Integer.toString(Tag));
+    				//Log.i("TAG", Integer.toString(Tag));
     				Message msg = new Message();
     				Bundle data = new Bundle();
     				data.putInt("tag", Tag);
@@ -238,7 +252,7 @@ public class ViewNodes_Fragment extends CyllellFragment
 				} 
     			catch (Exception e)
     			{
-    				Log.e("GetMoreDetails","An actual exception occured!");
+    				//Log.e("GetMoreDetails","An actual exception occured!");
     				e.printStackTrace();
     				
     				Message msg = new Message();

@@ -94,7 +94,7 @@ public class Authentication
 	{
 		List <NameValuePair> Headers = new ArrayList <NameValuePair>();
 		
-		Log.i("setHeaders","Getting Headers");
+		//Log.i("setHeaders","Getting Headers");
 		Digester Disgesteriser = new Digester();
 		String signed_canonicalize_request = null;
 		int charLocation = 0, AuthorizationIteration = 1;
@@ -133,7 +133,7 @@ public class Authentication
 			}
 			Headers.add(new BasicNameValuePair("X-Ops-Authorization-"+Integer.toString(AuthorizationIteration),AuthString));
 			
-			Log.i("TAG","X-Ops-Authorization-"+Integer.toString(AuthorizationIteration) + " : " + AuthString);
+			//Log.i("TAG","X-Ops-Authorization-"+Integer.toString(AuthorizationIteration) + " : " + AuthString);
 			AuthorizationIteration++;
 		}	
 

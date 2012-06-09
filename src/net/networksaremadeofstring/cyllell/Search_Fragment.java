@@ -88,7 +88,7 @@ public class Search_Fragment extends CyllellFragment
 						JSONArray rows = Nodes.getJSONArray("rows");
 						for(int i = 0; i < rows.length(); i++)
 						{
-							Log.i("URI", ((JSONObject) rows.get(i)).getString("name"));
+							//Log.i("URI", ((JSONObject) rows.get(i)).getString("name"));
 							listOfNodes.add(new Node(((JSONObject) rows.get(i)).getString("name"), ""));
 						}
 						handler.sendEmptyMessage(202);

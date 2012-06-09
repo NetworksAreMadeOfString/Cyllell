@@ -183,7 +183,7 @@ public class ViewNodes extends Activity
 					for(int i = 0; i < Nodes.length(); i++)
 					{
 						String URI = Nodes.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/nodes/", "");
-						Log.i("URI", URI);
+						//Log.i("URI", URI);
 						listOfNodes.add(new Node(Keys.get(i).toString(), URI));
 					}
 					handler.sendEmptyMessage(202);
@@ -223,7 +223,7 @@ public class ViewNodes extends Activity
 	    		{
 	    			try 
 	    			{
-	    				Log.i("TAG", Integer.toString(Tag));
+	    				//Log.i("TAG", Integer.toString(Tag));
 	    				Message msg = new Message();
 	    				Bundle data = new Bundle();
 	    				data.putInt("tag", Tag);
@@ -244,7 +244,7 @@ public class ViewNodes extends Activity
 					} 
 	    			catch (Exception e)
 	    			{
-	    				Log.e("GetMoreDetails","An actual exception occured!");
+	    				//Log.e("GetMoreDetails","An actual exception occured!");
 	    				e.printStackTrace();
 	    				
 	    				Message msg = new Message();

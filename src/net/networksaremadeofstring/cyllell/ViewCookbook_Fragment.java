@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +26,22 @@ public class ViewCookbook_Fragment extends Fragment
 	private SharedPreferences settings = null;
 	private String FullJSON = "";
 	
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		//Log.e("onSaveInstanceState","Saving URI " + URI);
+		outState.putString("URI", URI);
+	    super.onSaveInstanceState(outState);
+	}
+	
 	public ViewCookbook_Fragment(String _URI)
 	{
 		this.URI = _URI;
 	}
 	
+	public ViewCookbook_Fragment()
+	{
+	}
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
     	settings = this.getActivity().getSharedPreferences("Cyllell", 0);
@@ -41,6 +53,11 @@ public class ViewCookbook_Fragment extends Fragment
         {
 			e.printStackTrace();
 		}
+        
+        if(savedInstanceState != null)
+        {
+        	URI = savedInstanceState.getString("URI");
+        }
         
         return inflater.inflate(R.layout.cookbook_view_details, container, false);
     }

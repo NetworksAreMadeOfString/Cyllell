@@ -91,9 +91,9 @@ public class Cuts
 		}
 		else
 		{
-			Log.i("URL",settings.getString("URL", "--"));
-			Log.i("ClientName",settings.getString("ClientName", "--"));
-			Log.i("PrivateKey",settings.getString("PrivateKey", "--"));
+			//Log.i("URL",settings.getString("URL", "--"));
+			//Log.i("ClientName",settings.getString("ClientName", "--"));
+			//Log.i("PrivateKey",settings.getString("PrivateKey", "--"));
 			throw new Exception("Chef URL is not set");
 		}
 		
@@ -111,12 +111,12 @@ public class Cuts
         //Check whether people are self signing or not
         if(settings.getBoolean("SelfSigned", true))
         {
-        	Log.i("SelfSigned","Allowing Self Signed Certificates");
+        	//Log.i("SelfSigned","Allowing Self Signed Certificates");
 			socketFactory = TrustAllSSLSocketFactory.getDefault();
         }
         else
         {
-        	Log.i("SelfSigned","Enforcing Certificate checks");
+        	//Log.i("SelfSigned","Enforcing Certificate checks");
         	socketFactory = SSLSocketFactory.getSocketFactory();
         }
         registry.register(new Scheme("https", socketFactory, 443));
@@ -141,7 +141,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -162,7 +162,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -183,7 +183,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -204,7 +204,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -225,7 +225,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -246,7 +246,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -267,7 +267,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -318,7 +318,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -349,7 +349,7 @@ public class Cuts
 		try {
 			CanonicalNode.put("uptime",
 					Node.getJSONObject("automatic").getString("uptime"));
-			Log.i("uptime",Node.getJSONObject("automatic").getString("uptime"));
+			//Log.i("uptime",Node.getJSONObject("automatic").getString("uptime"));
 		} 
 		catch (JSONException e) { CanonicalNode.put("uptime","Uptime unknown"); }
 		
@@ -386,7 +386,7 @@ public class Cuts
 			}
 
 			CanonicalNode.put("run_list",runList);
-			Log.i("CanonicalizeNode",runList);
+			//Log.i("CanonicalizeNode",runList);
 		} 
 		catch (JSONException e) { CanonicalNode.put("run_list","Unknown"); }
 		
@@ -414,7 +414,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -433,7 +433,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}

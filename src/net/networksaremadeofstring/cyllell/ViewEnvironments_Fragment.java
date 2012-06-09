@@ -127,7 +127,7 @@ public class ViewEnvironments_Fragment extends CyllellFragment
     				OnClickListener listener = new OnClickListener()
     				{
 						public void onClick(View v) {
-							Log.i("OnClick","Clicked");
+							//Log.i("OnClick","Clicked");
 							GetMoreDetails((Integer)v.getTag());
 						}
 					};
@@ -142,12 +142,12 @@ public class ViewEnvironments_Fragment extends CyllellFragment
     					}
     					else
     					{
-    						Log.e("EnvironmentAdapter","EnvironmentAdapter is null");
+    						//Log.e("EnvironmentAdapter","EnvironmentAdapter is null");
     					}
     				}
     				else
     				{
-    					Log.e("List","List is null");
+    					//Log.e("List","List is null");
     				}
 	    	        
         			dialog.dismiss();
@@ -247,7 +247,7 @@ public class ViewEnvironments_Fragment extends CyllellFragment
 		{
 			Intent GenericIntent = new Intent(getActivity().getApplicationContext(), Generic_Container.class);
         	GenericIntent.putExtra("fragment", "viewenvironment");
-        	GenericIntent.putExtra("roleURI", listOfEnvironments.get(Tag).GetURI());
+        	GenericIntent.putExtra("envURI", listOfEnvironments.get(Tag).GetURI());
         	getActivity().startActivity(GenericIntent);
 		}
     }
