@@ -1,4 +1,4 @@
-Cyllell is a Chef Client for Android aking to Knife
+Cyllell is a Chef Client for Android akin to Knife
 ======
 Cyllell makes it easy to manage servers and scale applications throughout your entire infrastructure from your phone. 
 
