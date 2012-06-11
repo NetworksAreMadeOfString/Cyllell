@@ -1,4 +1,4 @@
-Cyllell is a Chef Knife Client for Android
+Cyllell is a Chef Client for Android aking to Knife
 ======
 Cyllell makes it easy to manage servers and scale applications throughout your entire infrastructure from your phone. 
 
@@ -11,6 +11,7 @@ The source code has been released under the GPL version 3 license.
 Current Features:
 --------
 * It loads and checks it can connect to a Chef server
+* Supports open source and Hosted Chef
 * Enable or disable SSL certificate checking
 * Nodes
 	* List all Nodes
@@ -18,11 +19,21 @@ Current Features:
 * Search
 	* Free form search
 	* Voice search
-
+* Roles
+	* List Roles
+* Recipes
+	* List Recipe
+* Environments
+	* List Evironments
+	
+* Caching - used for search prediction / filter as you type stuff
+	* Cache role list 
+	* Cache recipe list
+	* Cache node list
+	
 To Do:
 --------
 * Recipes
-	* List Recipe
  	* Edit Recipes 
 	
 * Roles
@@ -41,13 +52,8 @@ To Do:
   	* Set default search query for voice search 
 	
 * Environments
-	* List Evironments
 	* Edit Environments
 
-* Caching - used for search prediction / filter as you type stuff
-	* Cache role list 
-	* Cache recipe list
-	* Cache node list
 
 Things that probably won't be done:
 --------
@@ -65,15 +71,15 @@ Links:
 --------
 * Email: Gareth@NetworksAreMadeOfString.co.uk
 * GitHub: https://github.com/NetworksAreMadeOfString/Cyllell
-* Market URL: https://market.android.com/details?id=net.networksaremadeofstring.cyllell [Not live yet]
+* Market URL: https://market.android.com/details?id=net.networksaremadeofstring.cyllell
 * Twitter: @NetworkString
 
 Copyright and Credits:
 -------
-All artwork has either been made myself or from iconfinder.com. The following is a attribution list;
-CPU and Memory Icons: http://omercetin.deviantart.com
-Chef Logo: OpsCode http://www.opscode.com
-Magnifying Glass: http://www.icons-land.com
-Operating System Icons: http://tatice.deviantart.com
+The following is a attribution list;
+	CPU and Memory Icons: http://omercetin.deviantart.com
+	Chef Logo: OpsCode http://www.opscode.com
+	Magnifying Glass: http://www.icons-land.com
+	Operating System Icons: http://tatice.deviantart.com
 
 All other materials (unless I've made a mistake): Gareth Llewellyn
