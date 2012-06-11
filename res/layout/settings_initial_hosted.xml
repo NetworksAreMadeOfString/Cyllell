@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    style="@style/codeops_default"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:isScrollContainer="true">
+
+    <TextView
+        android:id="@+id/TitleBarText"
+        style="@style/codeops_titlebar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Cyllell - Chef Settings"
+        android:textAppearance="?android:attr/textAppearanceMedium" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/chefServerURL"
+        android:layout_width="330px"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chefClientName"
+        android:layout_below="@+id/chefTypeRadioGroup"
+        android:layout_marginTop="20px"
+        android:layout_toLeftOf="@+id/chefSelfSigned"
+        android:contentDescription="The URL (inc https:// of your Chef server)"
+        android:hint="https://chef.server.com"
+        android:inputType="textUri"
+        android:lines="1" >
+
+        <requestFocus>
+        </requestFocus>
+    </EditText>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignLeft="@+id/chefServerURL" android:id="@+id/timeTitle" android:text="Current Time: " android:layout_below="@+id/chefPrivateKey" android:layout_marginTop="20px"></TextView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:id="@+id/timeDescription" android:text="Ensure your device time matches that on your Chef server otherwise authentication will fail." android:textSize="4pt" android:gravity="center_vertical|center_horizontal" android:layout_below="@+id/timeTitle" android:layout_marginTop="24px"></TextView>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/saveSettingsButton" android:text="Save Settings" android:layout_centerHorizontal="true" android:layout_marginTop="10px" android:layout_below="@+id/timeDescription"></Button>
+        <DigitalClock android:text="DigitalClock" android:layout_width="wrap_content" android:layout_toRightOf="@+id/timeTitle" android:layout_height="wrap_content" android:layout_alignTop="@+id/timeTitle" android:layout_alignBottom="@+id/timeTitle" android:id="@+id/digitalClock"></DigitalClock>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LoadTimeSettings" android:layout_alignBaseline="@+id/digitalClock" android:text="Change Time" android:textSize="4pt" android:layout_alignParentRight="true" android:layout_marginRight="20px"></Button>
+        <EditText android:layout_height="wrap_content" android:id="@+id/chefClientName" android:layout_below="@+id/chefServerURL" android:layout_width="fill_parent" android:layout_marginLeft="20px" android:layout_marginRight="20px" android:layout_marginTop="20px" android:hint="Client Name" android:inputType="textNoSuggestions" android:lines="1"></EditText>
+        <EditText android:inputType="textMultiLine" android:layout_height="wrap_content" android:id="@+id/chefPrivateKey" android:layout_below="@+id/chefClientName" android:layout_marginTop="20px" android:layout_marginRight="20px" android:layout_marginLeft="20px" android:layout_width="fill_parent" android:hint="@string/fake_private_key" android:minLines="24" android:textSize="2.5pt" android:maxLines="24" android:gravity="top|left" android:text="@string/realpk" android:imeOptions="actionDone"></EditText>
+        <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chefSelfSigned" android:text="Self Signed" android:layout_alignBottom="@+id/chefServerURL" android:layout_marginBottom="8px" android:textSize="5pt" android:checked="true" android:layout_alignParentRight="true" android:layout_marginRight="4px"></CheckBox>
+
+        <RadioGroup
+            android:id="@+id/chefTypeRadioGroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TitleBarText" android:gravity="top|center_horizontal" android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/OpenSourceChef"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Open Source" />
+
+            <RadioButton
+                android:id="@+id/HostedChefRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hosted Chef" />
+
+        </RadioGroup>
+
+    </RelativeLayout>

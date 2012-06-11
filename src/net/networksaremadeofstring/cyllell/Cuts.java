@@ -18,35 +18,27 @@
 */
 package net.networksaremadeofstring.cyllell;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,7 +54,8 @@ import android.util.Log;
 public class Cuts 
 {
 	private SharedPreferences settings = null;
-	private String ChefURL = "https://api.opscode.com";//This won't work but hey ho
+	private String ChefURL = "https://api.opscode.com"; //Hosted Chef
+	private String PathSuffix = "/organizations/namos"; //Hosted Chef
 	private String UserID = "Cyllell"; //The name of the API client
 	private String PrivateKey = null;
 	
@@ -88,6 +81,7 @@ public class Cuts
 		{
 			ChefAuth = new Authentication(settings.getString("ClientName", "--"),settings.getString("PrivateKey", "--"));
 			this.ChefURL = settings.getString("URL", "--");
+			this.PathSuffix = settings.getString("Suffix", "");
 		}
 		else
 		{
@@ -111,12 +105,12 @@ public class Cuts
         //Check whether people are self signing or not
         if(settings.getBoolean("SelfSigned", true))
         {
-        	//Log.i("SelfSigned","Allowing Self Signed Certificates");
+        	Log.i("SelfSigned","Allowing Self Signed Certificates");
 			socketFactory = TrustAllSSLSocketFactory.getDefault();
         }
         else
         {
-        	//Log.i("SelfSigned","Enforcing Certificate checks");
+        	Log.i("SelfSigned","Enforcing Certificate checks");
         	socketFactory = SSLSocketFactory.getSocketFactory();
         }
         registry.register(new Scheme("https", socketFactory, 443));
@@ -132,7 +126,7 @@ public class Cuts
 	 */
 	public JSONObject GetCookbooks() throws Exception
 	{
-		String Path = "/cookbooks";
+		String Path = this.PathSuffix + "/cookbooks";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -153,7 +147,7 @@ public class Cuts
 	 */
 	public JSONObject GetCookbook(String CookbookURI) throws Exception
 	{
-		String Path = "/cookbooks/" + CookbookURI + "/_latest";
+		String Path = this.PathSuffix + "/cookbooks/" + CookbookURI + "/_latest";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -174,7 +168,7 @@ public class Cuts
 	 */
 	public JSONObject GetNodes() throws Exception
 	{
-		String Path = "/nodes";
+		String Path = this.PathSuffix + "/nodes";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -195,7 +189,7 @@ public class Cuts
 	 */
 	public JSONObject GetRoles() throws Exception
 	{
-		String Path = "/roles";
+		String Path = this.PathSuffix + "/roles";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -216,7 +210,7 @@ public class Cuts
 	 */
 	public JSONObject GetRole(String URI) throws Exception
 	{
-		String Path = "/roles/"+URI;
+		String Path = this.PathSuffix + "/roles/"+URI;
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -237,7 +231,7 @@ public class Cuts
 	 */
 	public JSONObject GetEnvironments() throws Exception
 	{
-		String Path = "/environments";
+		String Path = this.PathSuffix + "/environments";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -258,7 +252,7 @@ public class Cuts
 	 */
 	public JSONObject GetEnvironment(String URI) throws Exception
 	{
-		String Path = "/environments/"+URI;
+		String Path = this.PathSuffix + "/environments/"+URI;
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -279,25 +273,59 @@ public class Cuts
 	 */
 	public Boolean ConfirmLogin() throws Exception
 	{
-		String Path = "/clients/" + settings.getString("ClientName", "--");
+		String Path = this.PathSuffix + "/clients/" + settings.getString("ClientName", "--");
 		this.httpget = new HttpGet(this.ChefURL + Path);
-
+		Log.i("ConfirmLogin",Path);
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
     	for(int i = 0; i < Headers.size(); i++)
     	{
+    		Log.i("Headers",Headers.get(i).getName()+":"+Headers.get(i).getValue());
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
+        
+    	//DEBUG ---------------------------------------------------------------
+    	/*HttpResponse response = httpClient.execute(this.httpget);
+        BufferedReader in = new BufferedReader
+        (new InputStreamReader(response.getEntity().getContent()));
+        StringBuffer sb = new StringBuffer("");
+        String line = "";
+        String NL = System.getProperty("line.separator");
+        while ((line = in.readLine()) != null) {
+            sb.append(line + NL);
+        }
+        in.close();
+        String page = sb.toString();
+        System.out.println(page);
+      
+        JSONObject json = new JSONObject(page);*/
+        //DEBUG ---------------------------------------------------------------
+        
+        
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
     
     	JSONObject json = new JSONObject(jsonTempString);
     	
-    	if(json.getString("chef_type").equals("client"))
+    	if(settings.getBoolean("OpenSourceChef", true) == true)
     	{
-    		return true;
+	    	if(json.getString("chef_type").equals("client"))
+	    	{
+	    		return true;
+	    	}
+	    	else
+	    	{
+	    		return false;
+	    	}
     	}
     	else
     	{
-    		return false;
+    		if(json.getString("clientname").equals(settings.getString("ClientName", "--")))
+	    	{
+	    		return true;
+	    	}
+	    	else
+	    	{
+	    		return false;
+	    	}
     	}
 	}
 	
@@ -309,7 +337,7 @@ public class Cuts
 	 */
 	public JSONObject GetNode(String URI) throws Exception
 	{
-		String Path = "/nodes/"+URI;
+		String Path = this.PathSuffix + "/nodes/"+URI;
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
@@ -395,7 +423,7 @@ public class Cuts
 	
 	public JSONObject Search(String Query, String Index) throws Exception
 	{
-		String Path = "/search/"+Index;
+		String Path = this.PathSuffix + "/search/"+Index;
 		
 		Query = Query.replace(' ', '*');
 		
@@ -421,7 +449,7 @@ public class Cuts
 	
 	public JSONObject CraftedSearch(String Query, String Index) throws Exception
 	{
-		String Path = "/search/"+Index.toLowerCase();
+		String Path = this.PathSuffix + "/search/"+Index.toLowerCase();
 		
 		Query = Query.replace(" ", "%20");
 		

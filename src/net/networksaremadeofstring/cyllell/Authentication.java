@@ -104,12 +104,13 @@ public class Authentication
 		Headers.add(new BasicNameValuePair("Content-Type","application/json"));
 		
 		Headers.add(new BasicNameValuePair("X-Ops-Sign","version=1.0"));
-		Headers.add(new BasicNameValuePair("X-Ops-Userid",this.ClientName));
+		Headers.add(new BasicNameValuePair("X-Chef-Version","0.10.4"));
+		Headers.add(new BasicNameValuePair("X-Ops-UserId",this.ClientName));
 		Headers.add(new BasicNameValuePair("X-Ops-Timestamp",TimeStamp));
 		Headers.add(new BasicNameValuePair("X-Ops-Content-Hash",Disgesteriser.hash_string(Body)));
 		
 		signed_canonicalize_request = SignHeaders("Method:GET"+
-				"\nHashed Path:" + Disgesteriser.hash_string(Path) + 
+				"\nHashed Path:" + Disgesteriser.hash_string(Path) +
 				"\nX-Ops-Content-Hash:"+Disgesteriser.hash_string(Body)+
 				"\nX-Ops-Timestamp:"+TimeStamp+
 				"\nX-Ops-UserId:"+this.ClientName);
