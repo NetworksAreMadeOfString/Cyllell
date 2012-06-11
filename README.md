@@ -24,7 +24,7 @@ Current Features:
 * Recipes
 	* List Recipe
 * Environments
-	* List Evironments
+	* List Environments
 	
 * Caching - used for search prediction / filter as you type stuff
 	* Cache role list 

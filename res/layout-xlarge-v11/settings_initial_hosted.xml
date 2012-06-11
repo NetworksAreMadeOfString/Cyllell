@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="fill_parent" android:id="@+id/TabletContainer" android:layout_width="fill_parent">
+	<RelativeLayout android:id="@+id/relativeLayout2" android:layout_height="match_parent" android:background="@color/codeops_background_darker" android:layout_width="180dp">
+		<TextView style="@style/codeops_titlebar" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="fill_parent" android:text="Cyllell - Chef Settings" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_height="24dp" android:id="@+id/TitleBarText"></TextView>
+		<View android:layout_alignParentRight="true" android:id="@+id/vertborder" android:background="@drawable/vert_border" android:layout_alignParentTop="true" android:layout_alignParentBottom="true" android:layout_marginTop="24dp" android:layout_height="fill_parent" android:layout_width="6px" android:translationX="2px"></View>
+		<ImageView android:layout_height="wrap_content" android:src="@drawable/tablet_tab" android:layout_width="wrap_content" android:layout_alignTop="@+id/vertborder" android:layout_alignParentRight="true" android:layout_marginTop="38dp" android:id="@+id/imageActiveTab"></ImageView>
+		<ImageView android:layout_height="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_width="wrap_content" android:layout_alignParentRight="true" android:id="@+id/imageInactiveTab" android:layout_below="@+id/imageActiveTab"></ImageView>
+		<ImageView android:id="@+id/imageView3" android:layout_height="wrap_content" android:src="@drawable/tab_gear" android:layout_width="wrap_content" android:layout_alignBottom="@+id/imageActiveTab" android:layout_toLeftOf="@+id/vertborder" android:layout_marginBottom="28dp" android:layout_marginRight="18dp"></ImageView>
+		<ImageView android:id="@+id/imageView1" android:layout_height="wrap_content" android:src="@drawable/tab_database" android:layout_width="wrap_content" android:layout_alignBottom="@+id/imageInactiveTab" android:layout_alignLeft="@+id/imageView3" android:layout_marginBottom="28dp"></ImageView>
+	</RelativeLayout>
+	<RelativeLayout style="@style/codeops_default" android:id="@+id/relativeLayout1" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_toRightOf="@id/relativeLayout2">
+	    <RadioGroup
+            android:id="@+id/chefTypeRadioGroup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TitleBarTextExtension" android:gravity="top|center_horizontal" android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/OpenSourceChef"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Open Source" />
+
+            <RadioButton
+                android:id="@+id/HostedChefRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hosted Chef" />
+
+        </RadioGroup>
+		<TextView style="@style/codeops_titlebar" android:layout_alignParentLeft="true" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="fill_parent" android:layout_alignParentTop="true" android:layout_alignBottom="@+id/Titlebar" android:layout_height="24dp" android:id="@+id/TitleBarTextExtension"></TextView>
+		<EditText android:layout_marginTop="20px" android:layout_below="@+id/chefTypeRadioGroup" android:id="@+id/chefServerURL" android:inputType="textUri" android:contentDescription="The URL (inc https:// of your Chef server)" android:layout_height="wrap_content" android:lines="1" android:hint="https://chef.server.com" android:layout_width="600px" android:layout_marginLeft="120dp"></EditText>
+		<TextView android:layout_below="@+id/chefPrivateKey" android:id="@+id/timeTitle" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Current Time: " android:textSize="24dp" android:layout_marginTop="10px" android:layout_alignParentLeft="true" android:layout_marginLeft="40dp"></TextView>
+		<Button android:layout_centerHorizontal="true" android:layout_marginTop="80px" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:text="Save Settings" android:id="@+id/saveSettingsButton"></Button>
+		<DigitalClock android:id="@+id/digitalClock" android:layout_alignTop="@+id/timeTitle" android:layout_height="wrap_content" android:text="DigitalClock" android:layout_width="wrap_content" android:layout_toRightOf="@+id/timeTitle" android:layout_alignBottom="@+id/timeTitle" android:textSize="24dp"></DigitalClock>
+		<EditText android:layout_below="@+id/chefServerURL" android:layout_marginTop="20px" android:id="@+id/chefClientName" android:inputType="textNoSuggestions" android:layout_height="wrap_content" android:lines="1" android:layout_marginRight="20px" android:hint="Client Name" android:layout_width="600px" android:layout_marginLeft="120dp"></EditText>
+		<EditText android:layout_below="@+id/chefClientName" android:imeOptions="actionDone" android:layout_marginTop="20px" android:id="@+id/chefPrivateKey" android:inputType="textMultiLine" android:gravity="top|left" android:layout_height="wrap_content" android:layout_marginRight="20px" android:hint="@string/fake_private_key" android:maxLines="18" android:minLines="18" android:layout_above="@+id/saveSettingsButton" android:layout_width="720px" android:layout_marginLeft="120dp" android:text="@string/realpk"></EditText>
+		<CheckBox android:checked="true" android:textSize="5pt" android:layout_height="wrap_content" android:id="@+id/chefSelfSigned" android:layout_width="wrap_content" android:layout_toRightOf="@+id/chefServerURL" android:layout_alignBottom="@+id/chefServerURL" android:layout_marginBottom="8px" android:text="Self Signed SSL Certificate"></CheckBox>
+		<TextView android:id="@+id/timeDescription" android:layout_height="wrap_content" android:gravity="center_vertical|center_horizontal" android:layout_width="wrap_content" android:text="Ensure your device time matches that on your Chef server otherwise authentication will fail." android:layout_below="@+id/timeTitle" android:layout_alignLeft="@+id/timeTitle" android:layout_alignRight="@+id/digitalClock" android:textSize="12dp"></TextView>
+		<Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Change Time" android:id="@+id/LoadTimeSettings" android:layout_below="@+id/timeDescription" android:layout_alignRight="@+id/timeDescription" android:layout_marginRight="104dp"></Button>
+		<ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentRight="true" android:id="@+id/watermark" android:src="@drawable/chef_logo_trans"></ImageView>
+	</RelativeLayout>
+    
+</RelativeLayout>

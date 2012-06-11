@@ -73,7 +73,16 @@ public class SettingsLanding extends Activity
         }
         
         if(settings.getString("URL", "--").equals("--") == false)
-        	chefURL.setText(settings.getString("URL",""));
+        {
+     	   if(settings.getBoolean("OpenSourceChef", true) == true)
+            {
+     		   chefURL.setText(settings.getString("URL",""));
+            }
+     	   else
+     	   {
+     		   chefURL.setText(settings.getString("Suffix",""));
+     	   }
+        }
         
         if(settings.getString("ClientName", "--").equals("--") == false)
         	chefClientName.setText(settings.getString("ClientName",""));

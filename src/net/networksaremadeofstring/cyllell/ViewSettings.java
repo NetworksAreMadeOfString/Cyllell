@@ -24,10 +24,13 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class ViewSettings extends Activity
@@ -38,7 +41,8 @@ public class ViewSettings extends Activity
    public void onCreate(Bundle savedInstanceState) 
    {
        super.onCreate(savedInstanceState);
-       setContentView(R.layout.settings_main);
+       //setContentView(R.layout.settings_main);
+       setContentView(R.layout.settings_initial_hosted);
        
        settings = getSharedPreferences("Cyllell", 0);
        ((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
@@ -46,9 +50,33 @@ public class ViewSettings extends Activity
        EditText chefURL = (EditText) findViewById(R.id.chefServerURL);
        EditText chefClientName = (EditText) findViewById(R.id.chefClientName);
        EditText chefPrivateKey = (EditText) findViewById(R.id.chefPrivateKey);
+       RadioButton OpenSourceChef = (RadioButton) findViewById(R.id.OpenSourceChef);
+       RadioButton HostedChef = (RadioButton) findViewById(R.id.HostedChefRadio);
+       
+       if(settings.getBoolean("OpenSourceChef", true) == true)
+       {
+       	OpenSourceChef.setChecked(true);
+       	HostedChef.setChecked(false);
+       	((CheckBox) findViewById(R.id.chefSelfSigned)).setVisibility(0);
+       }
+       else
+       {
+       	OpenSourceChef.setChecked(false);
+       	HostedChef.setChecked(true);
+       	((CheckBox) findViewById(R.id.chefSelfSigned)).setVisibility(8);
+       }
        
        if(settings.getString("URL", "--").equals("--") == false)
-       	chefURL.setText(settings.getString("URL",""));
+       {
+    	   if(settings.getBoolean("OpenSourceChef", true) == true)
+           {
+    		   chefURL.setText(settings.getString("URL",""));
+           }
+    	   else
+    	   {
+    		   chefURL.setText(settings.getString("Suffix",""));
+    	   }
+       }
        
        if(settings.getString("ClientName", "--").equals("--") == false)
        	chefClientName.setText(settings.getString("ClientName",""));
@@ -56,6 +84,26 @@ public class ViewSettings extends Activity
        if(settings.getString("PrivateKey", "--").equals("--") == false)
        	chefPrivateKey.setText(settings.getString("PrivateKey",""));
        
+       ((RadioGroup) findViewById(R.id.chefTypeRadioGroup)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) 
+			{
+				Log.i("RadioGroup",Integer.toString(checkedId));
+				if(checkedId == 2131296383)
+				{
+					((EditText) findViewById(R.id.chefServerURL)).setHint("/organizations/orgname");
+					((EditText) findViewById(R.id.chefServerURL)).setText("");
+					((CheckBox) findViewById(R.id.chefSelfSigned)).setVisibility(8);
+				}
+				else
+				{
+					((EditText) findViewById(R.id.chefServerURL)).setHint("https://chef.server.com");
+					((CheckBox) findViewById(R.id.chefSelfSigned)).setVisibility(0);
+					((EditText) findViewById(R.id.chefServerURL)).setText("");
+				}
+
+			}
+		});
        
        Button SaveButton = (Button) findViewById(R.id.saveSettingsButton);
        SaveButton.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +113,40 @@ public class ViewSettings extends Activity
                EditText chefClientName = (EditText) findViewById(R.id.chefClientName);
                EditText chefPrivateKey = (EditText) findViewById(R.id.chefPrivateKey);
                CheckBox chefSelfSigned = (CheckBox) findViewById(R.id.chefSelfSigned);
+               RadioButton OpenSourceChef = (RadioButton) findViewById(R.id.OpenSourceChef);
+               RadioButton HostedChef = (RadioButton) findViewById(R.id.HostedChefRadio);
                
                SharedPreferences.Editor editor = settings.edit();
-               //TODO remove trailing slash from a URL
-               editor.putString("URL", chefURL.getText().toString());
+               String ChefURL = "";
+               String PathSuffix = "";
+               if(OpenSourceChef.isChecked())
+               {
+               	ChefURL = chefURL.getText().toString();
+               	PathSuffix = "";
+               }
+               else
+               {
+               	ChefURL = "https://api.opscode.com";
+               	if(PathSuffix.contains("/organizations/"))
+               	{
+               		PathSuffix = chefURL.getText().toString();
+               	}
+               	else
+               	{
+               		PathSuffix = "/organizations/" + chefURL.getText().toString();
+               	}
+               }
+               
+               if(ChefURL.endsWith("/"))
+               	ChefURL = ChefURL.substring(0, ChefURL.length()-1);
+               
+               if(PathSuffix.endsWith("/"))
+               	PathSuffix = PathSuffix.substring(0, PathSuffix.length()-1);
+
+               editor.putString("URL", ChefURL);
+               editor.putString("Suffix", PathSuffix);
+               
+               editor.putBoolean("OpenSourceChef", OpenSourceChef.isChecked());
                
                //Name doesn't need any validation really
                editor.putString("ClientName", chefClientName.getText().toString());
