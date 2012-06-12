@@ -196,32 +196,39 @@ public class ViewRoles_Fragment extends CyllellFragment
     	{  
     		public void run() 
     		{
-    			try 
+    			if(listOfRoles.size() > 0)
     			{
-    				handler.sendEmptyMessage(200);
-    				Roles = Cut.GetRoles();
-					handler.sendEmptyMessage(201);
-
-					JSONArray Keys = Roles.names();
-					
-					for(int i = 0; i < Keys.length(); i++)
-					{
-				        listOfRoles.add(new Role(Keys.getString(i), Roles.getString(Keys.getString(i)).replaceFirst("^(https://|http://).*/roles/", "")));
-				    }
-
-					
-					handler.sendEmptyMessage(202);
-					handler.sendEmptyMessage(0);
-				} 
-    			catch (Exception e)
+    				handler.sendEmptyMessage(0);
+    			}
+    			else
     			{
-    				Message msg = new Message();
-    				Bundle data = new Bundle();
-    				data.putString("exception", e.getMessage());
-    				msg.setData(data);
-    				msg.what = 1;
-    				handler.sendMessage(msg);
-				}
+	    			try 
+	    			{
+	    				handler.sendEmptyMessage(200);
+	    				Roles = Cut.GetRoles();
+						handler.sendEmptyMessage(201);
+	
+						JSONArray Keys = Roles.names();
+						
+						for(int i = 0; i < Keys.length(); i++)
+						{
+					        listOfRoles.add(new Role(Keys.getString(i), Roles.getString(Keys.getString(i)).replaceFirst("^(https://|http://).*/roles/", "")));
+					    }
+	
+						
+						handler.sendEmptyMessage(202);
+						handler.sendEmptyMessage(0);
+					} 
+	    			catch (Exception e)
+	    			{
+	    				Message msg = new Message();
+	    				Bundle data = new Bundle();
+	    				data.putString("exception", e.getMessage());
+	    				msg.setData(data);
+	    				msg.what = 1;
+	    				handler.sendMessage(msg);
+					}	
+    			}
     			return;
     		}
     	};

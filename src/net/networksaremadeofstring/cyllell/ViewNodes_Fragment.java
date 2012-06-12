@@ -189,30 +189,37 @@ public class ViewNodes_Fragment extends CyllellFragment
     	{  
     		public void run() 
     		{
-    			try 
+    			if(listOfNodes.size() > 0)
     			{
-    				handler.sendEmptyMessage(200);
-					Nodes = Cut.GetNodes();
-					handler.sendEmptyMessage(201);
-					JSONArray Keys = Nodes.names();
-					for(int i = 0; i < Nodes.length(); i++)
-					{
-						String URI = Nodes.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/nodes/", "");
-						//Log.i("URI", URI);
-						listOfNodes.add(new Node(Keys.get(i).toString(), URI));
+    				handler.sendEmptyMessage(0);
+    			}
+    			else
+    			{
+	    			try 
+	    			{
+	    				handler.sendEmptyMessage(200);
+						Nodes = Cut.GetNodes();
+						handler.sendEmptyMessage(201);
+						JSONArray Keys = Nodes.names();
+						for(int i = 0; i < Nodes.length(); i++)
+						{
+							String URI = Nodes.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/nodes/", "");
+							//Log.i("URI", URI);
+							listOfNodes.add(new Node(Keys.get(i).toString(), URI));
+						}
+						handler.sendEmptyMessage(202);
+						handler.sendEmptyMessage(0);
+					} 
+	    			catch (Exception e)
+	    			{
+	    				Message msg = new Message();
+	    				Bundle data = new Bundle();
+	    				data.putString("exception", e.getMessage());
+	    				msg.setData(data);
+	    				msg.what = 1;
+	    				handler.sendMessage(msg);
 					}
-					handler.sendEmptyMessage(202);
-					handler.sendEmptyMessage(0);
-				} 
-    			catch (Exception e)
-    			{
-    				Message msg = new Message();
-    				Bundle data = new Bundle();
-    				data.putString("exception", e.getMessage());
-    				msg.setData(data);
-    				msg.what = 1;
-    				handler.sendMessage(msg);
-				}
+    			}
     			
     			return;
     		}

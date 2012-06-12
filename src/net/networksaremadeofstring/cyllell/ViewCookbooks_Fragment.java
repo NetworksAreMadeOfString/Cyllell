@@ -194,44 +194,51 @@ public class ViewCookbooks_Fragment extends CyllellFragment
     	{  
     		public void run() 
     		{
-    			try 
+    			if(listOfCookbooks.size() > 0)
     			{
-    				handler.sendEmptyMessage(200);
-    				Cookbooks = Cut.GetCookbooks();
-					handler.sendEmptyMessage(201);
-					JSONArray Keys = Cookbooks.names();
-					String URI = "";
-					String Version = "0.0.0";
-					JSONObject cookbook;
-					for(int i = 0; i < Cookbooks.length(); i++)
-					{
-						cookbook = new JSONObject(Cookbooks.getString(Keys.get(i).toString()));
-						//URI = Cookbooks.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/cookbooks/", "");
-						//Version = Cookbooks.getString(Keys.get(i).toString())
-						//Log.i("Cookbook Name", Keys.get(i).toString());
-						URI = cookbook.getString("url").replaceFirst("^(https://|http://).*/cookbooks/", "");
-						//Log.i("Cookbook URL", URI);
+    				handler.sendEmptyMessage(0);
+    			}
+    			else
+    			{
+	    			try 
+	    			{
+	    				handler.sendEmptyMessage(200);
+	    				Cookbooks = Cut.GetCookbooks();
+						handler.sendEmptyMessage(201);
+						JSONArray Keys = Cookbooks.names();
+						String URI = "";
+						String Version = "0.0.0";
+						JSONObject cookbook;
+						for(int i = 0; i < Cookbooks.length(); i++)
+						{
+							cookbook = new JSONObject(Cookbooks.getString(Keys.get(i).toString()));
+							//URI = Cookbooks.getString(Keys.get(i).toString()).replaceFirst("^(https://|http://).*/cookbooks/", "");
+							//Version = Cookbooks.getString(Keys.get(i).toString())
+							//Log.i("Cookbook Name", Keys.get(i).toString());
+							URI = cookbook.getString("url").replaceFirst("^(https://|http://).*/cookbooks/", "");
+							//Log.i("Cookbook URL", URI);
+							
+							JSONArray versions = cookbook.getJSONArray("versions");
+							
+							Version = versions.getJSONObject(versions.length() -1).getString("version");
+							//Log.i("Cookbook version", Version);
+							
+							listOfCookbooks.add(new Cookbook(Keys.get(i).toString(), URI, Version));
+						}
 						
-						JSONArray versions = cookbook.getJSONArray("versions");
-						
-						Version = versions.getJSONObject(versions.length() -1).getString("version");
-						//Log.i("Cookbook version", Version);
-						
-						listOfCookbooks.add(new Cookbook(Keys.get(i).toString(), URI, Version));
+						handler.sendEmptyMessage(202);
+						handler.sendEmptyMessage(0);
+					} 
+	    			catch (Exception e)
+	    			{
+	    				Message msg = new Message();
+	    				Bundle data = new Bundle();
+	    				data.putString("exception", e.getMessage());
+	    				msg.setData(data);
+	    				msg.what = 1;
+	    				handler.sendMessage(msg);
 					}
-					
-					handler.sendEmptyMessage(202);
-					handler.sendEmptyMessage(0);
-				} 
-    			catch (Exception e)
-    			{
-    				Message msg = new Message();
-    				Bundle data = new Bundle();
-    				data.putString("exception", e.getMessage());
-    				msg.setData(data);
-    				msg.what = 1;
-    				handler.sendMessage(msg);
-				}
+    			}
     			return;
     		}
     	};

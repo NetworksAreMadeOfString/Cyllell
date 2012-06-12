@@ -189,32 +189,39 @@ public class ViewEnvironments_Fragment extends CyllellFragment
     	{  
     		public void run() 
     		{
-    			try 
+    			if(listOfEnvironments.size() > 0)
     			{
-    				handler.sendEmptyMessage(200);
-    				Environments = Cut.GetEnvironments();
-					handler.sendEmptyMessage(201);
-
-					JSONArray Keys = Environments.names();
-					
-					for(int i = 0; i < Keys.length(); i++)
-					{
-				        listOfEnvironments.add(new Environment(Keys.getString(i), Environments.getString(Keys.getString(i)).replaceFirst("^(https://|http://).*/environments/", "")));
-				    }
-
-					
-					handler.sendEmptyMessage(202);
-					handler.sendEmptyMessage(0);
-				} 
-    			catch (Exception e)
+    				handler.sendEmptyMessage(0);
+    			}
+    			else
     			{
-    				Message msg = new Message();
-    				Bundle data = new Bundle();
-    				data.putString("exception", e.getMessage());
-    				msg.setData(data);
-    				msg.what = 1;
-    				handler.sendMessage(msg);
-				}
+	    			try 
+	    			{
+	    				handler.sendEmptyMessage(200);
+	    				Environments = Cut.GetEnvironments();
+						handler.sendEmptyMessage(201);
+	
+						JSONArray Keys = Environments.names();
+						
+						for(int i = 0; i < Keys.length(); i++)
+						{
+					        listOfEnvironments.add(new Environment(Keys.getString(i), Environments.getString(Keys.getString(i)).replaceFirst("^(https://|http://).*/environments/", "")));
+					    }
+	
+						
+						handler.sendEmptyMessage(202);
+						handler.sendEmptyMessage(0);
+					} 
+	    			catch (Exception e)
+	    			{
+	    				Message msg = new Message();
+	    				Bundle data = new Bundle();
+	    				data.putString("exception", e.getMessage());
+	    				msg.setData(data);
+	    				msg.what = 1;
+	    				handler.sendMessage(msg);
+					}
+    			}
     			return;
     		}
     	};
