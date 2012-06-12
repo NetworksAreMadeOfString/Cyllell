@@ -13,12 +13,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainLanding extends FragmentActivity
 {
@@ -37,7 +38,7 @@ public class MainLanding extends FragmentActivity
         if(isTabletDevice())
         {
         	setContentView(R.layout.main);
-        	
+        	((ImageView)findViewById(R.id.SettingsImageView)).setVisibility(8);
         	FragmentTransaction fragmentTransaction = fm.beginTransaction();
         	Fragment fragment = new TabletWelcome();
             fragmentTransaction.replace(R.id.MainFragment, fragment);
@@ -236,5 +237,33 @@ public class MainLanding extends FragmentActivity
         }
         return false;
     }
+    
+    public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		if(isTabletDevice())
+		{
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.tablet_menu, menu);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.menu_settings:
+			{
+				Intent ViewSettingsIntent = new Intent(MainLanding.this, ViewSettings.class);
+	             MainLanding.this.startActivity(ViewSettingsIntent);
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
