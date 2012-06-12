@@ -135,14 +135,14 @@ public class SettingsLanding extends Activity
                 else
                 {
                 	ChefURL = "https://api.opscode.com";
-                	if(PathSuffix.contains("/organizations/"))
-                	{
-                		PathSuffix = chefURL.getText().toString();
-                	}
-                	else
-                	{
-                		PathSuffix = "/organizations/" + chefURL.getText().toString();
-                	}
+                   	if(chefURL.getText().toString().contains("/organizations/"))
+                   	{
+                   		PathSuffix = chefURL.getText().toString();
+                   	}
+                   	else
+                   	{
+                   		PathSuffix = "/organizations/" + chefURL.getText().toString();
+                   	}
                 }
                 
                 if(ChefURL.endsWith("/"))

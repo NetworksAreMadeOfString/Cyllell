@@ -212,7 +212,7 @@ public class MainLanding extends FragmentActivity
         //See if this is the first time the app has run so we can give the user an intro
         if(settings.getBoolean("FirstRun", true) == true)
         {
-        	Toast.makeText(MainLanding.this, "Blah blah", Toast.LENGTH_LONG).show();
+        	//Toast.makeText(MainLanding.this, "Blah blah", Toast.LENGTH_LONG).show();
         }
     }
     

@@ -127,7 +127,7 @@ public class ViewSettings extends Activity
                else
                {
                	ChefURL = "https://api.opscode.com";
-               	if(PathSuffix.contains("/organizations/"))
+               	if(chefURL.getText().toString().contains("/organizations/"))
                	{
                		PathSuffix = chefURL.getText().toString();
                	}

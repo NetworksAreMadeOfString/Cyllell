@@ -105,12 +105,12 @@ public class Cuts
         //Check whether people are self signing or not
         if(settings.getBoolean("SelfSigned", true))
         {
-        	Log.i("SelfSigned","Allowing Self Signed Certificates");
+        	//Log.i("SelfSigned","Allowing Self Signed Certificates");
 			socketFactory = TrustAllSSLSocketFactory.getDefault();
         }
         else
         {
-        	Log.i("SelfSigned","Enforcing Certificate checks");
+        	//Log.i("SelfSigned","Enforcing Certificate checks");
         	socketFactory = SSLSocketFactory.getSocketFactory();
         }
         registry.register(new Scheme("https", socketFactory, 443));
@@ -282,25 +282,7 @@ public class Cuts
     		Log.i("Headers",Headers.get(i).getName()+":"+Headers.get(i).getValue());
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
-        
-    	//DEBUG ---------------------------------------------------------------
-    	/*HttpResponse response = httpClient.execute(this.httpget);
-        BufferedReader in = new BufferedReader
-        (new InputStreamReader(response.getEntity().getContent()));
-        StringBuffer sb = new StringBuffer("");
-        String line = "";
-        String NL = System.getProperty("line.separator");
-        while ((line = in.readLine()) != null) {
-            sb.append(line + NL);
-        }
-        in.close();
-        String page = sb.toString();
-        System.out.println(page);
-      
-        JSONObject json = new JSONObject(page);*/
-        //DEBUG ---------------------------------------------------------------
-        
-        
+          
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
     
     	JSONObject json = new JSONObject(jsonTempString);
