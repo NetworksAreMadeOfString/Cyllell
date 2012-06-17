@@ -58,6 +58,7 @@ public class ViewNodes_Fragment extends CyllellFragment
     {
 		Log.e("onActivityCreated","Called");
     	super.onCreate(savedInstanceState);
+    	setRetainInstance(true);
 		if(!isTabletDevice())
 		{
 			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
@@ -79,7 +80,10 @@ public class ViewNodes_Fragment extends CyllellFragment
         dialog.setTitle("Contacting Chef");
         dialog.setMessage("Please wait: Prepping Authentication protocols");       
         dialog.setIndeterminate(true);
-        dialog.show();
+        if(listOfNodes.size() < 1)
+        {
+        	dialog.show();
+        }
         
         updateListNotify = new Handler() 
     	{
@@ -131,7 +135,7 @@ public class ViewNodes_Fragment extends CyllellFragment
 						}
 					};
 					
-    				NodeAdapter = new NodeListAdaptor(getActivity().getBaseContext(), listOfNodes,listener);
+    				NodeAdapter = new NodeListAdaptor(getActivity(), listOfNodes,listener);
     				list = (ListView) getActivity().findViewById(R.id.nodesListView);
     				if(list != null)
     				{

@@ -1,4 +1,6 @@
 <resources>
+<style name="Theme" parent="Theme.Sherlock.Light"></style>
+
 <color name="codeops_background_light">#f4f2e6</color>
 <color name="codeops_background_darker">#d7d4c3</color>
 <color name="codeops_background_dark">#333333</color>
@@ -13,14 +15,14 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
     
-<style name="codeops_default" parent="android:Theme.Light">
+<style name="codeops_default" parent="Theme.Sherlock.Light">
     <item name="android:windowBackground">@color/codeops_background_light</item>
     <item name="android:colorBackground">@color/codeops_background_light</item>
     <item name="android:textColor">@color/codeops_normal_text</item>
     <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar</item>
 </style>
 
-<style name="codeops_dark" parent="android:Theme.Light">
+<style name="codeops_dark" parent="Theme.Sherlock.Light">
     <item name="android:windowBackground">@color/codeops_background_dark</item>
     <item name="android:colorBackground">@color/codeops_background_dark</item>
     <item name="android:textColor">@color/codeops_normal_text_onDark</item>
@@ -28,21 +30,36 @@
 </style>
 
 
-<style name="codeops_titlebar_tablet" parent="android:Theme.Holo">
+<style name="codeops_titlebar_tablet" parent="Theme.Sherlock">
         <item name="android:background">@color/codeops_background_dark</item>
         <item name="android:textColor">#FFFFFF</item>
 </style>
 
-<style name="codeops_default_tablet" parent="android:Theme.Holo.Light">
+<style name="codeops_default_tablet" parent="Theme.Sherlock.Light.DarkActionBar">
     <item name="android:windowBackground">@color/codeops_background_dark</item>
     <item name="android:colorBackground">@color/codeops_background_dark</item>
     <item name="android:textColor">@color/codeops_normal_text</item>
     <item name="android:windowTitleBackgroundStyle">@style/codeops_titlebar_tablet</item>
+    
     <item name="android:actionBarStyle">@style/codeops.ActionBarStyle</item> 
+    <item name="actionBarStyle">@style/codeops.ActionBarStyle</item> 
+    
+    <item name="android:actionBarTabStyle">@style/codeops_ActionBarTabStyle</item>
+    <item name="actionBarTabStyle">@style/codeops_ActionBarTabStyle</item>
 </style>
 
-<style name="codeops.ActionBarStyle" parent="android:style/Widget.Holo.ActionBar">
+<style name="codeops.ActionBarStyle" parent="Widget.Sherlock.ActionBar">
 <item name="android:titleTextStyle">@style/codeops.ActionBar.TitleTextStyle</item>
+<item name="titleTextStyle">@style/codeops.ActionBar.TitleTextStyle</item>
+<item name="android:background">@drawable/ad_tab_unselected_holo</item>
+<item name="background">@drawable/ad_tab_unselected_holo</item>
+</style>
+
+<style name="codeops_ActionBarTabStyle">
+    <item name="background">@drawable/actionbar_tab_bg</item>
+<item name="android:background">@drawable/actionbar_tab_bg</item>
+<item name="android:paddingLeft">32dp</item>
+<item name="android:paddingRight">32dp</item>
 </style>
 
 <style name="codeops.ActionBar.TitleTextStyle" parent="android:style/TextAppearance">
@@ -58,7 +75,7 @@
 	<item name="android:windowNoTitle">false</item>
 </style>
 
-<style name="codeops_title" parent="android:Theme.Light">
+<style name="codeops_title" parent="Theme.Sherlock.Light">
 	<item name="android:textColor">@color/codeops_title_text</item>
 </style>
 </resources>

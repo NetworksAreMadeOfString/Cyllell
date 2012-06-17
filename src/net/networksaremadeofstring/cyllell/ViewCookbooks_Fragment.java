@@ -60,6 +60,7 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	Thread GetFullDetails;
 	private SharedPreferences settings = null;
 	Boolean CutInProgress = false;
+	Handler handler;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -69,11 +70,14 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
 			
 		}
+		
+		Log.e("onActivityCreated","Called");
     }
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
+		Log.e("OnCreateView","Called");
 		list = (ListView) this.getActivity().findViewById(R.id.cookbooksListView);
 		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
         try 
@@ -89,7 +93,10 @@ public class ViewCookbooks_Fragment extends CyllellFragment
         dialog.setTitle("Contacting Chef");
         dialog.setMessage("Please wait: Prepping Authentication protocols");       
         dialog.setIndeterminate(true);
-        dialog.show();
+        if(listOfCookbooks.size() < 1)
+        {
+        	dialog.show();
+        }
         
         updateListNotify = new Handler() 
     	{
@@ -123,7 +130,7 @@ public class ViewCookbooks_Fragment extends CyllellFragment
     		}
     	};
         
-    	final Handler handler = new Handler() 
+    	handler = new Handler() 
     	{
     		public void handleMessage(Message msg) 
     		{	
@@ -136,9 +143,17 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 							GetMoreDetails((Integer)v.getTag());
 						}
 					};
-					
-    				CookbookAdapter = new CookbookListAdaptor(getActivity().getBaseContext(), listOfCookbooks,listener);
-    				list = (ListView) getView().findViewById(R.id.cookbooksListView);
+
+    				CookbookAdapter = new CookbookListAdaptor(getActivity(), listOfCookbooks,listener);
+    				try
+    				{
+    					list = (ListView) getView().findViewById(R.id.cookbooksListView);
+    				}
+    				catch(Exception e)
+    				{
+    					e.printStackTrace();
+    				}
+    				
     				if(list != null)
     				{
     					if(CookbookAdapter != null)

@@ -83,7 +83,10 @@ public class ViewEnvironments_Fragment extends CyllellFragment
         dialog.setTitle("Contacting Chef");
         dialog.setMessage("Please wait: Prepping Authentication protocols");       
         dialog.setIndeterminate(true);
-        dialog.show();
+        if(listOfEnvironments.size() < 1)
+        {
+        	dialog.show();
+        }
         
         updateListNotify = new Handler() 
     	{

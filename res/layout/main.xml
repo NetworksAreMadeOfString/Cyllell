@@ -1,19 +1,19 @@
+<RelativeLayout android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutMain" style="@style/codeops_default_tablet" android:layout_width="fill_parent">
+        
+        <FrameLayout
+            android:id="@+id/MainFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/codeops_background_light" >
 
-    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutMain" style="@style/codeops_default" android:background="@color/codeops_background_light">
-        <TextView android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_width="fill_parent" style="@style/codeops_titlebar" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/TitleBarText" android:text="Cyllell - Knife for Android"></TextView>
-        <ImageView android:src="@drawable/chef_logo_trans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:id="@+id/chefWaterMark"></ImageView>
-        <LinearLayout android:layout_height="wrap_content" android:layout_below="@+id/TitleBarText" android:layout_centerHorizontal="true" android:id="@+id/buttonGroup1" android:layout_width="fill_parent" android:layout_marginTop="48dp" android:gravity="center_vertical|center_horizontal">
-            <ImageView android:src="@drawable/nodes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:id="@+id/NodeImageView"></ImageView>
-            <ImageView android:src="@drawable/recipe" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:id="@+id/CookbookImageView"></ImageView>
-        </LinearLayout>
-        
-        <LinearLayout android:layout_height="wrap_content" android:layout_below="@+id/buttonGroup1" android:layout_centerHorizontal="true" android:id="@+id/buttonGroup2" android:layout_width="fill_parent" android:layout_marginTop="48dp" android:gravity="center_vertical|center_horizontal">
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:src="@drawable/role" android:id="@+id/RoleImageView"></ImageView>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:src="@drawable/environment" android:id="@+id/EnvironmentImageView"></ImageView>
-        </LinearLayout>
-        
-        <LinearLayout android:layout_height="wrap_content" android:layout_below="@+id/buttonGroup2" android:layout_centerHorizontal="true" android:id="@+id/buttonGroup3" android:layout_width="fill_parent" android:layout_marginTop="48dp" android:gravity="center_vertical|center_horizontal">
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:src="@drawable/settings" android:id="@+id/SettingsImageView"></ImageView>
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:src="@drawable/search" android:id="@+id/SearchImageView"></ImageView>
-        </LinearLayout>
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/chefWaterMark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chef_logo_trans" android:layout_alignParentBottom="true" android:layout_alignParentRight="true"/>
+
     </RelativeLayout>

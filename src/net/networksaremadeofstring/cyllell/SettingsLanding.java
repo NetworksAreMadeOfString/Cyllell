@@ -96,7 +96,7 @@ public class SettingsLanding extends Activity
 			public void onCheckedChanged(RadioGroup group, int checkedId) 
 			{
 				Log.i("RadioGroup",Integer.toString(checkedId));
-				if(checkedId == 2131296383)
+				if(checkedId == ((RadioButton) findViewById(R.id.HostedChefRadio)).getId())
 				{
 					((EditText) findViewById(R.id.chefServerURL)).setHint("/organizations/orgname");
 					((EditText) findViewById(R.id.chefServerURL)).setText("");

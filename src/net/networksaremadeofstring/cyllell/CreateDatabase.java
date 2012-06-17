@@ -153,8 +153,8 @@ public class CreateDatabase extends Activity
 	    	        	editor.putBoolean("DatabaseCreated", true);
 	    	        	editor.commit();
 	    				
-	    	    		Intent MainIntent = new Intent(CreateDatabase.this, MainLanding.class);
-	    	    		CreateDatabase.this.startActivity(MainIntent);
+	    	    		//Intent MainIntent = new Intent(CreateDatabase.this, MainLanding.class);
+	    	    		//CreateDatabase.this.startActivity(MainIntent);
 	    	    		finish();
 	    			}
 	    			break;

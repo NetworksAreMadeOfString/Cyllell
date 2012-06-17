@@ -9,6 +9,15 @@ import android.webkit.WebView;
 
 public class TabletWelcome extends Fragment
 {
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) 
+	{
+		//Log.e("onSaveInstanceState","Called from Generic Container");
+		savedInstanceState.putBoolean("fragmentSet", true);
+		((MainLanding) getActivity()).EnableTabs(false);
+	    super.onSaveInstanceState(savedInstanceState);
+	}
+	
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
         return inflater.inflate(R.layout.tablet_welcome, container, false);
@@ -18,5 +27,6 @@ public class TabletWelcome extends Fragment
     {
     	super.onCreate(savedInstanceState);
     	((WebView) getView().findViewById(R.id.webView1)).loadUrl("http://blog.networksaremadeofstring.co.uk/projects/cyllell/");
+    	((MainLanding) getActivity()).EnableTabs(true);
     }
 }

@@ -1,28 +1,19 @@
 <RelativeLayout android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutMain" style="@style/codeops_default_tablet" android:layout_width="fill_parent">
-        
-        <ImageView android:src="@drawable/chef_logo_trans" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:id="@+id/chefWaterMark"></ImageView>
-        
-        <RelativeLayout android:id="@+id/PrimaryMenu" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_height="fill_parent" android:background="@color/codeops_background_darker" android:layout_width="180dp">
-        	<View android:layout_alignParentRight="true" android:id="@+id/vertborder" android:background="@drawable/vert_border" android:layout_alignParentTop="true" android:layout_alignParentBottom="true" android:layout_height="fill_parent" android:layout_width="6px" android:translationX="2px"></View>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:id="@+id/NodesTab" android:layout_marginTop="2dp"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:id="@+id/NodeImageView" android:layout_width="wrap_content" android:src="@drawable/nodes" android:layout_alignParentRight="true" android:layout_marginRight="12dp" android:layout_marginTop="20dp" android:layout_alignTop="@+id/NodesTab"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_alignParentRight="true" android:layout_below="@+id/NodesTab" android:id="@+id/CookbookTab"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/recipe" android:layout_alignTop="@+id/CookbookTab" android:layout_alignParentRight="true" android:layout_marginRight="12dp" android:layout_marginTop="20dp" android:id="@+id/CookbookImageView"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_below="@+id/CookbookTab" android:layout_alignParentRight="true" android:id="@+id/RolesTab"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/role" android:layout_alignTop="@+id/RolesTab" android:layout_alignParentRight="true" android:id="@+id/RoleImageView" android:layout_marginRight="12dp" android:layout_marginTop="20dp"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_below="@+id/RolesTab" android:layout_alignParentRight="true" android:id="@+id/EnvironmentTab"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/environment" android:layout_alignTop="@+id/EnvironmentTab" android:layout_alignParentRight="true" android:layout_marginRight="12dp" android:layout_marginTop="20dp" android:id="@+id/EnvironmentImageView"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:src="@drawable/tablet_tab_inactive" android:layout_below="@+id/EnvironmentTab" android:layout_alignParentRight="true" android:id="@+id/SearchTab"></ImageView>
-            <ImageView android:layout_height="wrap_content" android:id="@+id/SearchImageView" android:layout_width="wrap_content" android:src="@drawable/search" android:layout_alignTop="@+id/SearchTab" android:layout_alignParentRight="true" android:layout_marginRight="12dp" android:layout_marginTop="20dp"></ImageView>
-            <ImageView android:id="@+id/SettingsImageView" android:src="@drawable/settings" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:layout_height="32px" android:layout_width="32px"></ImageView>
-        </RelativeLayout>
-        
-        <FrameLayout android:layout_alignParentTop="true" 
-        android:layout_height="fill_parent" 
-        android:layout_width="fill_parent" 
-        android:layout_alignParentRight="true" 
-        android:layout_toRightOf="@id/PrimaryMenu" 
-        android:id="@+id/MainFragment" android:background="@color/codeops_background_light">
+        
+        <FrameLayout
+            android:id="@+id/MainFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/codeops_background_light" >
+
         </FrameLayout>
+
+        <ImageView
+            android:id="@+id/chefWaterMark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chef_logo_trans" android:layout_alignParentBottom="true" android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
