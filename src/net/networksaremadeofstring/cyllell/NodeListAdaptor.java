@@ -21,6 +21,7 @@ package net.networksaremadeofstring.cyllell;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,11 +37,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class NodeListAdaptor extends BaseAdapter implements OnLongClickListener
+public class NodeListAdaptor extends BaseAdapter
 {
 	private Context context;
     private List<Node> listNodes;
     private OnClickListener listener;
+    private OnLongClickListener listenerLong;
     
     public NodeListAdaptor(Context context, List<Node> _listNodes) 
     {
@@ -53,6 +55,14 @@ public class NodeListAdaptor extends BaseAdapter implements OnLongClickListener
         this.context = context;
         this.listNodes = _listNodes;
         this.listener = _listener;
+    }
+    
+    public NodeListAdaptor(Context context, List<Node> _listNodes, OnClickListener _listener, OnLongClickListener _listenerLong) 
+    {
+        this.context = context;
+        this.listNodes = _listNodes;
+        this.listener = _listener;
+        this.listenerLong = _listenerLong;
     }
     
     @Override
@@ -113,6 +123,22 @@ public class NodeListAdaptor extends BaseAdapter implements OnLongClickListener
         TextView DeviceNameTextView = (TextView) convertView.findViewById(R.id.NodeName);
         DeviceNameTextView.setText(thisNode.GetName());
         //DeviceNameTextView.setTypeface(Typeface.createFromAsset(((ViewNodes)context).getAssets(), "fonts/codeops_serif.ttf"));
+        
+        if(thisNode.isSelected())
+        {
+        	((View) convertView.findViewById(R.id.selectedIndicator)).setBackgroundColor(Color.rgb(247, 104, 26));
+        	//((View) convertView.findViewById(R.id.selectedIndicator)).setVisibility(View.VISIBLE);
+        	
+        	Log.i("ID",Integer.toString(((View) convertView.findViewById(R.id.selectedIndicator)).getId()));
+        	Log.i("height",Integer.toString(((View) convertView.findViewById(R.id.selectedIndicator)).getHeight()));
+        	Log.i("width",Integer.toString(((View) convertView.findViewById(R.id.selectedIndicator)).getWidth()));
+        	Log.i("parent",((View) convertView.findViewById(R.id.selectedIndicator)).getParent().toString());
+        }
+        else
+        {
+        	((View) convertView.findViewById(R.id.selectedIndicator)).setBackgroundColor(Color.rgb(244,242,230));
+        	//((View) convertView.findViewById(R.id.selectedIndicator)).setVisibility(View.VISIBLE);
+        }
         
         if(this.getItemViewType(position) == 1)
         {
@@ -185,20 +211,15 @@ public class NodeListAdaptor extends BaseAdapter implements OnLongClickListener
         convertView.setTag(position);
         //Log.i("NodeListAdaptor","Setting Tag to " + Integer.toString(position));
         //convertView.setOnClickListener(this);
-        convertView.setOnLongClickListener(this);
+        convertView.setLongClickable(true);
+        convertView.setClickable(true);
+        
         if(listener != null)
         	convertView.setOnClickListener((OnClickListener) listener);
+
+        if(listenerLong != null)
+        	convertView.setOnLongClickListener((OnLongClickListener) listenerLong);
         
         return convertView;
 	}
-
-	public boolean onLongClick(View v) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*public void onClick(View v) 
-	{
-		//((ViewNodes)context).GetMoreDetails((Integer)v.getTag());
-	}*/
 }

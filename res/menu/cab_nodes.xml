@@ -1,0 +1,5 @@
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/EditRunList" android:title="Edit Run List" android:titleCondensed="Run List"></item>
+        <item android:id="@+id/EditEnv" android:title="Edit Environment" android:titleCondensed="Edit Env"></item>
+    </menu>

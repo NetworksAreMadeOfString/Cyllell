@@ -36,6 +36,7 @@ public class Node
 	//Being lazy
 	public HashMap<String,String> Details;
 	
+	private Boolean Selected = false;
 	
 	
 	public Node(String _Name, String _URI) 
@@ -44,6 +45,16 @@ public class Node
             this.Name = _Name;
             this.URI = _URI;
     }
+	
+	public void SetSelected(Boolean selected)
+	{
+		this.Selected = selected;
+	}
+	
+	public Boolean isSelected()
+	{
+		return this.Selected;
+	}
 	
 	public String GetName()
 	{

@@ -67,10 +67,10 @@ public class ViewRoles_Fragment extends CyllellFragment
 	public void onActivityCreated(Bundle savedInstanceState)
     {
     	super.onCreate(savedInstanceState);
-    	if(!isTabletDevice())
+    	/*if(!isTabletDevice())
         {
     		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-        }
+        }*/
     }
 	
 	@Override

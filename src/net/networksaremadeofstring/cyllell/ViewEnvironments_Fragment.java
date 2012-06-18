@@ -237,10 +237,10 @@ public class ViewEnvironments_Fragment extends CyllellFragment
     {
     	super.onCreate(savedInstanceState);
     	
-		if(!isTabletDevice())
+		/*if(!isTabletDevice())
         {
     		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-        }
+        }*/
     }
 	
 	public void GetMoreDetails(final int Tag)

@@ -1,5 +1,19 @@
-<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutNodeListItem">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutNodeListItem"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
         <TextView android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:layout_alignTop="@+id/nodeIcon" android:layout_alignParentLeft="true" android:id="@+id/NodeName" android:textStyle="bold" style="@style/codeops_title" android:layout_marginLeft="48dp" android:textSize="24dp" android:shadowRadius="2"></TextView>
-        <ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/MoreDetailsSpinner" android:indeterminate="true" android:paddingRight="8dp" android:visibility="invisible"></ProgressBar>
-        <ImageView android:layout_height="wrap_content" android:src="@drawable/error" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/WarningIcon" android:visibility="invisible"></ImageView>
+        <ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/MoreDetailsSpinner" android:indeterminate="true" android:paddingRight="8dp" android:visibility="invisible" android:layout_marginRight="3dp"></ProgressBar>
+        <ImageView android:layout_height="wrap_content" android:src="@drawable/error" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/WarningIcon" android:visibility="invisible" android:layout_marginRight="3dp"></ImageView>
+
+        <View
+            android:id="@+id/selectedIndicator"
+            android:layout_width="2dp"
+            android:layout_height="200dp"
+            android:layout_alignBottom="@+id/NodeName"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/codeops_title_text" />
+
     </RelativeLayout>

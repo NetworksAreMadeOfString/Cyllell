@@ -1,0 +1,4 @@
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/AddNode" android:title="Add Node" android:titleCondensed="Add" android:icon="@drawable/ab_add" android:showAsAction="ifRoom"></item>
+    </menu>

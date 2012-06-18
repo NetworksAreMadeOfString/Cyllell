@@ -1,7 +1,6 @@
 package net.networksaremadeofstring.cyllell;
 
 import java.lang.reflect.Method;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -9,13 +8,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.ImageView;
+import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -34,6 +33,8 @@ public class MainLanding extends SherlockFragmentActivity
 	Fragment viewSettings = null;
 	private Boolean enableTabListeners = false;
 	private Boolean fragmentSet = false;
+	ActionMode mActionMode;
+	
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) 
 	{
@@ -66,28 +67,20 @@ public class MainLanding extends SherlockFragmentActivity
         }
         
         fm = getSupportFragmentManager();
-        
-        if(isTabletDevice())
+        setContentView(R.layout.main);
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+    	Fragment fragment = new TabletWelcome();
+        fragmentTransaction.replace(R.id.MainFragment, fragment);
+        fragmentTransaction.commit();
+        ActionBar actionBar = getSupportActionBar();
+		actionBar.setTitle("");
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		AddTabs();
+		 
+        if(!isTabletDevice())
         {
-        	setContentView(R.layout.main);
-        	if(!fragmentSet)
-        	{
-	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
-	        	Fragment fragment = new TabletWelcome();
-	            fragmentTransaction.replace(R.id.MainFragment, fragment);
-	            fragmentTransaction.commit();
-        	}
-        }
-        else
-        {
-        	setContentView(R.layout.main);
-        	//((TextView)findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/codeops_serif.ttf"));
-        }
-	     
-		 ActionBar actionBar = getSupportActionBar();
-		 actionBar.setTitle("");
-		 actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		 AddTabs();
+        	actionBar.setTitle("Cyllell - Knife for Android");
+        } 
     }
     
     private boolean isTabletDevice() 
@@ -110,62 +103,22 @@ public class MainLanding extends SherlockFragmentActivity
         }
         return false;
     }
+  
     
-    /*public boolean onCreateOptionsMenu(Menu menu) 
-	{
-		if(isTabletDevice())
-		{
-			MenuInflater inflater = getMenuInflater();
-			inflater.inflate(R.menu.tablet_menu, menu);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}*/
-	
     private void AddTabs()
     {
     	ActionBar actionBar = getSupportActionBar();
-    	
-    	/*Tab HomeTab = actionBar.newTab().setTabListener(new TabListener(){
-
-			@Override
-			public void onTabSelected(Tab tab, FragmentTransaction ft) 
-			{
-				Fragment welcome = new TabletWelcome();		
-		        ft.replace(R.id.MainFragment, welcome);
-			}
-
-			@Override
-			public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onTabReselected(Tab tab, FragmentTransaction ft) 
-			{
-				Fragment welcome = new TabletWelcome();		
-		        ft.replace(R.id.MainFragment, welcome);
-			}});
-    	HomeTab.setIcon(R.drawable.ab_home);
-    	actionBar.addTab(HomeTab);*/
     	
     	Tab NodesTab = actionBar.newTab().setText("Nodes").setTabListener(new TabListener(){
 
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) 
 			{
-				//I don't start on the first tab
-				if(enableTabListeners)
-				{
-					if(viewNodes == null)
-						viewNodes = new ViewNodes_Fragment();
-					
-		        	ft.replace(R.id.MainFragment, viewNodes);
-		        	//ft.commit();
-				}
+				if(viewNodes == null)
+					viewNodes = new ViewNodes_Fragment();
+				
+				viewNodes.setHasOptionsMenu(true);
+	        	ft.replace(R.id.MainFragment, viewNodes);
 			}
 
 			@Override
@@ -177,6 +130,7 @@ public class MainLanding extends SherlockFragmentActivity
 			public void onTabReselected(Tab tab, FragmentTransaction ft) 
 			{
 				viewNodes = new ViewNodes_Fragment();
+				viewNodes.setHasOptionsMenu(true);
 	        	ft.replace(R.id.MainFragment, viewNodes);
 			}});
     	NodesTab.setIcon(R.drawable.ab_nodes);
@@ -339,6 +293,22 @@ public class MainLanding extends SherlockFragmentActivity
     	}
     }
     
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+    	Log.i("Menu","Showing");
+	    inflater.inflate(R.menu.tablet_menu, menu);
+	    return true;
+	}*/
+    
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu)
+    {
+    	MenuInflater inflater = getSupportMenuInflater();
+    	inflater.inflate(R.menu.tablet_menu, menu);
+    	return true;
+    }
+    
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		switch (item.getItemId())
@@ -357,152 +327,4 @@ public class MainLanding extends SherlockFragmentActivity
 	{
 		enableTabListeners = enable;
 	}
-	
-	private void EnableImageButtons()
-	{
-		/*((ImageView)findViewById(R.id.NodeImageView)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-            	((ActionBar) getSupportActionBar()).setTitle("View Nodes");
-            	if(isTabletDevice())
-                {
-            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab);
-            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		
-    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
-    	        	Fragment fragment = new ViewNodes_Fragment();
-    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
-    	            fragmentTransaction.commit();
-    	            
-    	            //((ActionBar) getSupportActionBar()).setTitle("View Nodes");
-                }
-                else
-                {
-                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
-                	GenericIntent.putExtra("fragment", "viewnodes");
-                	MainLanding.this.startActivity(GenericIntent);
-                }
-            }
-        });
-        
-        ((ImageView)findViewById(R.id.CookbookImageView)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-            	((ActionBar) getSupportActionBar()).setTitle("View Cookbooks");
-            	if(isTabletDevice())
-                {
-            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab);
-            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		
-    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
-    	        	Fragment fragment = new ViewCookbooks_Fragment();
-    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
-    	            fragmentTransaction.commit();
-    	            
-    	            //((ActionBar) getActionBar()).setTitle("View Cookbooks");
-                }
-                else
-                {
-                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
-                	GenericIntent.putExtra("fragment", "viewcookbooks");
-                	MainLanding.this.startActivity(GenericIntent);
-                }
-            }
-        });
-        
-        ((ImageView)findViewById(R.id.RoleImageView)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-            	if(isTabletDevice())
-                {
-            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab);
-            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		
-    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
-    	        	Fragment fragment = new ViewRoles_Fragment();
-    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
-    	            fragmentTransaction.commit();
-    	            
-    	            ((ActionBar) getSupportActionBar()).setTitle("View Roles");
-                }
-                else
-                {
-                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
-                	GenericIntent.putExtra("fragment", "viewroles");
-                	MainLanding.this.startActivity(GenericIntent);
-                }
-            }
-        });
-        
-        ((ImageView)findViewById(R.id.EnvironmentImageView)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-            	if(isTabletDevice())
-                {
-            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab);
-            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		
-    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
-    	        	Fragment fragment = new ViewEnvironments_Fragment();
-    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
-    	            fragmentTransaction.commit();
-    	            
-    	            ((ActionBar) getSupportActionBar()).setTitle("View Environments");
-                }
-                else
-                {
-                	Intent GenericIntent = new Intent(MainLanding.this, Generic_Container.class);
-                	GenericIntent.putExtra("fragment", "viewenvironments");
-                	MainLanding.this.startActivity(GenericIntent);
-                }
-            }
-        });
-        
-        ((ImageView)findViewById(R.id.SettingsImageView)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-	             Intent ViewSettingsIntent = new Intent(MainLanding.this, ViewSettings.class);
-	             MainLanding.this.startActivity(ViewSettingsIntent);
-            }
-        });
-        
-        ((ImageView)findViewById(R.id.SearchImageView)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-            	if(isTabletDevice())
-                {
-            		((ImageView) findViewById(R.id.NodesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.CookbookTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.RolesTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.EnvironmentTab)).setImageResource(R.drawable.tablet_tab_inactive);
-            		((ImageView) findViewById(R.id.SearchTab)).setImageResource(R.drawable.tablet_tab);
-            		
-    	        	FragmentTransaction fragmentTransaction = fm.beginTransaction();
-    	        	Fragment fragment = new Search_Fragment();
-    	            fragmentTransaction.replace(R.id.MainFragment, fragment);
-    	            fragmentTransaction.commit();
-    	            
-    	            ((ActionBar) getSupportActionBar()).setTitle("Chef Search");
-                }
-                else
-                {
-                	Intent SearchIntent = new Intent(MainLanding.this, Search.class);
-   	             	MainLanding.this.startActivity(SearchIntent);
-                }
-            }
-        });*/
-	}
-
 }

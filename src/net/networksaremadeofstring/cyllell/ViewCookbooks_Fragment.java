@@ -65,13 +65,11 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	public void onActivityCreated(Bundle savedInstanceState)
     {
     	super.onCreate(savedInstanceState);
-		if(!isTabletDevice())
+		/*if(!isTabletDevice())
 		{
 			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
 			
-		}
-		
-		Log.e("onActivityCreated","Called");
+		}*/
     }
 	
 	@Override

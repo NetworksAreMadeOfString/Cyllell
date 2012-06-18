@@ -2,10 +2,11 @@ package net.networksaremadeofstring.cyllell;
 
 import java.lang.reflect.Method;
 
-import android.content.res.Configuration;
-import android.support.v4.app.Fragment;
+import com.actionbarsherlock.app.SherlockFragment;
 
-public class CyllellFragment extends Fragment
+import android.content.res.Configuration;
+
+public class CyllellFragment extends SherlockFragment
 {
 
 	protected boolean isTabletDevice() 

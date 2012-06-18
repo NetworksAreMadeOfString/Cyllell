@@ -10,7 +10,12 @@
             <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:id="@+id/RAMStats" android:layout_marginLeft="2dp" android:text="0Kb Free / " android:textColor="@color/codeops_normal_text"></TextView>
         </LinearLayout>
         <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:text="TextView" android:layout_below="@+id/CPURAMLinearLayoutContainer" android:layout_alignLeft="@+id/Uptime" android:id="@+id/RunList" android:layout_marginRight="2dp" android:textSize="8dp" android:layout_width="fill_parent" android:gravity="center_horizontal" android:textColor="@color/codeops_normal_text"></TextView>
-        <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:id="@+id/OSImage" android:src="@drawable/linux"></ImageView>
-        <TextView android:id="@+id/Platform" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:layout_below="@+id/OSImage" android:layout_alignParentRight="true" android:textColor="@color/codeops_normal_text"></TextView>
-        <ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/MoreDetailsSpinner" android:indeterminate="true" android:paddingRight="8dp" android:visibility="invisible"></ProgressBar>
+        <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:id="@+id/OSImage" android:src="@drawable/linux" android:layout_marginRight="3dp"></ImageView>
+        <TextView android:id="@+id/Platform" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:layout_below="@+id/OSImage" android:layout_alignParentRight="true" android:textColor="@color/codeops_normal_text" android:layout_marginRight="3dp"></TextView>
+        <ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/MoreDetailsSpinner" android:indeterminate="true" android:paddingRight="8dp" android:visibility="invisible" android:layout_marginRight="3dp"></ProgressBar>
+        <View
+            android:id="@+id/selectedIndicator"
+            android:layout_width="2dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true" android:layout_alignParentTop="true" android:background="@color/codeops_title_text"/>
     </RelativeLayout>

@@ -7,13 +7,10 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,12 +18,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class ViewNodes_Fragment extends CyllellFragment
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.ActionMode.Callback;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+
+
+public class ViewNodes_Fragment extends SherlockFragment
 {
 	Cuts Cut = null;
 	JSONObject Nodes = null;
@@ -43,29 +49,22 @@ public class ViewNodes_Fragment extends CyllellFragment
 	Boolean Paused = false;
 	Thread dataPreload;
 	String instanceTime = "";
-	
-	public void OnPause()
-	{
-		Log.e("OnPause","Pasuing");
-	}
-	
-	public void OnResume()
-	{
-		Log.e("OnPause","Resuming");
-	}
+	int selectedNode = 0;
+	ActionMode mActionMode;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
 		Log.e("onActivityCreated","Called");
     	super.onCreate(savedInstanceState);
     	setRetainInstance(true);
-		if(!isTabletDevice())
+		/*if(!isTabletDevice())
 		{
 			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
 			
-		}
+		}*/
 		
 		list = (ListView) this.getActivity().findViewById(R.id.nodesListView);
+		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
         try 
         {
@@ -135,7 +134,16 @@ public class ViewNodes_Fragment extends CyllellFragment
 						}
 					};
 					
-    				NodeAdapter = new NodeListAdaptor(getActivity(), listOfNodes,listener);
+					OnLongClickListener listenerLong = new OnLongClickListener()
+    				{
+						public boolean onLongClick(View v) 
+						{
+							selectForCAB((Integer)v.getTag());
+							return true;
+						}
+					};
+					
+    				NodeAdapter = new NodeListAdaptor(getActivity(), listOfNodes,listener,listenerLong);
     				list = (ListView) getActivity().findViewById(R.id.nodesListView);
     				if(list != null)
     				{
@@ -280,4 +288,79 @@ public class ViewNodes_Fragment extends CyllellFragment
     	
     	GetFullDetails.start();
     }
+	
+	//Doing extra menus on a per mode basis with CAB
+	/*public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.nodes, menu);
+    }
+	    
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.AddNode:
+			{
+				Toast.makeText(getActivity(), "Bootstrapping a node from a tablet would be a tad dangerous...", Toast.LENGTH_LONG).show();
+				return true;
+			}
+		}
+		return false;
+	}*/
+	
+	public void selectForCAB(int id)
+	{
+    	mActionMode = getActivity().startActionMode(mActionModeCallback);
+    	selectedNode = id;
+    	listOfNodes.get(selectedNode).SetSelected(true);
+    	NodeAdapter.notifyDataSetChanged();
+	}
+	
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() 
+	{
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.cab_nodes, menu);
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) 
+        {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
+        {
+            switch (item.getItemId()) 
+            {
+		        default:
+		        	listOfNodes.get(selectedNode).SetSelected(false);
+		        	selectedNode = 0;
+		        	NodeAdapter.notifyDataSetChanged();
+		            return false;
+			}
+        }
+			
+			// Called when the user exits the action mode
+			@Override
+			public void onDestroyActionMode(ActionMode mode) 
+			{
+				listOfNodes.get(selectedNode).SetSelected(false);
+				selectedNode = 0;
+			    mActionMode = null;
+			    NodeAdapter.notifyDataSetChanged();
+			}
+		};
+		
+
 }
