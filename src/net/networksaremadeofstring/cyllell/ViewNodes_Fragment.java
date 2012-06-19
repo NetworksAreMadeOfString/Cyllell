@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.ActionMode.Callback;
 import com.actionbarsherlock.view.Menu;
@@ -50,7 +51,7 @@ public class ViewNodes_Fragment extends SherlockFragment
 	Thread dataPreload;
 	String instanceTime = "";
 	int selectedNode = 0;
-	ActionMode mActionMode;
+	com.actionbarsherlock.view.ActionMode.Callback mActionMode;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -311,13 +312,13 @@ public class ViewNodes_Fragment extends SherlockFragment
 	
 	public void selectForCAB(int id)
 	{
-    	mActionMode = getActivity().startActionMode(mActionModeCallback);
+    	mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
     	selectedNode = id;
     	listOfNodes.get(selectedNode).SetSelected(true);
     	NodeAdapter.notifyDataSetChanged();
 	}
 	
-	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() 
+	public ActionMode.Callback mActionModeCallback = new ActionMode.Callback() 
 	{
 
         // Called when the action mode is created; startActionMode() was called
@@ -361,6 +362,30 @@ public class ViewNodes_Fragment extends SherlockFragment
 			    NodeAdapter.notifyDataSetChanged();
 			}
 		};
+	/*private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) 
+        {
+            menu.add("Save").setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            Toast.makeText(getActivity().getBaseContext(), "Got click: " + item, Toast.LENGTH_SHORT).show();
+            mode.finish();
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+        }
+    }*/
 		
 
 }
