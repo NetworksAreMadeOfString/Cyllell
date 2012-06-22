@@ -9,6 +9,7 @@
 <color name="codeops_text_shadow">#767676</color>
 <color name="codeops_normal_text">#767676</color>
 <color name="codeops_normal_text_onDark">#EFECDD</color>
+<color name="codeops_white">#FFFFFF</color>
 
 <style name="codeops_titlebar">
         <item name="android:background">@color/codeops_background_dark</item>
@@ -46,6 +47,9 @@
     
     <item name="android:actionBarTabStyle">@style/codeops_ActionBarTabStyle</item>
     <item name="actionBarTabStyle">@style/codeops_ActionBarTabStyle</item>
+    
+    <item name="android:actionModeStyle">@style/codeops_actionmodeStyle</item>
+    <item name="actionModeStyle">@style/codeops_actionmodeStyle</item>
 </style>
 
 <style name="codeops.ActionBarStyle" parent="Widget.Sherlock.ActionBar">
@@ -55,6 +59,18 @@
 <item name="background">@drawable/ad_tab_unselected_holo</item>
 </style>
 
+<style name="codeops_actionmodeStyle" parent="Widget.Sherlock.ActionMode">
+    <item name="android:background">@drawable/ad_tab_unselected_holo</item>
+	<item name="background">@drawable/ad_tab_unselected_holo</item>
+	
+	<item name="android:titleTextStyle">@style/codeops.ActionBar.TitleTextStyle</item>
+    <item name="titleTextStyle">@style/codeops.ActionBar.TitleTextStyle</item>
+    
+    <item name="android:subtitleTextStyle">@style/codeops.ActionBar.TitleTextStyle</item>
+    <item name="subtitleTextStyle">@style/codeops.ActionBar.TitleTextStyle</item>
+</style>
+
+
 <style name="codeops_ActionBarTabStyle">
     <item name="background">@drawable/actionbar_tab_bg</item>
 <item name="android:background">@drawable/actionbar_tab_bg</item>
@@ -63,7 +79,7 @@
 </style>
 
 <style name="codeops.ActionBar.TitleTextStyle" parent="android:style/TextAppearance">
-<item name="android:textColor">@color/codeops_normal_text_onDark</item>
+<item name="android:textColor">@color/codeops_white</item>
 </style>
 
 
