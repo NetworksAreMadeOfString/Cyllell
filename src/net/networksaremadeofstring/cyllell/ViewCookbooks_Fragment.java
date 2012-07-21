@@ -40,6 +40,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -142,7 +143,17 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 						}
 					};
 
-    				CookbookAdapter = new CookbookListAdaptor(getActivity(), listOfCookbooks,listener);
+					OnLongClickListener listenerLong = new OnLongClickListener()
+    				{
+						public boolean onLongClick(View v) 
+						{
+							//selectForCAB((Integer)v.getTag());
+							Toast.makeText(getActivity(), "This version doesn't support Cookbook editing yet", Toast.LENGTH_SHORT).show();
+							return true;
+						}
+					};
+					
+    				CookbookAdapter = new CookbookListAdaptor(getActivity(), listOfCookbooks,listener,listenerLong);
     				try
     				{
     					list = (ListView) getView().findViewById(R.id.cookbooksListView);

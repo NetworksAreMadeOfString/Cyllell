@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,10 +66,20 @@ public class ViewNodes_Fragment extends SherlockFragment
 			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
 			
 		}*/
-		
+    	
+    	settings = this.getActivity().getSharedPreferences("Cyllell", 0);
+    	
+    	if(settings.getBoolean("NodesFirstView", true) == true)
+        {
+        	Toast.makeText(getActivity(),"Perform a short press to see OHAI info or perform a long press to edit nodes.", Toast.LENGTH_LONG).show();
+        	SharedPreferences.Editor editor = settings.edit();
+        	editor.putBoolean("NodesFirstView", false);
+        	editor.commit();
+        }
+    	
 		list = (ListView) this.getActivity().findViewById(R.id.nodesListView);
 		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
+		
         try 
         {
 			Cut = new Cuts(this.getActivity());
@@ -342,8 +353,8 @@ public class ViewNodes_Fragment extends SherlockFragment
 	
 	public void selectForCAB(int id)
 	{
+		selectedNode = id;
     	mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
-    	selectedNode = id;
     	listOfNodes.get(selectedNode).SetSelected(true);
     	NodeAdapter.notifyDataSetChanged();
 	}

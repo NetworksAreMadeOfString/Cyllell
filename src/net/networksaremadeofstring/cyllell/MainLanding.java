@@ -174,7 +174,9 @@ public class MainLanding extends SherlockFragmentActivity
 			public void onTabSelected(Tab tab, FragmentTransaction ft) 
 			{
 				if(viewRoles == null)
+				{
 					viewRoles = new ViewRoles_Fragment();
+				}
 				
 	        	ft.replace(R.id.MainFragment, viewRoles);
 			}
@@ -324,5 +326,11 @@ public class MainLanding extends SherlockFragmentActivity
 	public void EnableTabs(Boolean enable)
 	{
 		enableTabListeners = enable;
+	}
+	
+	@Override
+	public void onDestroy()
+	{
+		cacheDB.close();
 	}
 }

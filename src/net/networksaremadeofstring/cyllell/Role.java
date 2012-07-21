@@ -8,6 +8,7 @@ public class Role
 	private String Version;
 	private Boolean SpinnerVisible = false;
 	private Boolean Error = false;
+	private Boolean Selected = false;
 	
 	public Role(String _Name, String _URI) 
     {
@@ -23,6 +24,17 @@ public class Role
             this.URI = _URI;
             this.Version = _Version;
     }
+	
+	
+	public void SetSelected(Boolean selected)
+	{
+		this.Selected = selected;
+	}
+	
+	public Boolean isSelected()
+	{
+		return this.Selected;
+	}
 	
 	public String GetName()
 	{

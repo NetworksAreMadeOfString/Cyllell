@@ -21,6 +21,7 @@ package net.networksaremadeofstring.cyllell;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,11 +37,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RoleListAdaptor extends BaseAdapter implements OnLongClickListener
+public class RoleListAdaptor extends BaseAdapter
 {
 	private Context context;
     private List<Role> listRoles;
     private OnClickListener listener;
+    private OnLongClickListener listenerLong;
     
     public RoleListAdaptor(Context context, List<Role> _listRoles) 
     {
@@ -53,6 +55,14 @@ public class RoleListAdaptor extends BaseAdapter implements OnLongClickListener
         this.context = context;
         this.listRoles = _listRoles;
         this.listener = _listener;
+    }
+    
+    public RoleListAdaptor(Context context, List<Role> _listRoles, OnClickListener _listener, OnLongClickListener _listenerLong) 
+    {
+        this.context = context;
+        this.listRoles = _listRoles;
+        this.listener = _listener;
+        this.listenerLong = _listenerLong;
     }
     
     @Override
@@ -125,17 +135,24 @@ public class RoleListAdaptor extends BaseAdapter implements OnLongClickListener
         		((ImageView) convertView.findViewById(R.id.WarningIcon)).setVisibility(0);
         	}
         }
+        Log.i(thisRole.GetName(),thisRole.isSelected().toString());
+        if(thisRole.isSelected())
+        {
+        	((View) convertView.findViewById(R.id.selectedIndicator)).setBackgroundColor(Color.rgb(247, 104, 26));
+        }
+        else
+        {
+        	//((View) convertView.findViewById(R.id.selectedIndicator)).setBackgroundColor(Color.rgb(244,242,230));
+        }
         
         convertView.setTag(position);
-        convertView.setOnLongClickListener(this);
+        
         if(listener != null)
         	convertView.setOnClickListener((OnClickListener) listener);
         
+        if(listenerLong != null)
+        	convertView.setOnLongClickListener((OnLongClickListener) listenerLong);
+        
         return convertView;
-	}
-
-	public boolean onLongClick(View v) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

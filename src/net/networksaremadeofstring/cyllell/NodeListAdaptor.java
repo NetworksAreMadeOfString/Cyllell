@@ -129,10 +129,10 @@ public class NodeListAdaptor extends BaseAdapter
         	((View) convertView.findViewById(R.id.selectedIndicator)).setBackgroundColor(Color.rgb(247, 104, 26));
         	//((View) convertView.findViewById(R.id.selectedIndicator)).setVisibility(View.VISIBLE);
         	
-        	Log.i("ID",Integer.toString(((View) convertView.findViewById(R.id.selectedIndicator)).getId()));
+        	/*Log.i("ID",Integer.toString(((View) convertView.findViewById(R.id.selectedIndicator)).getId()));
         	Log.i("height",Integer.toString(((View) convertView.findViewById(R.id.selectedIndicator)).getHeight()));
         	Log.i("width",Integer.toString(((View) convertView.findViewById(R.id.selectedIndicator)).getWidth()));
-        	Log.i("parent",((View) convertView.findViewById(R.id.selectedIndicator)).getParent().toString());
+        	Log.i("parent",((View) convertView.findViewById(R.id.selectedIndicator)).getParent().toString());*/
         }
         else
         {

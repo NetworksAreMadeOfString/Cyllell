@@ -36,11 +36,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class CookbookListAdaptor extends BaseAdapter implements OnLongClickListener
+public class CookbookListAdaptor extends BaseAdapter
 {
 	private Context context;
     private List<Cookbook> listCookbooks;
     private OnClickListener listener;
+    private OnLongClickListener listenerLong;
     
     public CookbookListAdaptor(Context context, List<Cookbook> _listCookbooks) 
     {
@@ -53,6 +54,14 @@ public class CookbookListAdaptor extends BaseAdapter implements OnLongClickListe
         this.context = context;
         this.listCookbooks = _listCookbooks;
         this.listener = _listener;
+    }
+    
+    public CookbookListAdaptor(Context context, List<Cookbook> _listCookbooks, OnClickListener _listener, OnLongClickListener _listenerLong) 
+    {
+        this.context = context;
+        this.listCookbooks = _listCookbooks;
+        this.listener = _listener;
+        this.listenerLong = _listenerLong;
     }
     
     @Override
@@ -127,15 +136,13 @@ public class CookbookListAdaptor extends BaseAdapter implements OnLongClickListe
         }
         
         convertView.setTag(position);
-        convertView.setOnLongClickListener(this);
+
         if(listener != null)
         	convertView.setOnClickListener((OnClickListener) listener);
         
+        if(listenerLong != null)
+        	convertView.setOnLongClickListener((OnLongClickListener) listenerLong);
+        
         return convertView;
-	}
-
-	public boolean onLongClick(View v) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

@@ -27,11 +27,17 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +49,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -59,10 +66,12 @@ public class ViewRoles_Fragment extends CyllellFragment
 	Thread GetFullDetails;
 	private SharedPreferences settings = null;
 	Boolean CutInProgress = false;
-	
+	int selectedRole = 0;
+	ActionMode mActionMode;
 	RoleListAdaptor RoleAdapter;
 	List<Role> listOfRoles = new ArrayList<Role>();
 	JSONObject Roles = null;
+	AlertDialog rolesContextualDialog;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -142,7 +151,16 @@ public class ViewRoles_Fragment extends CyllellFragment
 						}
 					};
 					
-					RoleAdapter = new RoleListAdaptor(getActivity().getBaseContext(), listOfRoles,listener);
+					OnLongClickListener listenerLong = new OnLongClickListener()
+    				{
+						public boolean onLongClick(View v) 
+						{
+							selectForCAB((Integer)v.getTag());
+							return true;
+						}
+					};
+					
+					RoleAdapter = new RoleListAdaptor(getActivity().getBaseContext(), listOfRoles,listener,listenerLong);
     				list = (ListView) getView().findViewById(R.id.rolesListView);
     				if(list != null)
     				{
@@ -248,6 +266,7 @@ public class ViewRoles_Fragment extends CyllellFragment
 			FragmentManager fm = getActivity().getSupportFragmentManager();
 			FragmentTransaction fragmentTransaction = fm.beginTransaction();
 	    	Fragment fragment = new ViewRole_Fragment(listOfRoles.get(Tag).GetURI());
+
 	        fragmentTransaction.replace(R.id.RoleDetails, fragment,"RoleTag");
 	        fragmentTransaction.commit();
         }
@@ -259,4 +278,83 @@ public class ViewRoles_Fragment extends CyllellFragment
         	getActivity().startActivity(GenericIntent);
 		}
     }
+	
+	public void selectForCAB(int id)
+	{
+		selectedRole = id;
+    	mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
+    	listOfRoles.get(selectedRole).SetSelected(true);
+    	RoleAdapter.notifyDataSetChanged();
+	}
+	
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() 
+	{
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.roles, menu);
+            mode.setTitle("knife role edit " + listOfRoles.get(selectedRole).GetName());
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) 
+        {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
+        {
+            switch (item.getItemId()) 
+            {
+            	case R.id.edit_role:
+            	{
+            		Cursor dbResults = ((MainLanding) getActivity()).cacheDB.getRoles();
+    	    		final CharSequence[] items = new CharSequence[dbResults.getCount()];
+    	    		int i = 0;
+    	    		while(dbResults.moveToNext())
+        			{
+    	    			items[i] = dbResults.getString(0);
+    	    			i++;
+        			}
+    	    		
+    	    		AlertDialog.Builder builder = new AlertDialog.Builder(ViewRoles_Fragment.this.getActivity());
+		        	builder.setTitle("Edit Role");
+		        	builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+		        	    public void onClick(DialogInterface dialog, int item) 
+		        	    {
+		        	    	Log.i("roles", items[item].toString());
+		        	    }
+		        	});
+		        	
+		        	rolesContextualDialog = builder.create();
+		        	rolesContextualDialog.show();
+		        	
+		            return true;
+            	}
+            	
+		        default:
+		        	listOfRoles.get(selectedRole).SetSelected(false);
+		        	selectedRole = 0;
+		        	RoleAdapter.notifyDataSetChanged();
+		            return false;
+			}
+        }
+			
+			// Called when the user exits the action mode
+			@Override
+			public void onDestroyActionMode(ActionMode mode) 
+			{
+				listOfRoles.get(selectedRole).SetSelected(false);
+				selectedRole = 0;
+	        	RoleAdapter.notifyDataSetChanged();
+			    mActionMode = null;
+			}
+		};
 }

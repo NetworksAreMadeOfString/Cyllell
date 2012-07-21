@@ -3,6 +3,10 @@ package net.networksaremadeofstring.cyllell;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -11,12 +15,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewRole_Fragment extends CyllellFragment
 {
@@ -52,6 +58,16 @@ public class ViewRole_Fragment extends CyllellFragment
     	((ProgressBar) getView().findViewById(R.id.progressBar1)).setVisibility(0);
 		((TextView) getView().findViewById(R.id.ProgressStatus)).setVisibility(0);
     	
+		if(settings.getBoolean("RolesFirstView", true) == true)
+        {
+        	Toast rolehelp = Toast.makeText(getActivity(),"Use the Menu to access additional options such as Role Editing", Toast.LENGTH_LONG);
+        	rolehelp.setGravity(Gravity.TOP|Gravity.RIGHT, 5, 40);
+        	rolehelp.show();
+        	SharedPreferences.Editor editor = settings.edit();
+        	editor.putBoolean("RolesFirstView", false);
+        	editor.commit();
+        }
+		
 		/*if(!isTabletDevice())
         {
     		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
@@ -170,4 +186,23 @@ public class ViewRole_Fragment extends CyllellFragment
     	
     	dataPreload.start();
     }
+    
+    /*public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.roles, menu);
+    }
+	    
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.edit_role:
+			{
+				Toast.makeText(getActivity(), "Bootstrapping a node from a tablet would be a tad dangerous...", Toast.LENGTH_LONG).show();
+				return true;
+			}
+		}
+		return false;
+	}*/
 }

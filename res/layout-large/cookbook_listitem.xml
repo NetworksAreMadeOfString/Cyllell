@@ -3,4 +3,9 @@
         <ProgressBar android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/MoreDetailsSpinner" android:indeterminate="true" android:paddingRight="8dp" android:visibility="invisible"></ProgressBar>
         <ImageView android:layout_height="wrap_content" android:src="@drawable/error" android:layout_width="wrap_content" android:layout_centerVertical="true" android:layout_alignParentRight="true" android:id="@+id/WarningIcon" android:visibility="invisible"></ImageView>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:id="@+id/cookbookVersion" android:text="0.0.0" android:layout_below="@+id/CookbookName" android:layout_alignLeft="@+id/CookbookName" android:layout_marginLeft="20dp" android:textColor="@color/codeops_normal_text"></TextView>
+        <View
+            android:id="@+id/selectedIndicator"
+            android:layout_width="4dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:background="@color/codeops_title_text"/>
     </RelativeLayout>
