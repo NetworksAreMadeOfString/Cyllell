@@ -6,11 +6,12 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -52,6 +53,7 @@ public class ViewNodes_Fragment extends SherlockFragment
 	String instanceTime = "";
 	int selectedNode = 0;
 	ActionMode mActionMode;
+	AlertDialog nodeContextualDialog;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -175,6 +177,34 @@ public class ViewNodes_Fragment extends SherlockFragment
     			else if(msg.what == 202)
     			{
     				dialog.setMessage("Populating UI!");
+    			}
+    			else if(msg.what == 300)
+    			{
+    				//Toast.makeText(ViewNodes_Fragment.this.getActivity(), "Making Request", Toast.LENGTH_SHORT).show();
+    				dialog = new ProgressDialog(ViewNodes_Fragment.this.getActivity());
+    		        dialog.setTitle("Contacting Chef");
+    		        dialog.setMessage("Changing Environment");       
+    		        dialog.setIndeterminate(true);
+    		        dialog.show();
+    			}
+    			else if(msg.what == 301)
+    			{
+    				dialog.dismiss();
+    				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "Node Updated!", Toast.LENGTH_SHORT).show();
+    				nodeContextualDialog.dismiss();
+    				listOfNodes.get(selectedNode).SetSelected(false);
+		        	selectedNode = 0;
+		        	NodeAdapter.notifyDataSetChanged();
+    			}
+    			else if(msg.what == 302)
+    			{
+    				dialog.dismiss();
+    				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "There was a problem updating that node.", Toast.LENGTH_SHORT).show();
+    			}	
+    			else if(msg.what == 303)
+    			{
+    				dialog.dismiss();
+    				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "You are not authorized to update that node.\r\n[Hosted Chef RBAC]", Toast.LENGTH_SHORT).show();
     			}
     			else
     			{
@@ -348,6 +378,104 @@ public class ViewNodes_Fragment extends SherlockFragment
         {
             switch (item.getItemId()) 
             {
+            	case R.id.EditRunList:
+            	{
+            		Cursor dbResults = ((MainLanding) getActivity()).cacheDB.getRoles();
+    	    		final CharSequence[] items = new CharSequence[dbResults.getCount()];
+    	    		int i = 0;
+    	    		while(dbResults.moveToNext())
+        			{
+    	    			items[i] = dbResults.getString(0);
+    	    			i++;
+        			}
+    	    		
+    	    		AlertDialog.Builder builder = new AlertDialog.Builder(ViewNodes_Fragment.this.getActivity());
+		        	builder.setTitle("Add Roles to Runlist");
+		        	builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+		        	    public void onClick(DialogInterface dialog, int item) 
+		        	    {
+		        	    	Log.i("roles", items[item].toString());
+		        	    }
+		        	});
+		        	
+		        	nodeContextualDialog = builder.create();
+		        	nodeContextualDialog.show();
+		        	
+		            return true;
+            	}
+            	
+		        case R.id.EditEnv:
+		        {
+    	    		// CyllellCache cacheDB = new CyllellCache(ViewNodes_Fragment.this.getActivity());
+		        	
+    	    		Cursor dbResults = ((MainLanding) getActivity()).cacheDB.getEnvironments();
+    	    		final CharSequence[] items = new CharSequence[dbResults.getCount()];
+    	    		int i = 0;
+    	    		while(dbResults.moveToNext())
+        			{
+    	    			items[i] = dbResults.getString(0);
+    	    			i++;
+        			}
+    	    		
+    	    		
+		        	AlertDialog.Builder builder = new AlertDialog.Builder(ViewNodes_Fragment.this.getActivity());
+		        	builder.setTitle("Set Environment");
+		        	builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+		        	    public void onClick(DialogInterface dialog, int item) 
+		        	    {
+		        	    	final String URI = listOfNodes.get(selectedNode).GetURI();
+		        	    	final String Env = items[item].toString();
+		        	    	
+		        	    		handler.sendEmptyMessage(300);
+		        	    		Thread ProcessRequest = new Thread() 
+		        	        	{  
+		        	        		private Boolean continueThread = true;
+		        	        		private Message msg = new Message();
+		        	        		private Bundle data = new Bundle();
+		        	    			
+		        	        		public void run() 
+		        	        		{
+		        	        			try 
+		    		        	    	{
+		        	        				if(Cut.SetEnvironment(URI, Env))
+		        	        				{
+		        	        					handler.sendEmptyMessage(301);
+		        	        				}
+		        	        				else
+		        	        				{
+		        	        					handler.sendEmptyMessage(302);
+		        	        				}
+		    		        	    	}
+		        	        			catch (org.apache.http.client.HttpResponseException e)
+		        	        			{
+		        	        				Log.e("StatusCode",Integer.toString(e.getStatusCode()));
+		        	        				if(e.getStatusCode() == 401 || e.getStatusCode() == 403)
+		        	        				{
+		        	        					handler.sendEmptyMessage(303);
+		        	        				}
+		        	        				else
+		        	        				{
+		        	        					e.printStackTrace();
+		        								handler.sendEmptyMessage(302);
+		        	        				}
+		        	        			}
+	        	        				catch (Exception e) 
+	        		        	    	{
+	        								e.printStackTrace();
+	        								handler.sendEmptyMessage(302);
+	        		        	    	}
+		        	        		}
+
+		        	        	};
+		        	        	ProcessRequest.start();
+		        	    }
+		        	});
+		        	nodeContextualDialog = builder.create();
+		        	nodeContextualDialog.show();
+		        	
+		            return true;
+		        }
+            
 		        default:
 		        	listOfNodes.get(selectedNode).SetSelected(false);
 		        	selectedNode = 0;

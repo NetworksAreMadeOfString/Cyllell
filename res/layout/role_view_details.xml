@@ -6,17 +6,21 @@
 	    android:layout_height="match_parent"
 	    android:background="@color/codeops_background_darker"
 	    android:minHeight="700dp" >
-		<TextView android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_width="fill_parent" style="@style/codeops_titlebar" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/TitleBarText" android:text="Cyllell - View Role"></TextView>
+
 	    <TextView
 	        android:id="@+id/RoleTitle"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_centerHorizontal="true"
+	        android:layout_marginLeft="4dp"
+	        android:layout_marginRight="4dp"
 	        android:layout_marginTop="2dp"
+	        android:gravity="center_horizontal"
 	        android:text="TextView"
 	        android:textAppearance="?android:attr/textAppearanceLarge"
 	        android:textColor="@color/codeops_title_text"
-	        android:textSize="28dp" android:layout_marginLeft="4dp" android:layout_marginRight="4dp" android:gravity="center_horizontal" android:layout_below="@+id/TitleBarText">
+	        android:textSize="28dp" >
+
 	    </TextView>
 
 	    <TextView
@@ -49,7 +53,7 @@
 	        android:layout_alignLeft="@+id/RoleDescription"
 	        android:layout_below="@+id/RoleDescription"
 	        android:layout_marginTop="20dp"
-	        android:text="Default Attributes"
+	        android:text="@string/DefaultAttributesLabel"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:textColor="@color/codeops_normal_text" >
 	    </TextView>
@@ -74,7 +78,7 @@
 	        android:layout_alignLeft="@+id/DefaultAttrLabel"
 	        android:layout_below="@+id/DefaultAttributes"
 	        android:layout_marginTop="20dp"
-	        android:text="Override Attributes"
+	        android:text="@string/OverrideAttributesLabel"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:textColor="@color/codeops_normal_text" >
 	    </TextView>
@@ -99,7 +103,7 @@
 	        android:layout_alignLeft="@+id/OverrideAttrLabel"
 	        android:layout_below="@+id/OverrideAttributes"
 	        android:layout_marginTop="20dp"
-	        android:text="Run List:"
+	        android:text="@string/RunListLabel"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:textColor="@color/codeops_normal_text" >
 	    </TextView>

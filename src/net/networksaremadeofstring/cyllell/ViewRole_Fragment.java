@@ -52,10 +52,10 @@ public class ViewRole_Fragment extends CyllellFragment
     	((ProgressBar) getView().findViewById(R.id.progressBar1)).setVisibility(0);
 		((TextView) getView().findViewById(R.id.ProgressStatus)).setVisibility(0);
     	
-		if(!isTabletDevice())
+		/*if(!isTabletDevice())
         {
     		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-        }
+        }*/
 		
     	final Handler handler = new Handler() 
     	{

@@ -1,11 +1,25 @@
-<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/relativeLayoutNodeLanding" style="@style/codeops_default.NoTitleBar" android:background="@color/codeops_background_light">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutNodeLanding"
+    style="@style/codeops_default.NoTitleBar"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/codeops_background_light" >
 
     <ListView
         android:id="@+id/rolesListView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/vertborder"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
         android:background="@color/codeops_background_light" >
-</ListView>
+    </ListView>
+
+    <FrameLayout
+        android:id="@+id/RoleDetails"
+        android:layout_width="fill_parent"
+        android:layout_height="500dp"
+        android:layout_below="@id/rolesListView"
+        android:background="@color/codeops_background_darker" >
+
+    </FrameLayout>
+
 </RelativeLayout>

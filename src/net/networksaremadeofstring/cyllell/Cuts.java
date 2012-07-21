@@ -32,10 +32,12 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
@@ -70,6 +72,7 @@ public class Cuts
 	//This one is the HttpClient we do use;
 	private DefaultHttpClient httpClient;
 	public HttpGet httpget = null;
+	public HttpPut httpput = null;
 	
 	public Cuts(Context thisContext) throws Exception
 	{
@@ -129,7 +132,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/cookbooks";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -150,7 +153,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/cookbooks/" + CookbookURI + "/_latest";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -171,7 +174,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/nodes";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -192,7 +195,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/roles";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -213,7 +216,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/roles/"+URI;
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -234,7 +237,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/environments";
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -255,7 +258,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/environments/"+URI;
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -264,6 +267,35 @@ public class Cuts
     	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
+	}
+	
+	public Boolean SetEnvironment(String NodeURI, String Environment) throws Exception
+	{
+		JSONObject NodeDetails = this.GetNode(NodeURI);
+		NodeDetails.put("chef_environment", Environment);
+
+		String Path = this.PathSuffix + "/nodes/"+NodeURI;
+		this.httpput = new HttpPut(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, NodeDetails.toString(),"PUT");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpput.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	this.httpput.setEntity(new StringEntity(NodeDetails.toString()));
+    	
+    	String jsonTempString = httpClient.execute(this.httpput, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+		
+    	if(json.get("chef_environment").equals(Environment))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	/**
@@ -276,7 +308,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/clients/" + settings.getString("ClientName", "--");
 		this.httpget = new HttpGet(this.ChefURL + Path);
 		Log.i("ConfirmLogin",Path);
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		Log.i("Headers",Headers.get(i).getName()+":"+Headers.get(i).getValue());
@@ -322,7 +354,7 @@ public class Cuts
 		String Path = this.PathSuffix + "/nodes/"+URI;
 		this.httpget = new HttpGet(this.ChefURL + Path);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -418,7 +450,7 @@ public class Cuts
 			this.httpget = new HttpGet(this.ChefURL + Path + "?q=name:*"+Query+"*");
 		}
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
@@ -437,7 +469,7 @@ public class Cuts
 		
 		this.httpget = new HttpGet(this.ChefURL + Path.toLowerCase() + "?q="+Query);
 
-    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "");
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","GET");
     	for(int i = 0; i < Headers.size(); i++)
     	{
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());

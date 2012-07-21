@@ -37,11 +37,44 @@ with the full power of Ruby, Chef makes it easy to create an elegant, fully auto
 	</string>
 
 
+	<string name="TabsNodes">Nodes</string>
+	<string name="TabsCookbooks">Cookbooks</string>
+	<string name="TabsRoles">Roles</string>
+	<string name="TabsEnv">Environments</string>
+	<string name="TabsSearch">Search</string>
+	<string name="TabsSettings">Settings</string>
+	
 	<string name="MaintainerEmailLabel">Maintainer Email:</string>
 	<string name="MaintainerLabel">Maintainer:</string>
 	<string name="CookbookDescLabel">Description:</string>
 	<string name="RecipeListLabel">Recipes:</string>
 	<string name="TemplateListLabel">Templates:</string>
+	
+	
+	
+	<string name="CreateDatabaseLabel">Create Database</string>
+	<string name="CreateTablesLabel">Create Tables</string>
+	<string name="CacheNodesLabel">Cache Nodes List</string>
+	<string name="CacheRolesLabel">Cache Roles List</string>
+	<string name="CacheEnvironmentsLabel">Cache Environments</string>
+	
+	
+	<string name="DefaultAttributesLabel">Default Attributes</string>
+	<string name="LockedCookbooksLabel">Locked Cookbooks</string>
+	
+	<string name="OverrideAttributesLabel">Override Attributes</string>
+	<string name="RunListLabel">Run List</string>
+	
+	
+	<string name="SettingsOpenSourceLabel">Open Source</string>
+	<string name="SettingsHostedLabel">Hosted Chef</string>
+	<string name="SettingsSelfSignedLabel">Self Signed</string>
+	<string name="SettingsCurrentTimeLabel">Current Time: </string>
+	<string name="SettingsCurrentTimeButton">Change Time</string>
+	<string name="SettingsDescription">Ensure your device time matches that on your Chef server otherwise authentication will fail.</string>
+	<string name="SettingsSaveButton">Save Settings</string>
+	
+	
 	
     <string name="fake_private_key">-----BEGIN RSA PRIVATE KEY-----
  \n

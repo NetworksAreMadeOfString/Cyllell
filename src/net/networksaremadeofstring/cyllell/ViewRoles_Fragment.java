@@ -242,7 +242,8 @@ public class ViewRoles_Fragment extends CyllellFragment
 	
 	public void GetMoreDetails(final int Tag)
     {
-		if(isTabletDevice())
+		//if(isTabletDevice())
+		if(true)
         {
 			FragmentManager fm = getActivity().getSupportFragmentManager();
 			FragmentTransaction fragmentTransaction = fm.beginTransaction();

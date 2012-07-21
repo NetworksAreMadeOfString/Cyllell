@@ -262,7 +262,8 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	
 	public void GetMoreDetails(final int Tag)
     {
-		if(isTabletDevice())
+		//if(isTabletDevice())
+		if(true)
         {
 			FragmentManager fm = getActivity().getSupportFragmentManager();
 			FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -278,42 +279,5 @@ public class ViewCookbooks_Fragment extends CyllellFragment
         	//getActivity().getApplicationContext().startActivity(GenericIntent);
         	getActivity().startActivity(GenericIntent);
 		}
-    	/*GetFullDetails = new Thread() 
-    	{  
-    		public void run() 
-    		{
-    			try 
-    			{
-    				Log.i("TAG", Integer.toString(Tag));
-    				Message msg = new Message();
-    				Bundle data = new Bundle();
-    				data.putInt("tag", Tag);
-    				msg.setData(data);
-    				msg.what = 0;
-    				//Set the spinner going
-    				updateListNotify.sendMessage(msg);
-
-    				Cuts threadCut = new Cuts(getActivity());
-    				listOfCookbooks.get(Tag).SetFullDetails(threadCut.CanonicalizeNode(threadCut.GetNode(listOfCookbooks.get(Tag).GetURI())));
-    				
-    				updateListNotify.sendEmptyMessage(1);
-				} 
-    			catch (Exception e)
-    			{
-    				Log.e("GetMoreDetails","An actual exception occured!");
-    				e.printStackTrace();
-    				
-    				Message msg = new Message();
-    				Bundle data = new Bundle();
-    				data.putInt("tag", Tag);
-    				msg.setData(data);
-    				msg.what = 99;
-    				updateListNotify.sendMessage(msg);
-				}
-    			return;
-    		}
-    	};
-    	
-    	GetFullDetails.start();*/
     }
 }

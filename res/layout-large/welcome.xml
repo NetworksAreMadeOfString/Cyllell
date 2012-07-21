@@ -1,0 +1,35 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/codeops_background_light" >
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_marginTop="8dp" android:id="@+id/introTitle" android:textColor="@color/codeops_normal_text" android:layout_marginLeft="8dp" android:text="@string/tabletWelcomeTitle" android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/tabletWelcomeIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/introTitle"
+        android:layout_below="@+id/introTitle"
+        android:layout_marginRight="8dp"
+        android:text="@string/tabletWelcomeIntro"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/codeops_normal_text"
+        android:textSize="12dp" >
+</TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_below="@+id/tabletWelcomeIntro" android:layout_alignLeft="@+id/tabletWelcomeIntro" android:layout_marginTop="8dp" android:textColor="@color/codeops_normal_text" android:id="@+id/Subtitle" android:text="@string/tabletWelcomeSubTitle" android:textStyle="bold"></TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_below="@+id/Subtitle" android:layout_alignLeft="@+id/Subtitle" android:id="@+id/tabletWelcomeGettingStarted" android:textColor="@color/codeops_normal_text" android:text="@string/tabletWelcomeGettingStarted" android:layout_alignRight="@+id/tabletWelcomeIntro" android:textSize="12dp"></TextView>
+
+    <WebView
+        android:id="@+id/cyllellWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tabletWelcomeGettingStarted"
+        android:layout_marginTop="36dp"
+        android:background="@color/codeops_background_darker" />
+     
+</RelativeLayout>
+

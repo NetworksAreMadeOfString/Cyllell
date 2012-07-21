@@ -3,8 +3,17 @@
     <ListView
         android:id="@+id/environmentsListView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
+        android:layout_height="200dp"
         android:background="@color/codeops_background_light" >
-</ListView>
+    </ListView>
+
+    <FrameLayout
+        android:id="@+id/EnvironmentDetails"
+        android:layout_width="fill_parent"
+        android:layout_height="500dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/environmentsListView"
+        android:background="@color/codeops_background_darker" >
+    </FrameLayout>
+
 </RelativeLayout>

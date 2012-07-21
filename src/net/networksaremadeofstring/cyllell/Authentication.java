@@ -90,7 +90,7 @@ public class Authentication
 		return sdf.format(new Date());
 	}
 	
-	public List <NameValuePair> GetHeaders(String Path, String Body) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchProviderException, URISyntaxException
+	public List <NameValuePair> GetHeaders(String Path, String Body, String Method) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchProviderException, URISyntaxException
 	{
 		List <NameValuePair> Headers = new ArrayList <NameValuePair>();
 		
@@ -107,11 +107,36 @@ public class Authentication
 		Headers.add(new BasicNameValuePair("X-Chef-Version","0.10.4"));
 		Headers.add(new BasicNameValuePair("X-Ops-UserId",this.ClientName));
 		Headers.add(new BasicNameValuePair("X-Ops-Timestamp",TimeStamp));
-		Headers.add(new BasicNameValuePair("X-Ops-Content-Hash",Disgesteriser.hash_string(Body)));
+		String HashedBody = Disgesteriser.hash_string(Body);
+		/*if(HashedBody.length() > 60)
+		{
+			String tempBody = "";
+			int rubyLength = 1;
+			int bodycharLocation = 0;
+			int HashedBodyLength = HashedBody.length();
+			while(bodycharLocation < HashedBodyLength)
+			{
+				while(rubyLength < 61 && bodycharLocation < HashedBodyLength)
+				{
+					if(HashedBody.charAt(charLocation) != '\n' && HashedBody.charAt(charLocation) != '\r')
+					{
+						tempBody += HashedBody.charAt(bodycharLocation);
+						rubyLength++;
+					}
+					bodycharLocation++;
+				}
+				tempBody += "\n";
+			}
+			
+			HashedBody = tempBody;
+		}
+		Log.e("HashedBody",HashedBody);*/
 		
-		signed_canonicalize_request = SignHeaders("Method:GET"+
+		Headers.add(new BasicNameValuePair("X-Ops-Content-Hash",HashedBody));
+		
+		signed_canonicalize_request = SignHeaders("Method:"+Method+
 				"\nHashed Path:" + Disgesteriser.hash_string(Path) +
-				"\nX-Ops-Content-Hash:"+Disgesteriser.hash_string(Body)+
+				"\nX-Ops-Content-Hash:"+HashedBody+
 				"\nX-Ops-Timestamp:"+TimeStamp+
 				"\nX-Ops-UserId:"+this.ClientName);
 

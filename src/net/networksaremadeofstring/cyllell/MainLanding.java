@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +36,7 @@ public class MainLanding extends SherlockFragmentActivity
 	private Boolean enableTabListeners = false;
 	private Boolean fragmentSet = false;
 	ActionMode mActionMode;
+	public CyllellCache cacheDB;
 	
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) 
@@ -80,7 +83,7 @@ public class MainLanding extends SherlockFragmentActivity
         if(!isTabletDevice())
         {
         	actionBar.setTitle("Cyllell - Knife for Android");
-        } 
+        }
     }
     
     private boolean isTabletDevice() 
@@ -109,7 +112,7 @@ public class MainLanding extends SherlockFragmentActivity
     {
     	ActionBar actionBar = getSupportActionBar();
     	
-    	Tab NodesTab = actionBar.newTab().setText("Nodes").setTabListener(new TabListener(){
+    	Tab NodesTab = actionBar.newTab().setText(R.string.TabsNodes).setTabListener(new TabListener(){
 
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) 
@@ -133,10 +136,10 @@ public class MainLanding extends SherlockFragmentActivity
 				viewNodes.setHasOptionsMenu(true);
 	        	ft.replace(R.id.MainFragment, viewNodes);
 			}});
-    	NodesTab.setIcon(R.drawable.ab_nodes);
+    	NodesTab.setIcon(R.drawable.ic_action_nodes);
     	actionBar.addTab(NodesTab, false);
 
-		Tab cookbooksTab = actionBar.newTab().setText("Cookbooks").setTabListener(new TabListener(){
+		Tab cookbooksTab = actionBar.newTab().setText(R.string.TabsCookbooks).setTabListener(new TabListener(){
 
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) {
@@ -162,10 +165,10 @@ public class MainLanding extends SherlockFragmentActivity
 				
 			}});
 		
-    	cookbooksTab.setIcon(R.drawable.ab_cookbooks);
+    	cookbooksTab.setIcon(R.drawable.ic_action_cookbook);
     	actionBar.addTab(cookbooksTab,false);
 
-    	Tab rolesTab = actionBar.newTab().setText("Roles").setTabListener(new TabListener(){
+    	Tab rolesTab = actionBar.newTab().setText(R.string.TabsRoles).setTabListener(new TabListener(){
 
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) 
@@ -188,10 +191,10 @@ public class MainLanding extends SherlockFragmentActivity
 				viewRoles = new ViewRoles_Fragment();
 	        	ft.replace(R.id.MainFragment, viewRoles);	
 			}});
-    	rolesTab.setIcon(R.drawable.ab_roles);
+    	rolesTab.setIcon(R.drawable.ic_action_roles);
     	actionBar.addTab(rolesTab,false);
 
-    	Tab envTab = actionBar.newTab().setText("Environments").setTabListener(new TabListener(){
+    	Tab envTab = actionBar.newTab().setText(R.string.TabsEnv).setTabListener(new TabListener(){
 
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) {
@@ -214,10 +217,10 @@ public class MainLanding extends SherlockFragmentActivity
 	        	ft.replace(R.id.MainFragment, viewEnvironments);
 				
 			}});
-    	envTab.setIcon(R.drawable.ab_environments);
+    	envTab.setIcon(R.drawable.ic_action_environments);
     	actionBar.addTab(envTab,false);
     	
-    	Tab searchTab = actionBar.newTab().setText("Search").setTabListener(new TabListener(){
+    	Tab searchTab = actionBar.newTab().setText(R.string.TabsSearch).setTabListener(new TabListener(){
 
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) {
@@ -240,7 +243,7 @@ public class MainLanding extends SherlockFragmentActivity
 				viewSearch = new Search_Fragment();
 	        	ft.replace(R.id.MainFragment, viewSearch);
 			}});
-    	searchTab.setIcon(R.drawable.ab_search);
+    	searchTab.setIcon(R.drawable.ic_action_search);
     	actionBar.addTab(searchTab,false);
     }
     
@@ -253,6 +256,7 @@ public class MainLanding extends SherlockFragmentActivity
     		/*Intent MainLandingIntent = new Intent(launcher.this, MainLanding.class);
     		launcher.this.startActivity(MainLandingIntent);
     		finish();*/
+    		cacheDB = new CyllellCache(MainLanding.this.getApplicationContext());
     	}
     	else
     	{
@@ -272,12 +276,6 @@ public class MainLanding extends SherlockFragmentActivity
     		SharedPreferences.Editor editor = settings.edit();
         	editor.putBoolean("FirstRun", false);
         	editor.commit();
-        	
-    		//Toast.makeText(launcher.this, "Settings validated!\r\nLaunching Cyllell...", Toast.LENGTH_SHORT).show();
-    		
-    		/*Intent MainIntent = new Intent(launcher.this, Main.class);
-    		launcher.this.startActivity(MainIntent);
-    		finish();*/
         	CheckDatabase();
     	}
     	else if(resultCode == 2)
