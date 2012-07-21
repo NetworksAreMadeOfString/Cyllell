@@ -331,6 +331,7 @@ public class MainLanding extends SherlockFragmentActivity
 	@Override
 	public void onDestroy()
 	{
+		super.onDestroy();
 		cacheDB.close();
 	}
 }

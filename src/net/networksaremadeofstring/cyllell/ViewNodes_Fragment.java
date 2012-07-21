@@ -61,12 +61,7 @@ public class ViewNodes_Fragment extends SherlockFragment
 		Log.e("onActivityCreated","Called");
     	super.onCreate(savedInstanceState);
     	setRetainInstance(true);
-		/*if(!isTabletDevice())
-		{
-			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-			
-		}*/
-    	
+
     	settings = this.getActivity().getSharedPreferences("Cyllell", 0);
     	
     	if(settings.getBoolean("NodesFirstView", true) == true)
@@ -217,6 +212,38 @@ public class ViewNodes_Fragment extends SherlockFragment
     				dialog.dismiss();
     				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "You are not authorized to update that node.\r\n[Hosted Chef RBAC]", Toast.LENGTH_SHORT).show();
     			}
+    			
+    			
+    			//-------------- Edit Run List
+    			else if(msg.what == 400)
+    			{
+    				//Toast.makeText(ViewNodes_Fragment.this.getActivity(), "Making Request", Toast.LENGTH_SHORT).show();
+    				dialog = new ProgressDialog(ViewNodes_Fragment.this.getActivity());
+    		        dialog.setTitle("Contacting Chef");
+    		        dialog.setMessage("Adding to run list....");       
+    		        dialog.setIndeterminate(true);
+    		        dialog.show();
+    			}
+    			else if(msg.what == 401)
+    			{
+    				dialog.dismiss();
+    				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "Node Updated!", Toast.LENGTH_SHORT).show();
+    				nodeContextualDialog.dismiss();
+    				listOfNodes.get(selectedNode).SetSelected(false);
+		        	selectedNode = 0;
+		        	NodeAdapter.notifyDataSetChanged();
+    			}
+    			else if(msg.what == 402)
+    			{
+    				dialog.dismiss();
+    				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "There was a problem updating that node.", Toast.LENGTH_SHORT).show();
+    			}	
+    			else if(msg.what == 403)
+    			{
+    				dialog.dismiss();
+    				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "You are not authorized to update that node.\r\n[Hosted Chef RBAC]", Toast.LENGTH_SHORT).show();
+    			}
+    			//-------------- End Edit Run List
     			else
     			{
     				//Close the Progress dialog
@@ -331,26 +358,6 @@ public class ViewNodes_Fragment extends SherlockFragment
     	GetFullDetails.start();
     }
 	
-	//Doing extra menus on a per mode basis with CAB
-	/*public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
-	{
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.nodes, menu);
-    }
-	    
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-			case R.id.AddNode:
-			{
-				Toast.makeText(getActivity(), "Bootstrapping a node from a tablet would be a tad dangerous...", Toast.LENGTH_LONG).show();
-				return true;
-			}
-		}
-		return false;
-	}*/
-	
 	public void selectForCAB(int id)
 	{
 		selectedNode = id;
@@ -405,7 +412,51 @@ public class ViewNodes_Fragment extends SherlockFragment
 		        	builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
 		        	    public void onClick(DialogInterface dialog, int item) 
 		        	    {
-		        	    	Log.i("roles", items[item].toString());
+		        	    	final String URI = listOfNodes.get(selectedNode).GetURI();
+		        	    	final String Role = items[item].toString();
+		        	    	
+		        	    		handler.sendEmptyMessage(400);
+		        	    		Thread ProcessRequest = new Thread() 
+		        	        	{  
+		        	        		private Boolean continueThread = true;
+		        	        		private Message msg = new Message();
+		        	        		private Bundle data = new Bundle();
+		        	    			
+		        	        		public void run() 
+		        	        		{
+		        	        			try 
+		    		        	    	{
+		        	        				if(Cut.AddRunList(URI, Role))
+		        	        				{
+		        	        					handler.sendEmptyMessage(301);
+		        	        				}
+		        	        				else
+		        	        				{
+		        	        					handler.sendEmptyMessage(302);
+		        	        				}
+		    		        	    	}
+		        	        			catch (org.apache.http.client.HttpResponseException e)
+		        	        			{
+		        	        				Log.e("StatusCode",Integer.toString(e.getStatusCode()));
+		        	        				if(e.getStatusCode() == 401 || e.getStatusCode() == 403)
+		        	        				{
+		        	        					handler.sendEmptyMessage(403);
+		        	        				}
+		        	        				else
+		        	        				{
+		        	        					e.printStackTrace();
+		        								handler.sendEmptyMessage(402);
+		        	        				}
+		        	        			}
+	        	        				catch (Exception e) 
+	        		        	    	{
+	        								e.printStackTrace();
+	        								handler.sendEmptyMessage(402);
+	        		        	    	}
+		        	        		}
+
+		        	        	};
+		        	        	ProcessRequest.start();
 		        	    }
 		        	});
 		        	

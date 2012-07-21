@@ -78,6 +78,7 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	{
 		Log.e("OnCreateView","Called");
 		list = (ListView) this.getActivity().findViewById(R.id.cookbooksListView);
+		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
         try 
         {

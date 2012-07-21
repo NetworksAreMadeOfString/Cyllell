@@ -298,6 +298,34 @@ public class Cuts
 		}
 	}
 	
+	public Boolean AddRunList(String NodeURI, String Role) throws Exception
+	{
+		JSONObject NodeDetails = this.GetNode(NodeURI);
+		Log.i("NodeDetails",NodeDetails.toString(3));
+		
+		JSONArray RunList = NodeDetails.getJSONArray("run_list");
+		RunList.put("role["+Role+"]");
+		NodeDetails.put("run_list", RunList);
+		
+		Log.i("NodeDetails2",NodeDetails.toString(3));
+		
+		String Path = this.PathSuffix + "/nodes/"+NodeURI;
+		this.httpput = new HttpPut(this.ChefURL + Path);
+
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, NodeDetails.toString(),"PUT");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpput.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	this.httpput.setEntity(new StringEntity(NodeDetails.toString()));
+    	
+    	String jsonTempString = httpClient.execute(this.httpput, responseHandler);
+    	Log.i("JSONString:",jsonTempString);
+    	JSONObject json = new JSONObject(jsonTempString);
+		
+		return true;
+	}
+	
 	/**
 	 * Try and perform a chef function - it'll either succeed or throw an exception / return false
 	 * @return - Boolean - whether we logged in or not

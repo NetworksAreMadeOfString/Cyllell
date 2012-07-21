@@ -146,8 +146,17 @@ public class NodeListAdaptor extends BaseAdapter
         	((TextView) convertView.findViewById(R.id.Uptime)).setText(thisNode.Details.get("uptime"));
         	((TextView) convertView.findViewById(R.id.CPUCount)).setText(thisNode.Details.get("cpuCountString"));
         	((TextView) convertView.findViewById(R.id.RAMStats)).setText(thisNode.Details.get("ramStatsString"));
-        	((TextView) convertView.findViewById(R.id.RunList)).setText(thisNode.Details.get("run_list"));
-
+        	
+        	if(thisNode.Details.get("run_list").length() > 1)
+        	{
+        		((TextView) convertView.findViewById(R.id.RunList)).setText(thisNode.Details.get("run_list"));
+        	}
+        	else
+        	{
+        		
+        		((TextView) convertView.findViewById(R.id.RunList)).setText(R.string.RunListEmpty);
+        	}
+        	
         	String platform = thisNode.Details.get("platform");
         	if(platform.equals("centos"))
         	{
