@@ -227,6 +227,24 @@ public class Cuts
     	return json;
 	}
 	
+	public Boolean UpdateRolewithRawJSON(String RoleURI, JSONObject JSON) throws Exception
+	{
+		String Path = this.PathSuffix + "/roles/"+RoleURI;
+		this.httpput = new HttpPut(this.ChefURL + Path);
+		Log.i("UpdateNodewithRawJSON",Path);
+		Log.i("UpdateNodewithRawJSON",JSON.toString(3));
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, JSON.toString(),"PUT");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpput.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	this.httpput.setEntity(new StringEntity(JSON.toString()));
+    	
+    	httpClient.execute(this.httpput, responseHandler);
+
+		return true;
+	}
+	
 	/**
 	 * Gets a list of all environments in the system along with the URI's to get additional details
 	 * @return - JSONObject - Returns a hash of uri's for the environments.
@@ -345,6 +363,8 @@ public class Cuts
 
 		return true;
 	}
+	
+	
 	/**
 	 * Try and perform a chef function - it'll either succeed or throw an exception / return false
 	 * @return - Boolean - whether we logged in or not

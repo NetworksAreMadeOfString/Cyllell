@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Roles -->
+    <integer name="show_dialog">1</integer>
+    <integer name="update_edit_dialog">2</integer>
+    
+    <integer name="update_role_successful">3</integer>
+    <integer name="update_role_unsuccessful">4</integer>
+    <!-- End Roles -->
+    
+    <!-- Generic -->
+    <integer name="http_bad_request">400</integer>
+    <integer name="http_unauthorized">401</integer>
+    <integer name="http_forbidden">403</integer>
+    <!-- End Generic -->
+</resources>

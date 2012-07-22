@@ -135,7 +135,7 @@ public class RoleListAdaptor extends BaseAdapter
         		((ImageView) convertView.findViewById(R.id.WarningIcon)).setVisibility(0);
         	}
         }
-        Log.i(thisRole.GetName(),thisRole.isSelected().toString());
+        //Log.i(thisRole.GetName(),thisRole.isSelected().toString());
         if(thisRole.isSelected())
         {
         	((View) convertView.findViewById(R.id.selectedIndicator)).setBackgroundColor(Color.rgb(247, 104, 26));

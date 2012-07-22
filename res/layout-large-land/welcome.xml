@@ -9,6 +9,7 @@
         android:id="@+id/cyllellWelcome"
         android:layout_width="600dp"
         android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/tabletWelcomeIntro"
         android:background="@color/codeops_background_darker" >

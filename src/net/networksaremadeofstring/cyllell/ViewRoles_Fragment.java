@@ -33,7 +33,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -72,14 +74,12 @@ public class ViewRoles_Fragment extends CyllellFragment
 	List<Role> listOfRoles = new ArrayList<Role>();
 	JSONObject Roles = null;
 	AlertDialog rolesContextualDialog;
+	Dialog editRole;
+	static ViewRoles_Handler editRoleHandler;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
     	super.onCreate(savedInstanceState);
-    	/*if(!isTabletDevice())
-        {
-    		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-        }*/
     }
 	
 	@Override
@@ -204,7 +204,7 @@ public class ViewRoles_Fragment extends CyllellFragment
     				alertDialog.setButton2("Back", new DialogInterface.OnClickListener() {
     				   public void onClick(DialogInterface dialog, int which) 
     				   {
-    					   getActivity().finish();
+    					   //getActivity().finish();
     				   }
     				});
     				alertDialog.setIcon(R.drawable.icon);
@@ -315,27 +315,55 @@ public class ViewRoles_Fragment extends CyllellFragment
             {
             	case R.id.edit_role:
             	{
-            		Cursor dbResults = ((MainLanding) getActivity()).cacheDB.getRoles();
-    	    		final CharSequence[] items = new CharSequence[dbResults.getCount()];
-    	    		int i = 0;
-    	    		while(dbResults.moveToNext())
-        			{
-    	    			items[i] = dbResults.getString(0);
-    	    			i++;
-        			}
-    	    		
-    	    		AlertDialog.Builder builder = new AlertDialog.Builder(ViewRoles_Fragment.this.getActivity());
-		        	builder.setTitle("Edit Role");
-		        	builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-		        	    public void onClick(DialogInterface dialog, int item) 
-		        	    {
-		        	    	Log.i("roles", items[item].toString());
-		        	    }
-		        	});
+            		Context mContext = getActivity();
+	        		editRole = new Dialog(mContext);
+	
+	        		editRole.setContentView(R.layout.role_edit_details);
+	        		editRole.setTitle("Edit " + listOfRoles.get(selectedRole).GetName());
 		        	
-		        	rolesContextualDialog = builder.create();
-		        	rolesContextualDialog.show();
-		        	
+	        		editRole.show();
+	        		
+	        		editRoleHandler = new ViewRoles_Handler(editRole,getActivity());
+	        		final String URI = listOfRoles.get(selectedRole).GetURI();
+	        		
+	        		Thread GetRawJSON = new Thread() 
+    	        	{  
+    	        		private Message msg = new Message();
+    	        		private Bundle data = new Bundle();
+    	    			
+    	        		public void run() 
+    	        		{
+    	        			try 
+    	        			{
+								JSONObject Role = Cut.GetRole(URI);
+								data.putString("RawJSON", Role.toString());
+								msg.setData(data);
+								msg.what = R.integer.update_edit_dialog;
+								editRoleHandler.sendMessage(msg);
+							} 
+    	        			catch (org.apache.http.client.HttpResponseException e)
+    	        			{
+    	        				Log.e("StatusCode",Integer.toString(e.getStatusCode()));
+    	        				if(e.getStatusCode() == 401 || e.getStatusCode() == 403)
+    	        				{
+    	        					editRoleHandler.sendEmptyMessage(R.integer.http_forbidden);
+    	        				}
+    	        				else
+    	        				{
+    	        					e.printStackTrace();
+    	        					editRoleHandler.sendEmptyMessage(R.integer.http_bad_request);
+    	        				}
+    	        			}
+	        				catch (Exception e) 
+		        	    	{
+								e.printStackTrace();
+								editRoleHandler.sendEmptyMessage(R.integer.http_bad_request);
+		        	    	}
+    	        		}
+    	        	};
+    	        	GetRawJSON.start();
+	        		
+	        		
 		            return true;
             	}
             	
