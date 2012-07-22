@@ -12,6 +12,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,7 +40,8 @@ public class Search_Fragment extends CyllellFragment
 	String query, index;
 	Cuts threadCut;
 	Handler handler;
-
+	private SharedPreferences settings = null;
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 	    super.onCreate(savedInstanceState);
@@ -61,7 +63,7 @@ public class Search_Fragment extends CyllellFragment
 	      {
 	    	  threadCut = new Cuts(getActivity().getApplicationContext());
 
-			dialog = new ProgressDialog(getActivity().getApplicationContext());
+			dialog = new ProgressDialog(getActivity());
 	        dialog.setTitle("Chef Search");
 	        dialog.setMessage("Searching for: "+query+"\n\nPlease wait: Prepping Authentication protocols");       
 	        dialog.setIndeterminate(true);
@@ -172,19 +174,31 @@ public class Search_Fragment extends CyllellFragment
 	public void onActivityCreated(Bundle savedInstanceState)
     {
     	super.onCreate(savedInstanceState);
-    	//Fancy title
-	    ((TextView) getView().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-	    
+    	
 	    //List view to hold search results
 	    list = (ListView) getView().findViewById(R.id.SearchResultsListView);
+	    
+	    settings = this.getActivity().getSharedPreferences("Cyllell", 0);
+	    
+	    if(settings.getBoolean("SearchFirstView", true) == true)
+        {
+        	Toast.makeText(getActivity(),"You can only search for items at the moment. Additional functionality will be added soon.", Toast.LENGTH_LONG).show();
+        	SharedPreferences.Editor editor = settings.edit();
+        	editor.putBoolean("SearchFirstView", false);
+        	editor.commit();
+        }
 	    
 	  //This is for the crafted search (not visible if the user came in via a search intent
 	    ((Button) getView().findViewById(R.id.SearchButton)).setOnClickListener(new View.OnClickListener() {
 	           public void onClick(View v) 
 	           {
+	        	   if(listOfNodes != null)
+	        	   {
+	        		   listOfNodes.clear();
+	        	   }
 	        	   index = ((Spinner) getView().findViewById(R.id.IndexChoice)).getSelectedItem().toString().toLowerCase();
 	        	   query = ((TextView) getView().findViewById(R.id.SearchStringEditText)).getText().toString();
-	        	   PerformSearch(true);
+	        	   PerformSearch(false);
 	           }
 	    });
 	    
@@ -210,29 +224,6 @@ public class Search_Fragment extends CyllellFragment
 	    {
 	    	//findViewById(R.id.SearchParamContainer).setVisibility(0);
 	    	getView().findViewById(R.id.ShowSearchParams).setVisibility(4);
-	    }*/
-	    
-	    //This is a temp
-	    getView().findViewById(R.id.ShowSearchParams).setVisibility(4);
-	    
-	    ((ImageView) getView().findViewById(R.id.ShowSearchParams)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-            	getView().findViewById(R.id.SearchParamContainer).setVisibility(0);
-            	getView().findViewById(R.id.ShowSearchParams).setVisibility(4);
-            	getView().findViewById(R.id.SearchMainRelativeLayout).invalidate();
-            }
-        });
-	    
-	    ((ImageView) getView().findViewById(R.id.HideSearchParams)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-            	getView().findViewById(R.id.SearchParamContainer).setVisibility(8);
-            	getView().findViewById(R.id.ShowSearchParams).setVisibility(0);
-            	getView().findViewById(R.id.SearchMainRelativeLayout).invalidate();
-    	    	
-            }
-        });
-	    
+	    }*/  
     }
 }

@@ -86,7 +86,7 @@ public class Search extends Activity
 	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) 
 	    {
 	    	findViewById(R.id.SearchParamContainer).setVisibility(8);
-	    	findViewById(R.id.ShowSearchParams).setVisibility(0);
+	    	//findViewById(R.id.ShowSearchParams).setVisibility(0);
 	    	findViewById(R.id.SearchMainRelativeLayout).invalidate();
 	    	
 	    	query = intent.getStringExtra(SearchManager.QUERY);
@@ -97,15 +97,15 @@ public class Search extends Activity
 	    else if (Intent.ACTION_SEARCH_LONG_PRESS.equals(intent.getAction()))
 	    {
 	    	//findViewById(R.id.SearchParamContainer).setVisibility(0);
-	    	findViewById(R.id.ShowSearchParams).setVisibility(4);
+	    	//findViewById(R.id.ShowSearchParams).setVisibility(4);
 	    }
 	    else
 	    {
 	    	//findViewById(R.id.SearchParamContainer).setVisibility(0);
-	    	findViewById(R.id.ShowSearchParams).setVisibility(4);
+	    	//findViewById(R.id.ShowSearchParams).setVisibility(4);
 	    }
 	    
-	    ((ImageView)findViewById(R.id.ShowSearchParams)).setOnClickListener(new View.OnClickListener() {
+	    /*((ImageView)findViewById(R.id.ShowSearchParams)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
             	findViewById(R.id.SearchParamContainer).setVisibility(0);
@@ -122,7 +122,7 @@ public class Search extends Activity
     	    	findViewById(R.id.SearchMainRelativeLayout).invalidate();
     	    	
             }
-        });
+        });*/
 	}
 	
 	public void GetMoreDetails(final int Tag)

@@ -503,7 +503,7 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	//Log.i("JSONString:",jsonTempString);
+    	Log.i("CraftedSearch JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
