@@ -16,15 +16,20 @@ Current Features:
 * Nodes
 	* List all Nodes
 	* Get Node details (Run List, OHAI info etc)
+	* Change Node environment
+	* Edit node json
 * Search
 	* Free form search
 	* Voice search
 * Roles
 	* List Roles
+	* Edit role details
 * Recipes
-	* List Recipe
+	* List Recipes
+	* View Recipe details
 * Environments
 	* List Environments
+	* Edit Environment
 	
 * Caching - used for search prediction / filter as you type stuff
 	* Cache role list 
@@ -38,22 +43,11 @@ To Do:
 	
 * Roles
 	* Create Role
-	* Edit Role
-
-* Nodes
-	* Edit Node
-	* Add run list to Node
-	* Remove run list from Node
- 	* Set default search params for /node/ search on list view 
 
 * Search
 	* Saved / Favourited Searches
  	* Utilise search results (view info, edit etc)
   	* Set default search query for voice search 
-	
-* Environments
-	* Edit Environments
-
 
 Things that probably won't be done:
 --------
@@ -79,7 +73,7 @@ Copyright and Credits:
 The following is a attribution list;
 	CPU and Memory Icons: http://omercetin.deviantart.com
 	Chef Logo: OpsCode http://www.opscode.com
-	Magnifying Glass: http://www.icons-land.com
 	Operating System Icons: http://tatice.deviantart.com
+	Actionbar icons etc are from Google
 
 All other materials (unless I've made a mistake): Gareth Llewellyn
