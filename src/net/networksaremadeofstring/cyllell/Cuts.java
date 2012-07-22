@@ -303,6 +303,8 @@ public class Cuts
 		JSONObject NodeDetails = this.GetNode(NodeURI);
 		Log.i("NodeDetails",NodeDetails.toString(3));
 		
+		
+		//TODO Replace with JSONObject.accumulate() at some point
 		JSONArray RunList = NodeDetails.getJSONArray("run_list");
 		RunList.put("role["+Role+"]");
 		NodeDetails.put("run_list", RunList);
@@ -320,12 +322,29 @@ public class Cuts
     	this.httpput.setEntity(new StringEntity(NodeDetails.toString()));
     	
     	String jsonTempString = httpClient.execute(this.httpput, responseHandler);
-    	Log.i("JSONString:",jsonTempString);
-    	JSONObject json = new JSONObject(jsonTempString);
+    	//Log.i("JSONString:",jsonTempString);
+    	//JSONObject json = new JSONObject(jsonTempString);
 		
 		return true;
 	}
 	
+	public Boolean UpdateNodewithRawJSON(String NodeURI, JSONObject JSON) throws Exception
+	{
+		String Path = this.PathSuffix + "/nodes/"+NodeURI;
+		this.httpput = new HttpPut(this.ChefURL + Path);
+		Log.i("UpdateNodewithRawJSON",Path);
+		Log.i("UpdateNodewithRawJSON",JSON.toString(3));
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, JSON.toString(),"PUT");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpput.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	this.httpput.setEntity(new StringEntity(JSON.toString()));
+    	
+    	httpClient.execute(this.httpput, responseHandler);
+
+		return true;
+	}
 	/**
 	 * Try and perform a chef function - it'll either succeed or throw an exception / return false
 	 * @return - Boolean - whether we logged in or not

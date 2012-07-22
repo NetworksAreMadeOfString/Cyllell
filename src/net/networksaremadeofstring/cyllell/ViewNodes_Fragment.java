@@ -6,29 +6,32 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.ActionMode.Callback;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -55,6 +58,7 @@ public class ViewNodes_Fragment extends SherlockFragment
 	int selectedNode = 0;
 	ActionMode mActionMode;
 	AlertDialog nodeContextualDialog;
+	Dialog rawJSON;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -197,7 +201,11 @@ public class ViewNodes_Fragment extends SherlockFragment
     			{
     				dialog.dismiss();
     				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "Node Updated!", Toast.LENGTH_SHORT).show();
-    				nodeContextualDialog.dismiss();
+    				if(nodeContextualDialog != null && nodeContextualDialog.isShowing())
+    				{
+    					nodeContextualDialog.dismiss();
+    				}
+    				
     				listOfNodes.get(selectedNode).SetSelected(false);
 		        	selectedNode = 0;
 		        	NodeAdapter.notifyDataSetChanged();
@@ -244,6 +252,76 @@ public class ViewNodes_Fragment extends SherlockFragment
     				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "You are not authorized to update that node.\r\n[Hosted Chef RBAC]", Toast.LENGTH_SHORT).show();
     			}
     			//-------------- End Edit Run List
+    			
+    			//-------------- RAW JSON
+    			else if(msg.what == 500)
+    			{
+    				((TextView) rawJSON.findViewById(R.id.JSON)).setText(msg.getData().getString("RawJSON"));
+    				
+    				((ProgressBar) rawJSON.findViewById(R.id.gettinJSONProgressBar)).setVisibility(8);
+    				
+    				((Button) rawJSON.findViewById(R.id.saveRawJSON)).setOnClickListener(new View.OnClickListener() {
+ 			           public void onClick(View v) 
+ 			           {
+ 			        	   try
+ 			        	   {
+ 			        		   final String URI = listOfNodes.get(selectedNode).GetURI();
+ 			        		   final JSONObject newJSON = new JSONObject(((TextView) rawJSON.findViewById(R.id.JSON)).getText().toString());
+ 			        	  
+	 			        	  handler.sendEmptyMessage(400);
+		        	    		Thread ProcessRequest = new Thread() 
+		        	        	{  
+		        	        		public void run() 
+		        	        		{
+		        	        			try 
+		    		        	    	{
+		        	        				if(Cut.UpdateNodewithRawJSON(URI,newJSON))
+		        	        				{
+		        	        					handler.sendEmptyMessage(301);
+		        	        				}
+		        	        				else
+		        	        				{
+		        	        					handler.sendEmptyMessage(302);
+		        	        				}
+		    		        	    	}
+		        	        			catch (org.apache.http.client.HttpResponseException e)
+		        	        			{
+		        	        				Log.e("StatusCode",Integer.toString(e.getStatusCode()));
+		        	        				if(e.getStatusCode() == 401 || e.getStatusCode() == 403)
+		        	        				{
+		        	        					handler.sendEmptyMessage(403);
+		        	        				}
+		        	        				else
+		        	        				{
+		        	        					e.printStackTrace();
+		        								handler.sendEmptyMessage(402);
+		        	        				}
+		        	        			}
+	      	        				catch (Exception e) 
+	      		        	    	{
+	      								e.printStackTrace();
+	      								handler.sendEmptyMessage(402);
+	      		        	    	}
+		        	        		}
+	
+		        	        	};
+		        	        	ProcessRequest.start();
+ 			        	   }
+ 			        	   catch(Exception e)
+ 			        	   {
+ 			        		  e.printStackTrace();
+ 			        		  handler.sendEmptyMessage(501);
+ 			        	   }
+ 			           }
+    				});
+    			}
+    			
+    			else if(msg.what == 501)
+    			{
+    				dialog.dismiss();
+    				Toast.makeText(ViewNodes_Fragment.this.getActivity(), "Error: Invalid JSON", Toast.LENGTH_SHORT).show();
+    			}
+    			//-------------- END RAW JSON
     			else
     			{
     				//Close the Progress dialog
@@ -396,6 +474,57 @@ public class ViewNodes_Fragment extends SherlockFragment
         {
             switch (item.getItemId()) 
             {
+            
+	            case R.id.EditRawJSON:
+	        	{
+	        		Context mContext = getActivity();
+	        		rawJSON = new Dialog(mContext);
+	
+	        		rawJSON.setContentView(R.layout.edit_raw_json);
+	        		rawJSON.setTitle("Edit Node JSON");
+		        	
+	        		rawJSON.show();
+	        		final String URI = listOfNodes.get(selectedNode).GetURI();
+	        		
+	        		Thread GetRawJSON = new Thread() 
+    	        	{  
+    	        		private Message msg = new Message();
+    	        		private Bundle data = new Bundle();
+    	    			
+    	        		public void run() 
+    	        		{
+    	        			try 
+    	        			{
+								JSONObject Node = Cut.GetNode(URI);
+								data.putString("RawJSON", Node.toString(3));
+								msg.setData(data);
+								msg.what = 500;
+								handler.sendMessage(msg);
+							} 
+    	        			catch (org.apache.http.client.HttpResponseException e)
+    	        			{
+    	        				Log.e("StatusCode",Integer.toString(e.getStatusCode()));
+    	        				if(e.getStatusCode() == 401 || e.getStatusCode() == 403)
+    	        				{
+    	        					handler.sendEmptyMessage(403);
+    	        				}
+    	        				else
+    	        				{
+    	        					e.printStackTrace();
+    								handler.sendEmptyMessage(402);
+    	        				}
+    	        			}
+	        				catch (Exception e) 
+		        	    	{
+								e.printStackTrace();
+								handler.sendEmptyMessage(402);
+		        	    	}
+    	        		}
+    	        	};
+    	        	GetRawJSON.start();
+		            return true;
+	        	}
+            
             	case R.id.EditRunList:
             	{
             		Cursor dbResults = ((MainLanding) getActivity()).cacheDB.getRoles();
@@ -468,8 +597,6 @@ public class ViewNodes_Fragment extends SherlockFragment
             	
 		        case R.id.EditEnv:
 		        {
-    	    		// CyllellCache cacheDB = new CyllellCache(ViewNodes_Fragment.this.getActivity());
-		        	
     	    		Cursor dbResults = ((MainLanding) getActivity()).cacheDB.getEnvironments();
     	    		final CharSequence[] items = new CharSequence[dbResults.getCount()];
     	    		int i = 0;

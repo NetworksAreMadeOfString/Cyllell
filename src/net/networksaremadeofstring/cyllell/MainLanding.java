@@ -259,12 +259,20 @@ public class MainLanding extends SherlockFragmentActivity
     		launcher.this.startActivity(MainLandingIntent);
     		finish();*/
     		cacheDB = new CyllellCache(MainLanding.this.getApplicationContext());
+    		try
+    		{
+	        	Cuts Cut = new Cuts(MainLanding.this.getApplicationContext());
+	    		cacheDB.RefreshCache(Cut);
+    		}
+    		catch(Exception e)
+    		{
+    			BugSenseHandler.log("CheckDataBase", e);
+    		}
     	}
     	else
     	{
     		Intent DatabaseIntent = new Intent(MainLanding.this, CreateDatabase.class);
     		MainLanding.this.startActivity(DatabaseIntent);
-    		//finish();
     	}
     }
     
@@ -292,14 +300,6 @@ public class MainLanding extends SherlockFragmentActivity
     		MainLanding.this.startActivityForResult(LauncherIntent, requestCode);
     	}
     }
-    
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
-	{
-    	Log.i("Menu","Showing");
-	    inflater.inflate(R.menu.tablet_menu, menu);
-	    return true;
-	}*/
     
     @Override
     public boolean onCreateOptionsMenu (Menu menu)

@@ -37,6 +37,8 @@ with the full power of Ruby, Chef makes it easy to create an elegant, fully auto
 	</string>
 
 	<string name="RunListEmpty">This node doesn\'t have any roles specified in it\'t run list</string>
+	
+	<string name="Save">Save</string>
 
 	<string name="TabsNodes">Nodes</string>
 	<string name="TabsCookbooks">Cookbooks</string>

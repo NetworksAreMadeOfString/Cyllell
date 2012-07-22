@@ -71,14 +71,13 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 			((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
 			
 		}*/
+    	list = (ListView) this.getActivity().findViewById(R.id.cookbooksListView);
+    	list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		Log.e("OnCreateView","Called");
-		list = (ListView) this.getActivity().findViewById(R.id.cookbooksListView);
-		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		settings = this.getActivity().getSharedPreferences("Cyllell", 0);
         try 
         {
@@ -91,6 +90,7 @@ public class ViewCookbooks_Fragment extends CyllellFragment
         
         dialog = new ProgressDialog(getActivity());
         dialog.setTitle("Contacting Chef");
+
         dialog.setMessage("Please wait: Prepping Authentication protocols");       
         dialog.setIndeterminate(true);
         if(listOfCookbooks.size() < 1)
