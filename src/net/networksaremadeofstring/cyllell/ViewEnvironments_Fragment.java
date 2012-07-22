@@ -27,8 +27,15 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +50,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -60,6 +68,8 @@ public class ViewEnvironments_Fragment extends CyllellFragment
 	Thread GetFullDetails;
 	private SharedPreferences settings = null;
 	Boolean CutInProgress = false;
+	int selectedEnv = 0;
+	ActionMode mActionMode;
 	
 	EnvironmentListAdaptor EnvironmentAdapter;
 	List<Environment> listOfEnvironments = new ArrayList<Environment>();
@@ -135,7 +145,16 @@ public class ViewEnvironments_Fragment extends CyllellFragment
 						}
 					};
 					
-					EnvironmentAdapter = new EnvironmentListAdaptor(getActivity().getBaseContext(), listOfEnvironments,listener);
+					OnLongClickListener listenerLong = new OnLongClickListener()
+    				{
+						public boolean onLongClick(View v) 
+						{
+							selectForCAB((Integer)v.getTag());
+							return true;
+						}
+					};
+					
+					EnvironmentAdapter = new EnvironmentListAdaptor(getActivity().getBaseContext(), listOfEnvironments,listener, listenerLong);
     				list = (ListView) getView().findViewById(R.id.environmentsListView);
     				if(list != null)
     				{
@@ -262,4 +281,70 @@ public class ViewEnvironments_Fragment extends CyllellFragment
         	getActivity().startActivity(GenericIntent);
 		}
     }
+	
+	public void selectForCAB(int id)
+	{
+		selectedEnv = id;
+    	mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
+    	listOfEnvironments.get(selectedEnv).SetSelected(true);
+    	EnvironmentAdapter.notifyDataSetChanged();
+	}
+	
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() 
+	{
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.cab_environments, menu);
+            mode.setTitle("Manage Environment");
+            return true;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) 
+        {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) 
+        {
+            switch (item.getItemId()) 
+            {
+            	case R.id.delete_env:
+            	{
+            		Toast.makeText(getActivity(), "Deleting Environments is not available.\r\nIf you think it is a neccessary feature please email the author.", Toast.LENGTH_LONG).show();
+		            return true;
+            	}
+            	
+            	case R.id.edit_env:
+            	{
+            		GetMoreDetails(selectedEnv);
+            		//Toast.makeText(getActivity(), "To edit an environment single press the environment you wish to edit from the list.\r\nOnce it has loaded make your changes then click the 'Update Environment' button at the bottom.", Toast.LENGTH_LONG).show();
+		            return true;
+            	}
+            	
+		        default:
+		        	listOfEnvironments.get(selectedEnv).SetSelected(false);
+		        	selectedEnv = 0;
+		        	EnvironmentAdapter.notifyDataSetChanged();
+		            return false;
+			}
+        }
+			
+			// Called when the user exits the action mode
+			@Override
+			public void onDestroyActionMode(ActionMode mode) 
+			{
+				listOfEnvironments.get(selectedEnv).SetSelected(false);
+				selectedEnv = 0;
+				EnvironmentAdapter.notifyDataSetChanged();
+			    mActionMode = null;
+			}
+		};
 }

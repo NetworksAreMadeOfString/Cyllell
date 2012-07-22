@@ -1,0 +1,5 @@
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/delete_env" android:title="Delete Environment" android:titleCondensed="Delete" android:icon="@drawable/ic_action_delete"></item>
+        <item android:id="@+id/edit_env" android:titleCondensed="Edit" android:icon="@drawable/ic_action_edit" android:title="Edit Environment"></item>
+    </menu>

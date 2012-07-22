@@ -294,7 +294,7 @@ public class ViewRoles_Fragment extends CyllellFragment
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.roles, menu);
+            inflater.inflate(R.menu.cab_roles, menu);
             mode.setTitle("knife role edit " + listOfRoles.get(selectedRole).GetName());
             return true;
         }

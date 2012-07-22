@@ -8,6 +8,7 @@ public class Environment
 	private String Version;
 	private Boolean SpinnerVisible = false;
 	private Boolean Error = false;
+	private Boolean Selected = false;
 	
 	public Environment(String _Name, String _URI) 
     {
@@ -23,6 +24,16 @@ public class Environment
             this.URI = _URI;
             this.Version = _Version;
     }
+	
+	public void SetSelected(Boolean selected)
+	{
+		this.Selected = selected;
+	}
+	
+	public Boolean isSelected()
+	{
+		return this.Selected;
+	}
 	
 	public String GetName()
 	{

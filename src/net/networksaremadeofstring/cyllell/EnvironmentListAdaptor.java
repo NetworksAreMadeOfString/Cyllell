@@ -36,11 +36,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class EnvironmentListAdaptor extends BaseAdapter implements OnLongClickListener
+public class EnvironmentListAdaptor extends BaseAdapter
 {
 	private Context context;
     private List<Environment> listEnvironments;
     private OnClickListener listener;
+    private OnLongClickListener listenerLong;
     
     public EnvironmentListAdaptor(Context context, List<Environment> _listEnvironments) 
     {
@@ -53,6 +54,14 @@ public class EnvironmentListAdaptor extends BaseAdapter implements OnLongClickLi
         this.context = context;
         this.listEnvironments = _listEnvironments;
         this.listener = _listener;
+    }
+    
+    public EnvironmentListAdaptor(Context context, List<Environment> _listEnvironments, OnClickListener _listener, OnLongClickListener _listenerLong) 
+    {
+        this.context = context;
+        this.listEnvironments = _listEnvironments;
+        this.listener = _listener;
+        this.listenerLong = _listenerLong;
     }
     
     @Override
@@ -127,15 +136,12 @@ public class EnvironmentListAdaptor extends BaseAdapter implements OnLongClickLi
         }
         
         convertView.setTag(position);
-        convertView.setOnLongClickListener(this);
         if(listener != null)
         	convertView.setOnClickListener((OnClickListener) listener);
         
+        if(listenerLong != null)
+        	convertView.setOnLongClickListener((OnLongClickListener) listenerLong);
+        
         return convertView;
-	}
-
-	public boolean onLongClick(View v) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
