@@ -9,11 +9,14 @@
             android:background="@color/codeops_background_light" >
 
         </FrameLayout>
-
+
         <ImageView
             android:id="@+id/chefWaterMark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/chef_logo_trans" android:layout_alignParentBottom="true" android:layout_alignParentRight="true"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="false"
+            android:src="@drawable/chef_logo_trans" />
 
     </RelativeLayout>

@@ -4,19 +4,22 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewEnvironment_Fragment extends CyllellFragment
 {
@@ -24,6 +27,9 @@ public class ViewEnvironment_Fragment extends CyllellFragment
 	Cuts Cut = null;
 	private SharedPreferences settings = null;
 	private String FullJSON = "";
+	ProgressDialog dialog;
+	JSONObject Environment;
+	Handler updateHandler;
 	
 	public ViewEnvironment_Fragment(String _URI)
 	{
@@ -52,10 +58,19 @@ public class ViewEnvironment_Fragment extends CyllellFragment
     	((ProgressBar) getView().findViewById(R.id.progressBar1)).setVisibility(0);
 		((TextView) getView().findViewById(R.id.ProgressStatus)).setVisibility(0);
     	
-		/*if(!isTabletDevice())
-        {
-    		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-        }*/
+		((Button) getView().findViewById(R.id.EditEnvButton)).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) 
+			{
+				dialog = new ProgressDialog(getActivity());
+		        dialog.setTitle("Updating Environment..");
+		        dialog.setMessage("Please wait: Prepping Authentication protocols");       
+		        dialog.setIndeterminate(true);
+		        dialog.show();
+		        UpdateEnvironment();
+			}
+		});
 		
     	final Handler handler = new Handler() 
     	{
@@ -117,7 +132,7 @@ public class ViewEnvironment_Fragment extends CyllellFragment
     				
     				//Sending request
     				handler.sendEmptyMessage(200);
-    				JSONObject Environment = Cut.GetEnvironment(URI);
+    				Environment = Cut.GetEnvironment(URI);
     				//Parsing JSON
 					handler.sendEmptyMessage(201);
 					FullJSON = Environment.toString(2);
@@ -150,7 +165,7 @@ public class ViewEnvironment_Fragment extends CyllellFragment
 					}
 					else
 					{
-						data.putString("cookbook_list","There are no locked cookbooks in this environment.");
+						data.putString("cookbook_list","{}");
 					}
 					
 					
@@ -176,5 +191,112 @@ public class ViewEnvironment_Fragment extends CyllellFragment
     	};
     	
     	dataPreload.start();
+    }
+    
+    private void UpdateEnvironment()
+    {
+    	updateHandler = new Handler() 
+    	{
+    		public void handleMessage(Message msg) 
+    		{	
+    			switch(msg.what)
+    			{
+    				case 0:
+    				{
+    					dialog.dismiss();
+    					Toast.makeText(getActivity(), "Environment successfully updated!", Toast.LENGTH_SHORT).show();
+    				}
+    				break;
+    				
+    				case 1:
+    				{
+    					dialog.dismiss();
+    					Toast.makeText(getActivity(), "There was a problem updating the environment", Toast.LENGTH_SHORT).show();
+    				}
+    				break;
+    				
+    				case 2:
+    				{
+    					dialog.dismiss();
+    					Toast.makeText(getActivity(), "You do not have authorization to update this environment (Hosted Chef role based access controls?)", Toast.LENGTH_SHORT).show();
+    				}
+    				break;
+    				
+    				case 99:
+    				{
+    					dialog.dismiss();
+    					Toast.makeText(getActivity(), "An Exception Occured;\r\n" + msg.getData().getString("exception"), Toast.LENGTH_SHORT).show();
+    				}
+    			}
+    		}
+    	};
+    	
+    	Thread ProcessRequest = new Thread() 
+		{  
+			public void run() 
+			{
+				Message msg = new Message();
+				Bundle data = new Bundle();
+				
+				try 
+				{
+					JSONObject newEnv = Environment;
+
+					newEnv.put("cookbook_versions", new JSONObject(((EditText) getView().findViewById(R.id.CookbookList)).getText().toString()));
+					newEnv.put("default_attributes", new JSONObject(((EditText) getView().findViewById(R.id.DefaultAttributes)).getText().toString()));
+					Cuts Cut = new Cuts(getActivity());
+					if(Cut.UpdateEnvironment(newEnv))
+					{
+						updateHandler.sendEmptyMessage(0);
+					}
+					else
+					{
+						data.putString("exception", "The update was unsuccessful. There was no reason given.");
+	    				msg.setData(data);
+	    				msg.what = 99;
+	    				updateHandler.sendMessage(msg);
+					}
+				}
+				catch (org.json.JSONException j)
+				{
+    				data.putString("exception", j.getLocalizedMessage());
+    				msg.setData(data);
+    				msg.what = 99;
+    				updateHandler.sendMessage(msg);
+				}
+				catch (org.apache.http.client.HttpResponseException e)
+				{
+					Log.e("StatusCode",Integer.toString(e.getStatusCode()));
+					if(e.getStatusCode() == 401 || e.getStatusCode() == 403)
+					{
+						//updateHandler.sendEmptyMessage(2);
+						data.putString("exception", e.getLocalizedMessage());
+	    				msg.setData(data);
+	    				msg.what = 99;
+	    				updateHandler.sendMessage(msg);
+					}
+					else
+					{
+						e.printStackTrace();
+						//updateHandler.sendEmptyMessage(1);
+						data.putString("exception", e.getLocalizedMessage());
+	    				msg.setData(data);
+	    				msg.what = 99;
+	    				updateHandler.sendMessage(msg);
+					}
+				}
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+					//updateHandler.sendEmptyMessage(1);
+					data.putString("exception", e.getLocalizedMessage());
+    				msg.setData(data);
+    				msg.what = 99;
+    				updateHandler.sendMessage(msg);
+				}
+			}
+
+		};
+		ProcessRequest.start();
     }
 }
