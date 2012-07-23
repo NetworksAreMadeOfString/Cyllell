@@ -27,24 +27,6 @@
 			android:theme="@style/codeops_default.NoTitleBar">
 		</activity>
 		
-		<activity android:name=".ViewNodes"
-			android:label="Cyllell - View Nodes"
-			android:theme="@style/codeops_default">
-			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
-		</activity>
-		
-		<activity android:name=".ViewNodes_Container"
-			android:label="Cyllell - View Nodes"
-			android:theme="@style/codeops_default">
-			<meta-data android:name="android.app.default_searchable" android:value=".Search" />
-		</activity>
-		
-		<!--  <activity android:name=".MainLanding"
-			android:label="@string/app_name"
-			android:theme="@style/codeops_default"
-			android:logo="@drawable/app_logo">
-		</activity>-->
-		
 		<activity android:name=".ViewSettings"
 			android:label="Cyllell - Settings"
 			android:theme="@style/codeops_default.NoTitleBar">
