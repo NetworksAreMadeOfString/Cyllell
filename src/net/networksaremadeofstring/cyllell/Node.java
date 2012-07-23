@@ -95,12 +95,22 @@ public class Node
 	
 	public String GetRunList()
 	{
-		return this.URI;
+		return this.RunList;
 	}
 	
 	public void SetRunList(String _RunList)
 	{
 		this.RunList = _RunList;
+	}
+	
+	public String GetSerial()
+	{
+		return this.serial_number;
+	}
+	
+	public void SetSerial(String _Serial)
+	{
+		this.serial_number = _Serial;
 	}
 	
 	public void SetSpinnerVisible()

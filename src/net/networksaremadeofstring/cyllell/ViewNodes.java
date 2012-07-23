@@ -22,8 +22,6 @@ package net.networksaremadeofstring.cyllell;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import android.app.Activity;
@@ -35,11 +33,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +49,7 @@ public class ViewNodes extends Activity
 	NodeListAdaptor NodeAdapter;
 	Handler updateListNotify;
 	Thread GetFullDetails;
-	private SharedPreferences settings = null;
+	SharedPreferences settings = null;
 	Boolean CutInProgress = false;
 	
 	/** Called when the activity is first created. */

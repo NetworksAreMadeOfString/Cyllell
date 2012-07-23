@@ -19,44 +19,30 @@
 package net.networksaremadeofstring.cyllell;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewRoles_Fragment extends CyllellFragment
@@ -66,7 +52,7 @@ public class ViewRoles_Fragment extends CyllellFragment
 	ProgressDialog dialog;
 	Handler updateListNotify;
 	Thread GetFullDetails;
-	private SharedPreferences settings = null;
+	SharedPreferences settings = null;
 	Boolean CutInProgress = false;
 	int selectedRole = 0;
 	ActionMode mActionMode;
@@ -261,22 +247,21 @@ public class ViewRoles_Fragment extends CyllellFragment
 	public void GetMoreDetails(final int Tag)
     {
 		//if(isTabletDevice())
-		if(true)
-        {
+        //{
 			FragmentManager fm = getActivity().getSupportFragmentManager();
 			FragmentTransaction fragmentTransaction = fm.beginTransaction();
 	    	Fragment fragment = new ViewRole_Fragment(listOfRoles.get(Tag).GetURI());
 
 	        fragmentTransaction.replace(R.id.RoleDetails, fragment,"RoleTag");
 	        fragmentTransaction.commit();
-        }
-		else
+       // }
+		/*else
 		{
 			Intent GenericIntent = new Intent(getActivity().getApplicationContext(), Generic_Container.class);
         	GenericIntent.putExtra("fragment", "viewrole");
         	GenericIntent.putExtra("roleURI", listOfRoles.get(Tag).GetURI());
         	getActivity().startActivity(GenericIntent);
-		}
+		}*/
     }
 	
 	public void selectForCAB(int id)

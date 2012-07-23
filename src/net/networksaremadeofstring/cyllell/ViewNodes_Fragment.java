@@ -26,10 +26,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -547,9 +545,9 @@ public class ViewNodes_Fragment extends SherlockFragment
 		        	    		handler.sendEmptyMessage(400);
 		        	    		Thread ProcessRequest = new Thread() 
 		        	        	{  
-		        	        		private Boolean continueThread = true;
+		        	        		/*private Boolean continueThread = true;
 		        	        		private Message msg = new Message();
-		        	        		private Bundle data = new Bundle();
+		        	        		private Bundle data = new Bundle();*/
 		        	    			
 		        	        		public void run() 
 		        	        		{
@@ -618,9 +616,9 @@ public class ViewNodes_Fragment extends SherlockFragment
 		        	    		handler.sendEmptyMessage(300);
 		        	    		Thread ProcessRequest = new Thread() 
 		        	        	{  
-		        	        		private Boolean continueThread = true;
+		        	        		/*private Boolean continueThread = true;
 		        	        		private Message msg = new Message();
-		        	        		private Bundle data = new Bundle();
+		        	        		private Bundle data = new Bundle();*/
 		        	    			
 		        	        		public void run() 
 		        	        		{

@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,8 +24,8 @@ public class ViewEnvironment_Fragment extends CyllellFragment
 {
 	private String URI = "";
 	Cuts Cut = null;
-	private SharedPreferences settings = null;
-	private String FullJSON = "";
+	SharedPreferences settings = null;
+	String FullJSON = "";
 	ProgressDialog dialog;
 	JSONObject Environment;
 	Handler updateHandler;

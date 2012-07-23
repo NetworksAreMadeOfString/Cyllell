@@ -27,25 +27,19 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewCookbooks_Fragment extends CyllellFragment
@@ -59,7 +53,7 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	CookbookListAdaptor CookbookAdapter;
 	Handler updateListNotify;
 	Thread GetFullDetails;
-	private SharedPreferences settings = null;
+	SharedPreferences settings = null;
 	Boolean CutInProgress = false;
 	Handler handler;
 	
@@ -283,13 +277,13 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	        fragmentTransaction.replace(R.id.CookbookDetails, fragment,"CookbookTag");
 	        fragmentTransaction.commit();
         }
-		else
+		/*else
 		{
 			Intent GenericIntent = new Intent(getActivity().getApplicationContext(), Generic_Container.class);
         	GenericIntent.putExtra("fragment", "viewcookbook");
         	GenericIntent.putExtra("cookbookURI", listOfCookbooks.get(Tag).GetURI());
         	//getActivity().getApplicationContext().startActivity(GenericIntent);
         	getActivity().startActivity(GenericIntent);
-		}
+		}*/
     }
 }

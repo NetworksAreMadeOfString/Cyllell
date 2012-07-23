@@ -4,13 +4,10 @@ import java.lang.reflect.Method;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -33,8 +30,7 @@ public class MainLanding extends SherlockFragmentActivity
 	Fragment viewEnvironments = null;
 	Fragment viewSearch = null;
 	Fragment viewSettings = null;
-	private Boolean enableTabListeners = false;
-	private Boolean fragmentSet = false;
+	Boolean fragmentSet = false;
 	ActionMode mActionMode;
 	public CyllellCache cacheDB;
 	
@@ -321,11 +317,6 @@ public class MainLanding extends SherlockFragmentActivity
 			}
 		}
 		return false;
-	}
-	
-	public void EnableTabs(Boolean enable)
-	{
-		enableTabListeners = enable;
 	}
 	
 	@Override

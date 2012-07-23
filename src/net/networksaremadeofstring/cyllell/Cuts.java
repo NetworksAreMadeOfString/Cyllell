@@ -18,18 +18,13 @@
 */
 package net.networksaremadeofstring.cyllell;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.util.HashMap;
 import java.util.List;
-
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
@@ -58,11 +53,11 @@ public class Cuts
 	private SharedPreferences settings = null;
 	private String ChefURL = "https://api.opscode.com"; //Hosted Chef
 	private String PathSuffix = "/organizations/namos"; //Hosted Chef
-	private String UserID = "Cyllell"; //The name of the API client
-	private String PrivateKey = null;
+	//private String UserID = "Cyllell"; //The name of the API client
+	//private String PrivateKey = null;
 	
 	private ResponseHandler<String> responseHandler;
-	private String JSONReturn = "";
+	//private String JSONReturn = "";
 	private Authentication ChefAuth = null;
 	
 	//These don't get used directly
@@ -374,8 +369,8 @@ public class Cuts
     		this.httpput.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	this.httpput.setEntity(new StringEntity(NodeDetails.toString()));
-    	
-    	String jsonTempString = httpClient.execute(this.httpput, responseHandler);
+    	httpClient.execute(this.httpput, responseHandler);
+    	//String jsonTempString = httpClient.execute(this.httpput, responseHandler);
     	//Log.i("JSONString:",jsonTempString);
     	//JSONObject json = new JSONObject(jsonTempString);
 		

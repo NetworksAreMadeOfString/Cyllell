@@ -10,21 +10,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ViewCookbook_Fragment extends Fragment
 {
 	private String URI = "";
 	Cuts Cut = null;
-	private SharedPreferences settings = null;
-	private String FullJSON = "";
+	SharedPreferences settings = null;
+	String FullJSON = "";
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState)
