@@ -1,3 +1,4 @@
     <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:id="@+id/edit_role" android:titleCondensed="Edit" android:icon="@drawable/ic_action_edit" android:title="Edit Role"></item>
+        <item android:id="@+id/delete_role" android:title="Delete Role" android:titleCondensed="Delete" android:icon="@drawable/ic_action_delete" android:showAsAction="always|withText"></item>
+        <item android:id="@+id/edit_role" android:titleCondensed="Edit" android:icon="@drawable/ic_action_edit" android:title="Edit Role" android:showAsAction="always|withText"></item>
     </menu>

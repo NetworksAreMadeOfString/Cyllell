@@ -1,5 +1,5 @@
     <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:id="@+id/EditRawJSON" android:title="Edit Raw JSON" android:titleCondensed="Edit JSON" android:icon="@drawable/ic_action_raw_json"></item>
-        <item android:id="@+id/EditRunList" android:title="Edit Run List" android:titleCondensed="Edit Run List" android:icon="@drawable/ic_action_runlist"></item>
-        <item android:id="@+id/EditEnv" android:title="Change Environment" android:titleCondensed="Change Environment" android:icon="@drawable/ic_action_edit_env"></item>
+        <item android:id="@+id/EditRawJSON" android:title="Edit Raw JSON" android:titleCondensed="Edit JSON" android:icon="@drawable/ic_action_raw_json" android:showAsAction="ifRoom|withText"></item>
+        <item android:id="@+id/EditRunList" android:title="Edit Run List" android:titleCondensed="Edit Run List" android:icon="@drawable/ic_action_runlist" android:showAsAction="ifRoom|withText"></item>
+        <item android:id="@+id/EditEnv" android:title="Change Environment" android:titleCondensed="Change Environment" android:icon="@drawable/ic_action_edit_env" android:showAsAction="ifRoom|withText"></item>
     </menu>

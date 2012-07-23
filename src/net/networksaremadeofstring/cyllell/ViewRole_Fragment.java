@@ -1,24 +1,21 @@
 package net.networksaremadeofstring.cyllell;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,7 +26,10 @@ public class ViewRole_Fragment extends CyllellFragment
 	private String URI = "";
 	Cuts Cut = null;
 	private SharedPreferences settings = null;
-	private String FullJSON = "";
+	//private String FullJSON = "";
+	ProgressDialog dialog;
+	Handler updateHandler;
+	JSONObject Role;
 	
 	public ViewRole_Fragment(String _URI)
 	{
@@ -68,11 +68,32 @@ public class ViewRole_Fragment extends CyllellFragment
         	editor.commit();
         }
 		
-		/*if(!isTabletDevice())
-        {
-    		((TextView) getActivity().findViewById(R.id.TitleBarText)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/codeops_serif.ttf"));
-        }*/
+		((Button) getView().findViewById(R.id.EditRoleButton)).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) 
+			{
+				dialog = new ProgressDialog(getActivity());
+		        dialog.setTitle("Updating Role..");
+		        dialog.setMessage("Please wait: Prepping Authentication protocols");       
+		        dialog.setIndeterminate(true);
+		        dialog.show();
+		        UpdateRole();
+			}
+		});
 		
+		/*((EditText) getView().findViewById(R.id.RunList)).setOnLongClickListener(new View.OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) 
+			{
+				// TODO Auto-generated method stub
+				//return false;
+				Toast.makeText(getActivity(), "Choose a Recipe", Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});*/
+
     	final Handler handler = new Handler() 
     	{
     		public void handleMessage(Message msg) 
@@ -81,10 +102,21 @@ public class ViewRole_Fragment extends CyllellFragment
     			if(msg.what == 0)
     			{
     				//Populate the data
-    				((TextView) getView().findViewById(R.id.RoleDescription)).setText(msg.getData().getString("description"));
+    				/*((TextView) getView().findViewById(R.id.RoleDescription)).setText(msg.getData().getString("description"));
     				((TextView) getView().findViewById(R.id.RunList)).setText(msg.getData().getString("run_list"));
     				((EditText) getView().findViewById(R.id.DefaultAttributes)).setText(msg.getData().getString("default_attributes"));
-    				((EditText) getView().findViewById(R.id.OverrideAttributes)).setText(msg.getData().getString("override_attributes"));
+    				((EditText) getView().findViewById(R.id.OverrideAttributes)).setText(msg.getData().getString("override_attributes"));*/
+    				try
+    				{
+    					((TextView) getView().findViewById(R.id.RoleDescription)).setText(Role.getString("description"));
+    					((TextView) getView().findViewById(R.id.RunList)).setText(Role.getJSONArray("run_list").toString(3));
+    					((EditText) getView().findViewById(R.id.DefaultAttributes)).setText(Role.getJSONObject("default_attributes").toString(3));
+    					((EditText) getView().findViewById(R.id.OverrideAttributes)).setText(Role.getJSONObject("override_attributes").toString(3));
+    				}
+    				catch(Exception e)
+    				{
+    					Toast.makeText(getActivity(), "There was an error processing the JSON.\r\nIt would be advisable to try that again.", Toast.LENGTH_SHORT).show();
+    				}
     				
 					//Hide the progress dialog
     				((ProgressBar) getView().findViewById(R.id.progressBar1)).setVisibility(8);
@@ -134,15 +166,12 @@ public class ViewRole_Fragment extends CyllellFragment
     				
     				//Sending request
     				handler.sendEmptyMessage(200);
-    				JSONObject Role = Cut.GetRole(URI);
+    				Role = Cut.GetRole(URI);
+    				Log.e("Role",Role.toString(3));
     				//Parsing JSON
 					handler.sendEmptyMessage(201);
-					FullJSON = Role.toString(2);
-					/*data.putString("maintainer_email", Role.getJSONObject("metadata").getString("maintainer_email"));
-					data.putString("maintainer", Role.getJSONObject("metadata").getString("maintainer"));
-					data.putString("version", Role.getJSONObject("metadata").getString("version"));*/
+					//FullJSON = Role.toString(2);
 					data.putString("description", Role.getString("description"));
-					
 					data.putString("default_attributes", Role.getJSONObject("default_attributes").toString(2));
 					data.putString("override_attributes", Role.getJSONObject("override_attributes").toString(2));
 					
@@ -187,22 +216,157 @@ public class ViewRole_Fragment extends CyllellFragment
     	dataPreload.start();
     }
     
-    /*public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
-	{
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.roles, menu);
-    }
-	    
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-			case R.id.edit_role:
+    private void UpdateRole()
+    {
+    	updateHandler = new Handler() 
+    	{
+    		public void handleMessage(Message msg) 
+    		{	
+    			switch(msg.what)
+    			{
+    				case 0:
+    				{
+    					dialog.setMessage("Success!");
+    					dialog.dismiss();
+    					Toast.makeText(getActivity(), "Role successfully updated!", Toast.LENGTH_SHORT).show();
+    				}
+    				break;
+    				
+    				case 1:
+    				{
+    					dialog.setMessage("Packaging new JSON...");
+    				}
+    				break;
+    				
+    				case 2:
+    				{
+    					dialog.setMessage("Sending to Chef server...");
+    				}
+    				break;
+    				
+    				default:
+    				{
+    					dialog.dismiss();
+    					Toast.makeText(getActivity(), "An Exception Occured;\r\n" + msg.getData().getString("exception"), Toast.LENGTH_LONG).show();
+    				}
+    			}
+    		}
+    	};
+    	
+    	Thread ProcessRequest = new Thread() 
+		{  
+			public void run() 
 			{
-				Toast.makeText(getActivity(), "Bootstrapping a node from a tablet would be a tad dangerous...", Toast.LENGTH_LONG).show();
-				return true;
+				Message msg = new Message();
+				Bundle data = new Bundle();
+				
+				try 
+				{
+					JSONObject newRole = Role;
+					updateHandler.sendEmptyMessage(1);
+					try
+					{
+						newRole.put("run_list", new JSONArray(((EditText) getView().findViewById(R.id.RunList)).getText().toString()));
+					}
+					catch(JSONException j)
+					{
+						//newRole.put("run_list", new JSONArray("[]"));
+						data.putString("exception", "The Runlist is not valid JSON:\r\n" + j.getMessage());
+						Message.obtain();
+	    				msg.setData(data);
+	    				msg.what = 99;
+	    				updateHandler.sendMessage(msg);
+	    				return;
+					}
+					
+					
+					try
+					{
+						newRole.put("default_attributes", new JSONObject(((EditText) getView().findViewById(R.id.DefaultAttributes)).getText().toString()));
+					}
+					catch(JSONException j)
+					{
+						//newRole.put("default_attributes", new JSONObject("{}"));
+						data.putString("exception", "The default attributes are not valid JSON:\r\n" + j.getMessage());
+						Message.obtain();
+	    				msg.setData(data);
+	    				msg.what = 100;
+	    				updateHandler.sendMessage(msg);
+	    				return;
+					}
+					
+					try
+					{
+						newRole.put("override_attributes", 	new JSONObject(((EditText) getView().findViewById(R.id.OverrideAttributes)).getText().toString()));
+					}
+					catch(JSONException j)
+					{
+						//newRole.put("override_attributes", new JSONObject("{}"));
+						data.putString("exception", "The override attributes are not valid JSON:\r\n" + j.getMessage());
+						Message.obtain();
+	    				msg.setData(data);
+	    				msg.what = 101;
+	    				updateHandler.sendMessage(msg);
+	    				return;
+					}
+					
+					updateHandler.sendEmptyMessage(2);
+					Cuts Cut = new Cuts(getActivity());
+					if(Cut.UpdateRole(newRole))
+					{
+						updateHandler.sendEmptyMessage(0);
+					}
+					else
+					{
+						data.putString("exception", "The update was unsuccessful. There was no reason given.");
+						Message.obtain();
+	    				msg.setData(data);
+	    				msg.what = 102;
+	    				updateHandler.sendMessage(msg);
+					}
+				}
+				catch (org.json.JSONException j)
+				{
+    				data.putString("exception", j.getMessage());
+    				Message.obtain();
+    				msg.setData(data);
+    				msg.what = 103;
+    				updateHandler.sendMessage(msg);
+				}
+				catch (org.apache.http.client.HttpResponseException e)
+				{
+					Log.e("StatusCode",Integer.toString(e.getStatusCode()));
+					if(e.getStatusCode() == 401 || e.getStatusCode() == 403)
+					{
+						//updateHandler.sendEmptyMessage(2);
+						data.putString("exception", "That request was denied (HTTP 401 or 403) probably due to Hosted Chef Role based Access control;\r\n" + e.getMessage());
+						Message.obtain();
+	    				msg.setData(data);
+	    				msg.what = 104;
+	    				updateHandler.sendMessage(msg);
+					}
+					else
+					{
+						e.printStackTrace();
+						data.putString("exception", e.getMessage());
+						Message.obtain();
+	    				msg.setData(data);
+	    				msg.what = 105;
+	    				updateHandler.sendMessage(msg);
+					}
+				}
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+					data.putString("exception", e.getMessage());
+					Message.obtain();
+    				msg.setData(data);
+    				msg.what = 106;
+    				updateHandler.sendMessage(msg);
+				}
 			}
-		}
-		return false;
-	}*/
+
+		};
+		ProcessRequest.start();
+    }
 }

@@ -18,8 +18,21 @@
 	            android:textAppearance="?android:attr/textAppearanceMedium"
 	            android:textColor="@color/codeops_normal_text" >
 </EditText>
-	        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/DefaultAttrLabel" android:text="Default Attributes" android:layout_marginTop="20dp" android:textColor="@color/codeops_normal_text" android:layout_width="200dp" android:layout_alignLeft="@+id/EnvironmentDescription" android:layout_below="@+id/EnvironmentDescription"></TextView>
-	        <TextView android:layout_height="wrap_content" android:layout_width="200dp" android:textColor="@color/codeops_normal_text" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_marginTop="20dp" android:id="@+id/EnvironmentListLabel" android:layout_alignLeft="@+id/DefaultAttrLabel" android:layout_below="@+id/DefaultAttributes" android:text="Locked Cookbooks:"></TextView>
+	        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/DefaultAttrLabel" android:text="Default Attributes" android:layout_marginTop="20dp" android:textColor="@color/codeops_normal_text" android:layout_width="150dp" android:layout_alignLeft="@+id/EnvironmentDescription" android:layout_below="@+id/EnvironmentDescription"></TextView>
+
+	        <TextView
+	            android:id="@+id/EnvironmentListLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignLeft="@+id/DefaultAttrLabel"
+	            android:layout_alignRight="@+id/EnvironmentTitle"
+	            android:layout_below="@+id/DefaultAttributes"
+	            android:layout_marginTop="20dp"
+	            android:text="Locked Cookbooks:"
+	            android:textAppearance="?android:attr/textAppearanceMedium"
+	            android:textColor="@color/codeops_normal_text" >
+
+</TextView>
 	        <EditText android:gravity="top|left" android:inputType="textMultiLine" android:id="@+id/DefaultAttributes" android:layout_height="200dp" android:layout_width="fill_parent" android:textColor="@color/codeops_normal_text" android:layout_below="@+id/DefaultAttrLabel" android:layout_alignLeft="@+id/EnvironmentListLabel" android:layout_marginRight="20dp"></EditText><Button
             android:id="@+id/EditEnvButton"
             android:layout_width="wrap_content"

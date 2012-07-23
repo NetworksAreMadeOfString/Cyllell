@@ -315,7 +315,7 @@ public class ViewRoles_Fragment extends CyllellFragment
             {
             	case R.id.edit_role:
             	{
-            		Context mContext = getActivity();
+            		/*Context mContext = getActivity();
 	        		editRole = new Dialog(mContext);
 	
 	        		editRole.setContentView(R.layout.role_edit_details);
@@ -362,8 +362,15 @@ public class ViewRoles_Fragment extends CyllellFragment
     	        		}
     	        	};
     	        	GetRawJSON.start();
+	        		*/
+            		GetMoreDetails(selectedRole);
 	        		
-	        		
+		            return true;
+            	}
+            	
+            	case R.id.delete_role:
+            	{
+            		Toast.makeText(getActivity(), "Deleting Roles is not available.\r\nIf you think it is a neccessary feature please email the author.", Toast.LENGTH_LONG).show();
 		            return true;
             	}
             	

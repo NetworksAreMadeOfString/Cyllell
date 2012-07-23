@@ -1,17 +1,139 @@
 <ScrollView android:id="@+id/scrollView1" xmlns:android="http://schemas.android.com/apk/res/android" android:background="@color/codeops_background_darker" android:layout_height="match_parent" android:layout_width="match_parent">
-	<RelativeLayout android:id="@+id/relativeLayout1" android:layout_height="match_parent" android:layout_width="match_parent" android:minHeight="680dp" android:background="@color/codeops_background_darker">
-	        <TextView android:text="TextView" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:textColor="@color/codeops_title_text" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" android:textSize="28dp" android:layout_marginTop="4dp" android:id="@+id/RoleTitle"></TextView>
+
+	<RelativeLayout
+	    android:id="@+id/relativeLayout1"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@color/codeops_background_darker"
+	    android:minHeight="680dp" >
 
-	        <ProgressBar android:id="@+id/progressBar1" style="?android:attr/progressBarStyleLarge" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"></ProgressBar>
-	        <TextView android:id="@+id/ProgressStatus" android:text="......." android:textAppearance="?android:attr/textAppearanceMedium" android:layout_height="wrap_content" android:textColor="@color/codeops_normal_text" android:layout_width="wrap_content" android:layout_alignParentBottom="true" android:layout_toRightOf="@+id/progressBar1"></TextView>
-	        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_below="@+id/RoleTitle" android:layout_alignParentLeft="true" android:layout_marginLeft="32dp" android:id="@+id/RoleDescription" android:text="......." android:textColor="@color/codeops_subtitle_text"></TextView>
-	        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_alignBaseline="@+id/RunListLabel" android:layout_alignBottom="@+id/RunListLabel" android:layout_toRightOf="@+id/RunListLabel" android:id="@+id/RunList" android:text="...." android:textColor="@color/codeops_normal_text"></TextView>
-	        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/DefaultAttrLabel" android:text="Default Attributes" android:layout_marginTop="20dp" android:textColor="@color/codeops_normal_text" android:layout_width="200dp" android:layout_alignLeft="@+id/RoleDescription" android:layout_below="@+id/RoleDescription"></TextView>
-	        <EditText android:inputType="textMultiLine" android:layout_alignTop="@+id/DefaultAttrLabel" android:layout_toRightOf="@+id/DefaultAttrLabel" android:id="@+id/DefaultAttributes" android:gravity="top|left" android:enabled="false" android:layout_width="fill_parent" android:layout_marginRight="12dp" android:textColor="@color/codeops_normal_text" android:layout_height="200dp">
-	            <requestFocus></requestFocus>
-	        </EditText>
-	        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_below="@+id/DefaultAttributes" android:id="@+id/OverrideAttrLabel" android:text="Override Attributes" android:textColor="@color/codeops_normal_text" android:layout_marginTop="20dp" android:layout_width="200dp" android:layout_alignLeft="@+id/DefaultAttrLabel"></TextView>
-	        <EditText android:inputType="textMultiLine" android:layout_alignTop="@+id/OverrideAttrLabel" android:layout_toRightOf="@+id/OverrideAttrLabel" android:id="@+id/OverrideAttributes" android:layout_width="fill_parent" android:layout_marginRight="12dp" android:textColor="@color/codeops_normal_text" android:enabled="false" android:gravity="top|left" android:layout_height="200dp"></EditText>
-	        <TextView android:layout_height="wrap_content" android:text="Run List:" android:layout_width="200dp" android:id="@+id/RunListLabel" android:textColor="@color/codeops_normal_text" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_below="@+id/OverrideAttributes" android:layout_alignLeft="@+id/OverrideAttrLabel" android:layout_marginTop="20dp"></TextView>
+	    <TextView
+	        android:id="@+id/RoleTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="4dp"
+	        android:text="TextView"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:textColor="@color/codeops_title_text"
+	        android:textSize="28dp" >
+	    </TextView>
+
+	    <TextView
+	        android:id="@+id/RoleDescription"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/RoleTitle"
+	        android:layout_marginLeft="32dp"
+	        android:text="......."
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@color/codeops_subtitle_text" >
+	    </TextView>
+
+	    <TextView
+	        android:id="@+id/DefaultAttrLabel"
+	        android:layout_width="200dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/RoleDescription"
+	        android:layout_below="@+id/RoleDescription"
+	        android:layout_marginTop="20dp"
+	        android:text="Default Attributes"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@color/codeops_normal_text" >
+	    </TextView>
+
+	    <TextView
+	        android:id="@+id/OverrideAttrLabel"
+	        android:layout_width="200dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/DefaultAttrLabel"
+	        android:layout_below="@+id/DefaultAttributes"
+	        android:layout_marginTop="20dp"
+	        android:text="Override Attributes"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@color/codeops_normal_text" >
+	    </TextView>
+
+	    <TextView
+	        android:id="@+id/RunListLabel"
+	        android:layout_width="200dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/OverrideAttrLabel"
+	        android:layout_below="@+id/OverrideAttributes"
+	        android:layout_marginTop="20dp"
+	        android:text="Run List:"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@color/codeops_normal_text" >
+	    </TextView>
+
+	    <EditText
+	        android:id="@+id/DefaultAttributes"
+	        android:layout_width="fill_parent"
+	        android:layout_height="150dp"
+	        android:layout_alignLeft="@+id/DefaultAttrLabel"
+	        android:layout_below="@+id/DefaultAttrLabel"
+	        android:layout_marginRight="3dp"
+	        android:ems="10"
+	        android:gravity="top|left"
+	        android:inputType="textMultiLine"
+	        android:textColor="@color/codeops_normal_text" >
+
+	        <requestFocus />
+	    </EditText>
+
+	    <EditText
+	        android:id="@+id/OverrideAttributes"
+	        android:layout_width="match_parent"
+	        android:layout_height="150dp"
+	        android:layout_alignLeft="@+id/OverrideAttrLabel"
+	        android:layout_below="@+id/OverrideAttrLabel"
+	        android:ems="10"
+	        android:gravity="top|left"
+	        android:inputType="textMultiLine"
+	        android:textColor="@color/codeops_normal_text" />
+
+	    <ProgressBar
+	        android:id="@+id/progressBar1"
+	        style="?android:attr/progressBarStyleLarge"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/RunList" />
+
+	    <EditText
+	        android:id="@+id/RunList"
+	        android:layout_width="fill_parent"
+	        android:layout_height="150dp"
+	        android:layout_alignLeft="@+id/RunListLabel"
+	        android:layout_below="@+id/RunListLabel"
+	        android:ems="10"
+	        android:gravity="top|left"
+	        android:inputType="textMultiLine"
+	        android:text="...."
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@color/codeops_normal_text" />
+
+	    <TextView
+	        android:id="@+id/ProgressStatus"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_toRightOf="@+id/progressBar1"
+	        android:text="......."
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@color/codeops_normal_text" />
+
+	    <Button
+	        android:id="@+id/EditRoleButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/RunList"
+	        android:layout_marginRight="8dp"
+	        android:text="Update Role" />
+
 	</RelativeLayout>
+
 </ScrollView>

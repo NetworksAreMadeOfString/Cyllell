@@ -227,6 +227,24 @@ public class Cuts
     	return json;
 	}
 	
+	public Boolean UpdateRole(JSONObject JSON) throws Exception
+	{
+		String Path = this.PathSuffix + "/roles/"+JSON.getString("name");
+		this.httpput = new HttpPut(this.ChefURL + Path);
+		Log.i("UpdateNodewithRawJSON",Path);
+		Log.i("UpdateNodewithRawJSON",JSON.toString(3));
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, JSON.toString(),"PUT");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpput.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	this.httpput.setEntity(new StringEntity(JSON.toString()));
+    	
+    	httpClient.execute(this.httpput, responseHandler);
+
+		return true;
+	}
+	
 	public Boolean UpdateRolewithRawJSON(String RoleURI, JSONObject JSON) throws Exception
 	{
 		String Path = this.PathSuffix + "/roles/"+RoleURI;
