@@ -73,7 +73,6 @@ public class CyllellCache extends SQLiteOpenHelper
     	{  
     		public void run() 
     		{
-    			Log.e("RefreshCache","Nodes -----------------------------------------------------------------");
     			//Nodes -----------------------------------------------------------------
     			JSONObject Nodes = null;
 				try 
@@ -97,14 +96,11 @@ public class CyllellCache extends SQLiteOpenHelper
 				} 
 				catch (Exception e)
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					qdb.endTransaction();
+					if(qdb.isOpen() && qdb.isDbLockedByCurrentThread())
+						qdb.endTransaction();
 				}
 				
 				//Roles -----------------------------------------------------------------
-				Log.e("RefreshCache","Roles -----------------------------------------------------------------");
-				
     			JSONObject Roles = null;
 				try 
 				{
@@ -126,14 +122,11 @@ public class CyllellCache extends SQLiteOpenHelper
 				} 
 				catch (Exception e)
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					qdb.endTransaction();
+					if(qdb.isOpen() && qdb.isDbLockedByCurrentThread())
+						qdb.endTransaction();
 				}
 				
 				//Environments -----------------------------------------------------------------
-				Log.e("RefreshCache","Environments -----------------------------------------------------------------");
-				
     			JSONObject Environments = null;
 				try 
 				{
@@ -155,9 +148,8 @@ public class CyllellCache extends SQLiteOpenHelper
 				} 
 				catch (Exception e)
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					qdb.endTransaction();
+					if(qdb.isOpen() && qdb.isDbLockedByCurrentThread())
+						qdb.endTransaction();
 				}
 				
 				//Finish up

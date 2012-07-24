@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.scheme.Scheme;
@@ -36,6 +37,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.SingleClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,6 +72,7 @@ public class Cuts
 	private DefaultHttpClient httpClient;
 	public HttpGet httpget = null;
 	public HttpPut httpput = null;
+	public HttpDelete httpdelete = null;
 	
 	public Cuts(Context thisContext) throws Exception
 	{
@@ -95,7 +100,11 @@ public class Cuts
 	
 	private void PrepareSSLHTTPClient() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException
 	{
-		client = new DefaultHttpClient(); 
+		HttpParams httpParameters = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 3000);
+		HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+		
+		client = new DefaultHttpClient(httpParameters); 
 		
         SchemeRegistry registry = new SchemeRegistry();
         SocketFactory socketFactory = null;
@@ -295,7 +304,6 @@ public class Cuts
     		this.httpget.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
     	}
     	String jsonTempString = httpClient.execute(this.httpget, responseHandler);
-    	//Log.i("JSONString:",jsonTempString);
     	JSONObject json = new JSONObject(jsonTempString);
     	return json;
 	}
@@ -304,8 +312,6 @@ public class Cuts
 	{
 		String Path = this.PathSuffix + "/environments/"+JSON.getString("name");
 		this.httpput = new HttpPut(this.ChefURL + Path);
-		Log.i("UpdateNodewithRawJSON",Path);
-		Log.i("UpdateNodewithRawJSON",JSON.toString(3));
     	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, JSON.toString(),"PUT");
     	for(int i = 0; i < Headers.size(); i++)
     	{
@@ -314,6 +320,20 @@ public class Cuts
     	this.httpput.setEntity(new StringEntity(JSON.toString()));
     	
     	httpClient.execute(this.httpput, responseHandler);
+
+		return true;
+	}
+	
+	public Boolean DeleteEnvironment(JSONObject JSON) throws Exception
+	{
+		String Path = this.PathSuffix + "/environments/"+JSON.getString("name");
+		this.httpdelete = new HttpDelete(this.ChefURL + Path);
+    	List <NameValuePair> Headers = ChefAuth.GetHeaders(Path, "","DELETE");
+    	for(int i = 0; i < Headers.size(); i++)
+    	{
+    		this.httpput.setHeader(Headers.get(i).getName(),Headers.get(i).getValue());
+    	}
+    	httpClient.execute(this.httpdelete, responseHandler);
 
 		return true;
 	}

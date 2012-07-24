@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -33,6 +34,8 @@ public class MainLanding extends SherlockFragmentActivity
 	Boolean fragmentSet = false;
 	ActionMode mActionMode;
 	public CyllellCache cacheDB;
+	ActionBar actionBar;
+	Boolean EnableTabs = false;
 	
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) 
@@ -52,6 +55,7 @@ public class MainLanding extends SherlockFragmentActivity
     	
         BugSenseHandler.setup(this, "84aff884");
         settings = getSharedPreferences("Cyllell", 0);
+        setContentView(R.layout.main);
         
         //See if this is the first time the app has run (and subsequently have no Chef details)
         if(settings.getBoolean("FirstRun", true) == true)
@@ -65,49 +69,33 @@ public class MainLanding extends SherlockFragmentActivity
         	CheckDatabase();
         }
         
-        fm = getSupportFragmentManager();
-        setContentView(R.layout.main);
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-    	Fragment fragment = new TabletWelcome();
-        fragmentTransaction.replace(R.id.MainFragment, fragment);
-        fragmentTransaction.commit();
-        ActionBar actionBar = getSupportActionBar();
-		actionBar.setTitle("");
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		AddTabs();
-		 
-        if(!isTabletDevice())
+        if(fragmentSet)
         {
-        	actionBar.setTitle("Cyllell - Knife for Android");
+        	Log.i("FragmentSet","Fragment was true");
         }
-    }
-    
-    private boolean isTabletDevice() 
-    {
-        if (android.os.Build.VERSION.SDK_INT >= 11) // honeycomb
-        { 
-            // test screen size, use reflection because isLayoutSizeAtLeast is only available since 11
-            Configuration con = getResources().getConfiguration();
-            try 
-            {
-                Method mIsLayoutSizeAtLeast = con.getClass().getMethod("isLayoutSizeAtLeast", int.class);
-                Boolean r = (Boolean) mIsLayoutSizeAtLeast.invoke(con, 0x00000004); // Configuration.SCREENLAYOUT_SIZE_XLARGE
-                return r;
-            } 
-            catch (Exception x) 
-            {
-                x.printStackTrace();
-                return false;
-            }
+        else
+        {
+        	fm = getSupportFragmentManager();
+	        
+	        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+	    	Fragment fragment = new TabletWelcome();
+	        fragmentTransaction.replace(R.id.MainFragment, fragment);
+	        fragmentTransaction.commit();
         }
-        return false;
+        
+        if(actionBar == null)
+        {
+	        actionBar = getSupportActionBar();
+			actionBar.setTitle("");
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			AddTabs();
+        }
+        
+        
     }
-  
     
     private void AddTabs()
     {
-    	ActionBar actionBar = getSupportActionBar();
-    	
     	Tab NodesTab = actionBar.newTab().setText(R.string.TabsNodes).setTabListener(new TabListener(){
 
 			@Override
@@ -128,11 +116,13 @@ public class MainLanding extends SherlockFragmentActivity
 			@Override
 			public void onTabReselected(Tab tab, FragmentTransaction ft) 
 			{
+				Log.i("onTabReselected","Nodes tab reselected");
 				viewNodes = new ViewNodes_Fragment();
 				viewNodes.setHasOptionsMenu(true);
 	        	ft.replace(R.id.MainFragment, viewNodes);
 			}});
     	NodesTab.setIcon(R.drawable.ic_action_nodes);
+    	//If in portrait mode the false seems to get ignored and we switch straight to it.
     	actionBar.addTab(NodesTab, false);
 
 		Tab cookbooksTab = actionBar.newTab().setText(R.string.TabsCookbooks).setTabListener(new TabListener(){
@@ -251,9 +241,6 @@ public class MainLanding extends SherlockFragmentActivity
     {
     	if(settings.getBoolean("DatabaseCreated", false) == true)
     	{
-    		/*Intent MainLandingIntent = new Intent(launcher.this, MainLanding.class);
-    		launcher.this.startActivity(MainLandingIntent);
-    		finish();*/
     		cacheDB = new CyllellCache(MainLanding.this.getApplicationContext());
     		try
     		{

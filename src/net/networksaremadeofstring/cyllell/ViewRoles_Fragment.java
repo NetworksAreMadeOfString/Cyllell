@@ -66,6 +66,7 @@ public class ViewRoles_Fragment extends CyllellFragment
 	public void onActivityCreated(Bundle savedInstanceState)
     {
     	super.onCreate(savedInstanceState);
+    	setRetainInstance(true);
     }
 	
 	@Override
@@ -146,7 +147,7 @@ public class ViewRoles_Fragment extends CyllellFragment
 						}
 					};
 					
-					RoleAdapter = new RoleListAdaptor(getActivity().getBaseContext(), listOfRoles,listener,listenerLong);
+					RoleAdapter = new RoleListAdaptor(getActivity(), listOfRoles,listener,listenerLong);
     				list = (ListView) getView().findViewById(R.id.rolesListView);
     				if(list != null)
     				{

@@ -388,7 +388,7 @@ public class ViewNodes_Fragment extends SherlockFragment
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		//Log.e("onCreateView","Called");
+		Log.e("onCreateView","Called");
         return inflater.inflate(R.layout.nodeslanding, container, false);
     }
 	
@@ -681,4 +681,16 @@ public class ViewNodes_Fragment extends SherlockFragment
 			    NodeAdapter.notifyDataSetChanged();
 			}
 		};
+		
+		public void onDestroyView()
+		{
+			super.onDestroyView();
+			dialog.dismiss();
+		}
+		
+		public void onDestroy()
+		{
+			super.onDestroy();
+			dialog.dismiss();
+		}
 }

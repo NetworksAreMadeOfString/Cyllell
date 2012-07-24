@@ -31,6 +31,10 @@ public class ViewRole_Fragment extends CyllellFragment
 	Handler updateHandler;
 	JSONObject Role;
 	
+	public ViewRole_Fragment()
+	{
+	}
+	
 	public ViewRole_Fragment(String _URI)
 	{
 		this.URI = _URI;

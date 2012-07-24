@@ -24,8 +24,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -56,6 +59,7 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 	SharedPreferences settings = null;
 	Boolean CutInProgress = false;
 	Handler handler;
+	Context context;
 	
 	public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -67,6 +71,7 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 		}*/
     	list = (ListView) this.getActivity().findViewById(R.id.cookbooksListView);
     	list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+    	context = getActivity();
     }
 	
 	@Override
@@ -194,13 +199,13 @@ public class ViewCookbooks_Fragment extends CyllellFragment
     				dialog.dismiss();
     				
     				//Alert the user that something went terribly wrong
-    				AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+    				AlertDialog alertDialog = new AlertDialog.Builder(context).create();
     				alertDialog.setTitle("API Error");
     				alertDialog.setMessage("There was an error communicating with the API:\n" + msg.getData().getString("exception"));
-    				alertDialog.setButton2("Back", new DialogInterface.OnClickListener() {
+    				alertDialog.setButton2("OK", new DialogInterface.OnClickListener() {
     				   public void onClick(DialogInterface dialog, int which) 
     				   {
-    					   getActivity().finish();
+    					   //getActivity().finish();
     				   }
     				});
     				alertDialog.setIcon(R.drawable.icon);
@@ -250,6 +255,8 @@ public class ViewCookbooks_Fragment extends CyllellFragment
 					} 
 	    			catch (Exception e)
 	    			{
+	    				BugSenseHandler.log("ViewCookbooksFragment", e);
+	    				e.printStackTrace();
 	    				Message msg = new Message();
 	    				Bundle data = new Bundle();
 	    				data.putString("exception", e.getMessage());

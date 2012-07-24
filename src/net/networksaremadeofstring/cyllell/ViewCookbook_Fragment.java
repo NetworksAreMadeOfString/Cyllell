@@ -39,6 +39,7 @@ public class ViewCookbook_Fragment extends Fragment
 	public ViewCookbook_Fragment()
 	{
 	}
+	
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
     	settings = this.getActivity().getSharedPreferences("Cyllell", 0);

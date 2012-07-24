@@ -221,6 +221,13 @@ public class ViewEnvironment_Fragment extends CyllellFragment
     				}
     				break;
     				
+    				case 3:
+    				{
+    					dialog.dismiss();
+    					Toast.makeText(getActivity(), "Environment successfully deleted!", Toast.LENGTH_SHORT).show();
+    				}
+    				break;
+    				
     				case 99:
     				{
     					dialog.dismiss();
